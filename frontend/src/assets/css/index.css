@@ -1,0 +1,95 @@
+/* Global stylesheet */
+
+/* Fonts */
+@import "../fonts/fonts.css";
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    background-color: #131621;
+}
+
+:root {
+    /* colors */
+}
+
+.onBoardingSVGS {
+    width: 100%;
+    max-width: 320px;
+}
+
+.toastContainer {
+    @media only screen and (max-width: 480px) {
+        width: 100%;
+        position: fixed !important;
+        top: 5px !important;
+        padding: 0px 24px !important;
+    }
+}
+
+.container {
+    overflow: hidden;
+    padding: 0px 24px;
+    @media only screen and (min-width: 480px) {
+    }
+    @media only screen and (min-width: 768px) {
+    }
+    @media only screen and (min-width: 1024px) {
+    }
+    @media only screen and (min-width: 1200px) {
+    }
+}
+
+/* Exceptional cases */
+.shortIntroductionOpenPage {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.75rem;
+    font-family: "Poppins Regular";
+    letter-spacing: 2px;
+    color: #b3b2b2;
+    /* The line */
+    &::before {
+        content: "";
+        display: block;
+        width: 65%;
+        height: 2px;
+        position: absolute;
+        top: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #b3b2b2;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .shortIntroductionOpenPage {
+        font-size: 1.25rem;
+    }
+}
+
+@media only screen and (min-width: 1024px) {
+    .backLight {
+        width: 500px;
+        height: 513px;
+    }
+
+    .title {
+        font-size: 4.5rem;
+    }
+
+    .shortIntroductionOpenPage {
+        font-size: 1.75rem;
+    }
+}
+@media only screen and (min-width: 1024px) {
+    .shortIntroductionOpenPage {
+        font-size: 1.75rem;
+    }
+}
