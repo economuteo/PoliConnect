@@ -1,38 +1,33 @@
 import { Form, redirect } from "react-router-dom";
-import { toast } from "react-toastify";
 
-import { ReactComponent as Email } from "../assets/images/RegisterForm/email.svg";
-
-import Wrapper from "../assets/wrappers/PhoneNumberComponent";
-
+import Wrapper from "../assets/wrappers/CreateUsernameComponent";
 import customFetch from "../utils/customFetch";
+import { toast } from "react-toastify";
 
 export const action = async ({ request }) => {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
 
-    if (!data.email.endsWith("@stud.fils.upb.ro")) {
-        toast.error("Please use your UPB university email address");
-        return null;
-    }
-
     try {
-        await customFetch.post("/auth/checkEmail", data);
-        return redirect("/authentification/verifyEmail");
+        await customFetch.post("/auth/createUsername", data);
+        return redirect("/authentification/addProfilePicture");
     } catch (error) {
         toast.error(error?.response?.data?.message || "An error occurred");
         return error;
     }
 };
 
-const EmailComponent = () => {
+const CreateUsernameComponent = () => {
     return (
         <Wrapper>
-            <p className="title">Enter Your Email</p>
+            <p className="title">Create Username</p>
+            <p className="shortDescription">
+                Please choose a username for your new account. You can always change it later if you
+                change your mind.
+            </p>
             <Form method="post">
                 <div className="parent">
-                    <input type="email" placeholder="Email" name="email" required />
-                    <Email className="childImage" />
+                    <input type="text" placeholder="Username" name="username" required />
                 </div>
                 <div className="buttons">
                     <button type="submit" className="emailNextButton">
@@ -44,4 +39,4 @@ const EmailComponent = () => {
     );
 };
 
-export default EmailComponent;
+export default CreateUsernameComponent;

@@ -14,6 +14,7 @@ import {
     VerifyEmailPage,
     ResetPasswordPage,
     AccountCreatedPage,
+    CreateUsernamePage,
     FeedLayoutPage,
     Error,
 } from "./pages";
@@ -22,6 +23,7 @@ import { action as registerAction } from "./components/RegisterFormComponent.jsx
 import { action as loginAction } from "./components/LoginFormComponent.jsx";
 import { action as resetPasswordAction } from "./components/ResetPasswordComponent.jsx";
 import { action as checkEmailAction } from "./components/EmailComponent.jsx";
+import { action as createUsernameAction } from "./components/CreateUsernameComponent.jsx";
 
 import { AppProvider } from "./contexts/AppContext";
 
@@ -91,6 +93,13 @@ const router = createBrowserRouter([
                     {
                         path: "accountCreated",
                         element: <AccountCreatedPage />,
+                        errorElement: <Error />,
+                        children: [],
+                    },
+                    {
+                        path: "createUsername",
+                        element: <CreateUsernamePage />,
+                        action: createUsernameAction,
                         errorElement: <Error />,
                         children: [],
                     },

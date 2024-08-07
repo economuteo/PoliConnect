@@ -6,7 +6,7 @@ import { BadRequestError, NotFoundError, UnauthenticatedError } from "../errors/
 import { sendVerificationEmail } from "../services/emailService.js";
 import { generateVerificationCode } from "../utils/verificationCodeUtils.js";
 import { comparePassword, hashPassword } from "../utils/passwordUtils.js";
-import { createJWT } from "../utils/tokenUtils.js";
+import { createJWT, verifyJWT } from "../utils/tokenUtils.js";
 
 export const register = async (req, res) => {
     const isFirstAccount = (await User.countDocuments({})) === 0;
@@ -16,6 +16,17 @@ export const register = async (req, res) => {
     req.body.password = hashedPassword;
 
     const user = await User.create(req.body);
+
+    const token = createJWT({ userId: user._id, role: user.role });
+
+    const oneDay = 1000 * 60 * 60 * 24;
+
+    res.cookie("token", token, {
+        httpOnly: true,
+        expires: new Date(Date.now() + oneDay),
+        secure: process.env.NODE_ENV === "production",
+    });
+
     res.status(StatusCodes.CREATED).json({ msg: "User created" });
 };
 
@@ -133,4 +144,25 @@ export const verifyEmailCode = async (req, res) => {
     } else {
         throw new UnauthenticatedError("The code entered is incorrect!");
     }
+};
+
+export const createUsername = async (req, res) => {
+    const { username } = req.body;
+
+    const { token } = req.cookies;
+
+    const tokenDecoded = verifyJWT(token);
+
+    const { userId } = tokenDecoded;
+
+    const user = await User.findOne({ _id: userId });
+
+    if (!user) {
+        throw new NotFoundError("User not found!");
+    }
+
+    user.username = username;
+    await user.save();
+
+    res.status(200).json({ message: "Username created successfully" });
 };

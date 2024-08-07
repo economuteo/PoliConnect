@@ -128,3 +128,15 @@ export const validateEmailInput = withValidationErrors([
         })
         .trim(),
 ]);
+
+export const validateUsername = withValidationErrors([
+    body("username")
+        .notEmpty()
+        .withMessage("Username is required")
+        .custom(async (username) => {
+            const user = await User.findOne({ username });
+            if (user) throw new BadRequestError("This username is already in use!");
+            return true;
+        })
+        .trim(),
+]);

@@ -1,8 +1,10 @@
 import styled from "styled-components";
 
 const Wrapper = styled.main`
+    max-width: 400px;
+
     .title {
-        text-align: left;
+        text-align: center;
         line-height: 125%;
         font-family: "Poppins SemiBold";
         font-size: 2.375rem;
@@ -10,15 +12,18 @@ const Wrapper = styled.main`
     }
 
     .shortDescription {
+        text-align: center;
+        margin-top: 8px;
+        font-size: 0.875em;
+        font-family: "Poppins Regular";
+        color: #acadb9;
     }
 
     input {
         width: 100%;
         padding: 20px;
-        padding-left: 62px;
         border: none;
         border-radius: 12px;
-
         background-color: #292c35;
         color: #c2c3cb;
         &::placeholder {
@@ -54,13 +59,6 @@ const Wrapper = styled.main`
         position: relative;
     }
 
-    .childImage {
-        position: absolute;
-        top: 50%;
-        left: 24px;
-        transform: translateY(-50%);
-    }
-
     .button {
         display: flex;
         flex-direction: column;
@@ -73,6 +71,10 @@ const Wrapper = styled.main`
 
     /* Responsiveness */
     @media only screen and (min-width: 768px) {
+        .shortDescription {
+            text-align: center;
+        }
+
         button {
             padding: 20px;
             width: 50%;
@@ -94,8 +96,6 @@ const Wrapper = styled.main`
         }
 
         input {
-            padding: 30px;
-            padding-left: 62px;
             font-size: 1.25rem;
 
             &::placeholder {
@@ -103,6 +103,7 @@ const Wrapper = styled.main`
                 color: #c2c3cb;
             }
         }
+
         .buttons {
             display: flex;
             flex-direction: row;
@@ -113,6 +114,13 @@ const Wrapper = styled.main`
     @media only screen and (min-width: 1024px) {
         .title {
             text-align: center;
+        }
+    }
+
+    @media only screen and (min-width: 1200px) {
+        max-width: 600px;
+        .shortDescription {
+            font-size: 1em;
         }
     }
 `;

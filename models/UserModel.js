@@ -9,6 +9,10 @@ const UserSchema = new mongoose.Schema({
         enum: ["user", "admin"],
         default: "user",
     },
+    username: {
+        type: String,
+        default: "username",
+    },
 });
 
 UserSchema.methods.toJSON = function () {
