@@ -8,13 +8,21 @@ import {
     RegisterPage,
     LoginPage,
     ForgetPasswordPage,
-    Error,
     PhoneNumberPage,
+    EmailPage,
     VerifyPhoneNumberPage,
     VerifyEmailPage,
     ResetPasswordPage,
     AccountCreatedPage,
+    FeedLayoutPage,
+    Error,
 } from "./pages";
+
+import { action as registerAction } from "./components/RegisterFormComponent.jsx";
+import { action as loginAction } from "./components/LoginFormComponent.jsx";
+import { action as resetPasswordAction } from "./components/ResetPasswordComponent.jsx";
+import { action as checkEmailAction } from "./components/EmailComponent.jsx";
+
 import { AppProvider } from "./contexts/AppContext";
 
 const router = createBrowserRouter([
@@ -39,12 +47,12 @@ const router = createBrowserRouter([
                     {
                         index: true,
                         element: <RegisterPage />,
-                        errorElement: <Error />,
+                        action: registerAction,
                     },
                     {
                         path: "login",
                         element: <LoginPage />,
-                        errorElement: <Error />,
+                        action: loginAction,
                     },
                     {
                         path: "forgetPassword",
@@ -56,12 +64,18 @@ const router = createBrowserRouter([
                         path: "resetPassword",
                         element: <ResetPasswordPage />,
                         errorElement: <Error />,
-                        children: [],
+                        action: resetPasswordAction,
                     },
                     {
                         path: "phoneNumber",
                         element: <PhoneNumberPage />,
                         errorElement: <Error />,
+                    },
+                    {
+                        path: "email",
+                        element: <EmailPage />,
+                        errorElement: <Error />,
+                        action: checkEmailAction,
                     },
                     {
                         path: "verifyPhoneNumber",
@@ -81,6 +95,11 @@ const router = createBrowserRouter([
                         children: [],
                     },
                 ],
+            },
+            {
+                path: "feed",
+                element: <FeedLayoutPage />,
+                errorElement: <Error />,
             },
         ],
     },

@@ -1,3 +1,5 @@
+import "express-async-errors";
+
 import * as dotenv from "dotenv";
 dotenv.config();
 
@@ -5,87 +7,46 @@ import express from "express";
 const app = express();
 
 import morgan from "morgan";
-import { nanoid } from "nanoid";
+import mongoose from "mongoose";
+import cookieParser from "cookie-parser";
+
+// routers
+import messageRouter from "./routes/messageRouter.js";
+import authRouter from "./routes/authRouter.js";
+import userRouter from "./routes/userRouter.js";
+
+// middleware
+import { authenticateUser } from "./middleware/authMiddleware.js";
+import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware.js";
 
 const port = process.env.PORT || 8080;
 
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
-
-let messages = [
-    { id: nanoid(), text: "Hello, World!", username: "John Doe" },
-    { id: nanoid(), text: "This is a message", username: "Stefanee" },
-];
+try {
+    await mongoose.connect(process.env.MONGO_URL);
+    app.listen(port, () => {
+        console.log(`Server is running on port ${port}`);
+    });
+} catch (error) {
+    console.log(error);
+    process.exit(1);
+}
 
 if (process.env.NODE_ENV === "development") {
     app.use(morgan("dev"));
 }
-
+app.use(cookieParser());
 app.use(express.json());
 
-app.get("/", (req, res) => {
-    res.json({ message: "Hello World!" });
+app.get("/api/v1/test", (req, res) => {
+    res.json({ msg: "test route" });
 });
 
-app.post("/", (req, res) => {
-    res.json({ message: "data received", data: req.body });
+app.use("/api/v1/messages", authenticateUser, messageRouter);
+app.use("/api/v1/users", authenticateUser, userRouter);
+app.use("/api/v1/auth", authRouter);
+
+app.use("*", (req, res) => {
+    res.status(404).json({ msg: "Not found" });
 });
 
-// Get messages
-app.get("/api/v1/messages", (req, res) => {
-    res.json(messages);
-});
-
-// Create a new message
-app.post("/api/v1/messages", (req, res) => {
-    const { text, username } = req.body;
-    if (!text) {
-        return res.status(400).json({ msg: "Please include the text that is missing..." });
-    }
-    if (!username) {
-        return res.status(400).json({ msg: "Please include the username that is missing..." });
-    }
-    const message = { id: nanoid(), text, username };
-    messages.push(message);
-    res.status(201).json(message);
-});
-
-// Get a single message
-app.get("/api/v1/messages/:id", (req, res) => {
-    const { id } = req.params;
-    const message = messages.find((message) => message.id === id);
-    if (!message) {
-        return res.status(404).json({ msg: `No message with the id of ${id}` });
-    }
-    res.status(200).json(message);
-});
-
-// Edit a message
-app.patch("/api/v1/messages/:id", (req, res) => {
-    const { username } = req.body;
-    if (!username) {
-        return res.status(400).json({ msg: "Please include the user that is missing..." });
-    }
-    const { id } = req.params;
-    const message = messages.find((message) => message.id === id);
-    if (!message) {
-        return res.status(404).json({ msg: `No message with the id of ${id}` });
-    }
-    message.username = username;
-    res.status(200).json({ msg: "vine stefane", message });
-});
-
-// Delete a message
-app.delete("/api/v1/messages/:id", (req, res) => {
-    const { id } = req.params;
-    const message = messages.find((message) => message.id === id);
-    if (!message) {
-        return res.status(404).json({ msg: `No message with the id of ${id}` });
-    }
-    messages = messages.filter((message) => message.id !== id);
-    res.status(200).json({ msg: "This message was deleted", message });
-});
-
-// Soon
-// app.use("/api/v1/users", authenticateUser, userRouter);
+app.use(errorHandlerMiddleware);

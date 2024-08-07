@@ -63,6 +63,11 @@ const Wrapper = styled.main`
         flex-direction: column;
     }
 
+    a {
+        text-decoration: none;
+        color: #ffff;
+    }
+
     /* Responsiveness */
     @media only screen and (min-width: 768px) {
         button {
@@ -74,6 +79,10 @@ const Wrapper = styled.main`
             display: flex;
             flex-direction: row;
             gap: 20px;
+        }
+
+        .emailNextButton {
+            width: 100%;
         }
 
         .title {

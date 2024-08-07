@@ -1,3 +1,5 @@
+import { Form, redirect, useNavigation } from "react-router-dom";
+
 import PasswordComponent from "./PasswordComponent";
 
 import { ReactComponent as Profile } from "../assets/images/RegisterForm/profile.svg";
@@ -8,33 +10,54 @@ import "react-toastify/dist/ReactToastify.css";
 
 import Wrapper from "../assets/wrappers/RegisterFormComponent";
 
+import customFetch from "../utils/customFetch.js";
+
+export const action = async ({ request }) => {
+    const formData = await request.formData();
+    const data = Object.fromEntries(formData);
+
+    // Validations
+    if (!data.email.endsWith("@stud.fils.upb.ro")) {
+        toast.error("Please use your UPB university email address");
+        return null;
+    }
+    if (data.password !== data.confirmPassword) {
+        toast.error("Passwords do not match");
+        return null;
+    }
+
+    try {
+        await customFetch.post("/auth/register", data);
+        toast.success("Registration successful!");
+        return redirect("/authentification/login");
+    } catch (error) {
+        toast.error(error?.response?.data?.message || "An error occurred");
+        return error;
+    }
+};
+
 const RegisterFormComponent = () => {
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const email = e.target.elements[1].value;
-        if (!email.endsWith("@stud.fils.upb.ro")) {
-            toast.error("Please use your UPB university email address");
-        } else {
-            // Form logic to be addded soon
-        }
-    };
+    const navigation = useNavigation();
+    const isSubmitting = navigation.state === "submitting";
 
     return (
         <>
             <Wrapper>
                 <p className="title">Create Your Account</p>
-                <form className="registrationForm" onSubmit={handleSubmit}>
+                <Form method="post" className="registrationForm">
                     <div className="parent">
-                        <input type="text" placeholder="Full Name" required />
+                        <input type="text" name="fullName" placeholder="Full Name" required />
                         <Profile className="childImage" />
                     </div>
                     <div className="parent">
-                        <input type="email" placeholder="Enter your email" required />
+                        <input type="email" name="email" placeholder="Enter your email" required />
                         <Email className="childImage" />
                     </div>
                     <PasswordComponent />
-                    <button type="submit">Register</button>
-                </form>
+                    <button type="submit" disabled={isSubmitting}>
+                        {isSubmitting ? "Submitting..." : "Register"}
+                    </button>
+                </Form>
             </Wrapper>
         </>
     );

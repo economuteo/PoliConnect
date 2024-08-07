@@ -1,15 +1,33 @@
 import { Router } from "express";
 const router = Router();
-import { login, register } from "../controllers/authController.js";
-import User from "../models/UserModel.js";
 
-export const register = async (req, res) => {
-    const isFirstAccount = (await User.countDocuments()) === 0;
-    req.body.role = isFirstAccount ? "admin" : "user";
+import {
+    login,
+    register,
+    logout,
+    checkEmail,
+    verifyEmailCode,
+    resendEmail,
+    sendEmail,
+    resetPassword,
+} from "../controllers/authController.js";
 
-    const hashedPassword = await hashPassword(req.body.password);
-    req.body.password = hashedPassword;
+import {
+    validateRegisterInput,
+    validateLoginInput,
+    validateEmailInput,
+    validateResetPasswordInput,
+} from "../middleware/validationMiddleware.js";
 
-    const user = await User.create(req.body);
-    res.status(StatusCodes.CREATED).json({ msg: "user created" });
-};
+// Basic functionality
+router.post("/register", validateRegisterInput, register);
+router.post("/login", validateLoginInput, login);
+router.get("/logout", logout);
+router.post("/resetPassword", validateResetPasswordInput, resetPassword);
+
+// Email functionality
+router.post("/checkEmail", validateEmailInput, checkEmail, sendEmail);
+router.post("/verifyEmailCode", verifyEmailCode);
+router.post("/resendEmailCode", resendEmail, sendEmail);
+
+export default router;

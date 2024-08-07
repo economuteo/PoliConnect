@@ -1,8 +1,12 @@
 import { useState } from "react";
+import { Form, redirect } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import { ReactComponent as PasswordHidden } from "../assets/images/RegisterForm/passwordHidden.svg";
 import { ReactComponent as PasswordLock } from "../assets/images/RegisterForm/passwordLock.svg";
 import { ReactComponent as ShowPassword } from "../assets/images/RegisterForm/showPassword.svg";
+
+import customFetch from "../utils/customFetch";
 
 const PasswordComponent = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -14,7 +18,12 @@ const PasswordComponent = () => {
     return (
         <>
             <div className="parent">
-                <input type={showPassword ? "text" : "password"} placeholder="Password" required />
+                <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    placeholder="Password"
+                    required
+                />
                 <PasswordLock className="childImage" />
                 {showPassword ? (
                     <PasswordHidden
@@ -28,6 +37,7 @@ const PasswordComponent = () => {
             <div className="parent">
                 <input
                     type={showPassword ? "text" : "password"}
+                    name="confirmPassword"
                     placeholder="Confirm Password"
                     required
                 />

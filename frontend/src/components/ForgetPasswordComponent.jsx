@@ -9,14 +9,16 @@ const ForgetPasswordComponent = () => {
     const navigate = useNavigate();
 
     const [isSelected, setIsSelected] = useState(false);
+    const [option, setOption] = useState(null);
 
     const handleEmailClick = () => {
         setIsSelected(!isSelected);
+        setOption("email");
     };
 
     const handleNextClick = () => {
         if (isSelected) {
-            navigate("/authentification/verifyEmail");
+            navigate(`/authentification/${option}`);
         }
     };
 
