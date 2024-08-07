@@ -1,9 +1,11 @@
 import styled from "styled-components";
 
 const Wrapper = styled.div`
+    width: 66px;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    gap: 3px;
 
     .images {
         position: relative;
@@ -12,23 +14,26 @@ const Wrapper = styled.div`
     }
 
     .userProfilePicture {
-        width: 54px;
-        height: 54px;
-        /* border: 2px solid #0677e8; */
+        width: 100%;
+        height: 66px;
+        border: 2px solid #0677e8;
         border-radius: 40px;
     }
 
     .addStoryIcon {
         position: absolute;
-        bottom: -8px;
-        right: -8px;
+        bottom: 0px;
+        right: 0px;
         width: 25px;
         height: 25px;
         border-radius: 40px;
     }
 
     p {
+        font-size: 0.75em;
         font-family: "Poppins Regular";
+        overflow: hidden;
+        text-overflow: ellipsis;
         color: white;
     }
 `;

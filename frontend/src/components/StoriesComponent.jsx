@@ -17,8 +17,6 @@ const StoriesComponent = () => {
     return (
         <Wrapper>
             <Swiper
-                slidesPerView="auto"
-                spaceBetween={13}
                 freeMode={true}
                 pagination={{
                     clickable: true,
@@ -28,7 +26,7 @@ const StoriesComponent = () => {
                 <SwiperSlide>
                     <CurrentUserStoryTemplateComponent
                         userProfileImage={Jacob}
-                        userName={"You"}
+                        userName={"Your story"}
                         addStoryIcon={AddStoryIcon}
                     />
                 </SwiperSlide>
@@ -47,7 +45,19 @@ const StoriesComponent = () => {
                 <SwiperSlide>
                     <UserStoryTemplateComponent
                         userProfileImage={Jacob}
-                        userName={"Cosmin Draghici"}
+                        userName={"victor_todica"}
+                    />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <UserStoryTemplateComponent
+                        userProfileImage={Jacob}
+                        userName={"victor_todica"}
+                    />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <UserStoryTemplateComponent
+                        userProfileImage={Jacob}
+                        userName={"victor_todica"}
                     />
                 </SwiperSlide>
             </Swiper>
