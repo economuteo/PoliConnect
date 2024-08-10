@@ -18,7 +18,6 @@ const Wrapper = styled.main`
         padding-left: 62px;
         border: none;
         border-radius: 12px;
-
         background-color: #292c35;
         color: #c2c3cb;
         &::placeholder {
@@ -90,29 +89,18 @@ const Wrapper = styled.main`
 
         .title {
             text-align: center;
-            font-size: 2.75rem;
         }
 
         input {
             padding: 30px;
             padding-left: 62px;
             font-size: 1.25rem;
-
-            &::placeholder {
-                font-size: 1.25rem;
-                color: #c2c3cb;
-            }
         }
+
         .buttons {
             display: flex;
             flex-direction: row;
             gap: 20px;
-        }
-    }
-
-    @media only screen and (min-width: 1024px) {
-        .title {
-            text-align: center;
         }
     }
 `;

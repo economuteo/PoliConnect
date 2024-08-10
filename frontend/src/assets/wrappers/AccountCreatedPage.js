@@ -12,7 +12,7 @@ const Wrapper = styled.section`
 
     .title {
         margin-top: 50px;
-        font-size: 2.8em;
+        font-size: 2.375em;
         font-family: "Poppins Bold";
         color: #ffff;
     }
@@ -26,7 +26,6 @@ const Wrapper = styled.section`
 
     button {
         width: 200px;
-        margin-top: 100px;
         padding: 15px;
         border: none;
         border-radius: 15px;
@@ -42,6 +41,7 @@ const Wrapper = styled.section`
     }
 
     a {
+        margin-top: 100px;
         text-decoration: none;
         color: #ffff;
     }
@@ -53,39 +53,25 @@ const Wrapper = styled.section`
             height: 300px;
         }
 
-        .title {
-            font-size: 3.5em;
-        }
-
         .shortDescription {
-            font-size: 1.2em;
+            font-size: 1.25em;
         }
 
         button {
             width: 250px;
             padding: 20px;
-            font-size: 1.2em;
         }
     }
 
-    @media only screen and (min-width: 1024px) {
+    @media only screen and (min-width: 1200px) {
         .successIcon {
-            width: 350px;
-            height: 350px;
-        }
-
-        .title {
-            font-size: 4.5em;
-        }
-
-        .shortDescription {
-            font-size: 1.5em;
+            width: 325px;
+            height: 325px;
         }
 
         button {
             width: 300px;
             padding: 25px;
-            font-size: 1.5em;
         }
     }
 `;

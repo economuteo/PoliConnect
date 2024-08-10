@@ -22,9 +22,9 @@ const CongratsPage = () => {
             <img src={SuccessIcon} className="successIcon" alt="Success Icon" />
             <p className="title">Congrats!</p>
             <p className="shortDescription">Account Created Succesfuly</p>
-            <button>
-                <Link to="/feed">Get Started</Link>
-            </button>
+            <Link to="/feed">
+                <button>Get Started</button>
+            </Link>
         </Wrapper>
     );
 };

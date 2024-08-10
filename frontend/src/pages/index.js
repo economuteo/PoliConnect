@@ -13,5 +13,7 @@ export { default as WelcomePage } from "./IntroductionPages/WelcomePage";
 export { default as LoginPage } from "./LoginPage";
 export { default as RegisterPage } from "./RegisterPage";
 export { default as AccountCreatedPage } from "./AccountCreatedPage";
+export { default as AddProfilePicturePage } from "./AddProfilePicturePage";
+export { default as ProfilePhotoQuestionPage } from "./ProfilePhotoQuestionPage";
 export { default as FeedLayoutPage } from "./FeedLayoutPage";
 export { default as Error } from "./Error";

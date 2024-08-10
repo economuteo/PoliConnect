@@ -15,6 +15,8 @@ import {
     ResetPasswordPage,
     AccountCreatedPage,
     CreateUsernamePage,
+    ProfilePhotoQuestionPage,
+    AddProfilePicturePage,
     FeedLayoutPage,
     Error,
 } from "./pages";
@@ -24,6 +26,7 @@ import { action as loginAction } from "./components/LoginFormComponent.jsx";
 import { action as resetPasswordAction } from "./components/ResetPasswordComponent.jsx";
 import { action as checkEmailAction } from "./components/EmailComponent.jsx";
 import { action as createUsernameAction } from "./components/CreateUsernameComponent.jsx";
+import { action as saveProfilePhotoAction } from "./components/ProfilePictureUpload.jsx";
 
 import { AppProvider } from "./contexts/AppContext";
 
@@ -88,20 +91,28 @@ const router = createBrowserRouter([
                         path: "verifyEmail",
                         element: <VerifyEmailPage />,
                         errorElement: <Error />,
-                        children: [],
                     },
                     {
                         path: "accountCreated",
                         element: <AccountCreatedPage />,
                         errorElement: <Error />,
-                        children: [],
                     },
                     {
                         path: "createUsername",
                         element: <CreateUsernamePage />,
                         action: createUsernameAction,
                         errorElement: <Error />,
-                        children: [],
+                    },
+                    {
+                        path: "profilePhotoQuestion",
+                        element: <ProfilePhotoQuestionPage />,
+                        errorElement: <Error />,
+                    },
+                    {
+                        path: "addProfilePicture",
+                        element: <AddProfilePicturePage />,
+                        action: saveProfilePhotoAction,
+                        errorElement: <Error />,
                     },
                 ],
             },

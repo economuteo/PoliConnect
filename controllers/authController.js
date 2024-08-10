@@ -1,12 +1,17 @@
 import User from "../models/UserModel.js";
 
-import { StatusCodes } from "http-status-codes";
-import { BadRequestError, NotFoundError, UnauthenticatedError } from "../errors/customErrors.js";
+import { getCurrentUserUsingToken } from "./userController.js";
 
 import { sendVerificationEmail } from "../services/emailService.js";
 import { generateVerificationCode } from "../utils/verificationCodeUtils.js";
 import { comparePassword, hashPassword } from "../utils/passwordUtils.js";
-import { createJWT, verifyJWT } from "../utils/tokenUtils.js";
+import { createJWT } from "../utils/tokenUtils.js";
+
+import { StatusCodes } from "http-status-codes";
+import { BadRequestError, NotFoundError, UnauthenticatedError } from "../errors/customErrors.js";
+
+import cloudinary from "cloudinary";
+import { formatImage } from "../middleware/multerMiddleware.js";
 
 export const register = async (req, res) => {
     const isFirstAccount = (await User.countDocuments({})) === 0;
@@ -149,13 +154,7 @@ export const verifyEmailCode = async (req, res) => {
 export const createUsername = async (req, res) => {
     const { username } = req.body;
 
-    const { token } = req.cookies;
-
-    const tokenDecoded = verifyJWT(token);
-
-    const { userId } = tokenDecoded;
-
-    const user = await User.findOne({ _id: userId });
+    const user = await getCurrentUserUsingToken(req);
 
     if (!user) {
         throw new NotFoundError("User not found!");
@@ -165,4 +164,23 @@ export const createUsername = async (req, res) => {
     await user.save();
 
     res.status(200).json({ message: "Username created successfully" });
+};
+
+export const saveUserPhoto = async (req, res) => {
+    const currentUser = await getCurrentUserUsingToken(req);
+
+    if (!currentUser) {
+        throw new BadRequestError("Current user not found");
+    }
+
+    if (req.file) {
+        const file = formatImage(req.file);
+        const response = await cloudinary.v2.uploader.upload(file, {
+            folder: "users-profile-photos",
+        });
+        currentUser.profileImage = response.secure_url;
+        await currentUser.save();
+    }
+
+    res.status(StatusCodes.OK).json({ msg: "update user" });
 };

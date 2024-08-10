@@ -10,6 +10,8 @@ export { default as EmailComponent } from "./EmailComponent";
 export { default as VerPhoneNumComponent } from "./VerPhoneNumComponent";
 export { default as VerEmailComponent } from "./VerEmailComponent";
 export { default as CreateUsernameComponent } from "./CreateUsernameComponent";
+export { default as ProfilePictureUpload } from "./ProfilePictureUpload";
+export { default as ProfilePhotoQuestionComponent } from "./ProfilePhotoQuestionComponent";
 export { default as StoriesComponent } from "./StoriesComponent";
 export { default as AuthNavbar } from "./AuthNavbar";
 export { default as FeedNavbar } from "./FeedNavbar";

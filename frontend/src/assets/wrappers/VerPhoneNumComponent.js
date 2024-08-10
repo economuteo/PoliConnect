@@ -128,25 +128,29 @@ const Wrapper = styled.section`
         .title {
             font-size: 2em;
         }
+
         .shortDesc {
             font-size: 1.25em;
         }
+
         .phoneNum {
             font-size: 1.25em;
         }
     }
 
-    @media only screen and (min-width: 1024px) {
+    @media only screen and (min-width: 1200px) {
         .react-code-input input {
             scale: 1.5;
         }
 
         .title {
-            font-size: 2.25em;
+            font-size: 2.375em;
         }
+
         .shortDesc {
-            font-size: 1.5em;
+            font-size: 1.25em;
         }
+
         .phoneNum {
             font-size: 1.375em;
         }

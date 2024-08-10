@@ -13,6 +13,11 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default: "username",
     },
+    profileImage: {
+        type: String,
+        default:
+            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
+    },
 });
 
 UserSchema.methods.toJSON = function () {

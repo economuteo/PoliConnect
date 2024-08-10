@@ -11,6 +11,7 @@ import {
     sendEmail,
     resetPassword,
     createUsername,
+    saveUserPhoto,
 } from "../controllers/authController.js";
 
 import {
@@ -21,6 +22,8 @@ import {
     validateUsername,
 } from "../middleware/validationMiddleware.js";
 
+import upload from "../middleware/multerMiddleware.js";
+
 //Initial auth functionality
 router.post("/register", validateRegisterInput, register);
 router.post("/login", validateLoginInput, login);
@@ -29,6 +32,7 @@ router.post("/resetPassword", validateResetPasswordInput, resetPassword);
 
 // Post auth functionality
 router.post("/createUsername", validateUsername, createUsername);
+router.patch("/savePhoto", upload.single("profileImage"), saveUserPhoto);
 
 // Email functionality
 router.post("/checkEmail", validateEmailInput, checkEmail, sendEmail);

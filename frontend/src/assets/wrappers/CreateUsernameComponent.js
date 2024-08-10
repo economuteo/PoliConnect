@@ -4,19 +4,21 @@ const Wrapper = styled.main`
     max-width: 400px;
 
     .title {
-        text-align: center;
         line-height: 125%;
         font-family: "Poppins SemiBold";
-        font-size: 2.375rem;
+        font-size: 2.375em;
         color: white;
     }
 
     .shortDescription {
-        text-align: center;
         margin-top: 8px;
         font-size: 0.875em;
         font-family: "Poppins Regular";
         color: #acadb9;
+    }
+
+    button {
+        font-size: 1em;
     }
 
     input {
@@ -73,6 +75,7 @@ const Wrapper = styled.main`
     @media only screen and (min-width: 768px) {
         .shortDescription {
             text-align: center;
+            font-size: 1.25em;
         }
 
         button {
@@ -92,16 +95,10 @@ const Wrapper = styled.main`
 
         .title {
             text-align: center;
-            font-size: 2.75rem;
         }
 
         input {
             font-size: 1.25rem;
-
-            &::placeholder {
-                font-size: 1.25rem;
-                color: #c2c3cb;
-            }
         }
 
         .buttons {
@@ -111,17 +108,8 @@ const Wrapper = styled.main`
         }
     }
 
-    @media only screen and (min-width: 1024px) {
-        .title {
-            text-align: center;
-        }
-    }
-
     @media only screen and (min-width: 1200px) {
         max-width: 600px;
-        .shortDescription {
-            font-size: 1em;
-        }
     }
 `;
 

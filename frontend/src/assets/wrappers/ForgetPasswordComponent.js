@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const Wrapper = styled.section`
     .title {
-        font-size: 2.5em;
+        font-size: 2.375em;
         font-family: "Poppins SemiBold";
         font-weight: bold;
         color: #ffff;
@@ -10,7 +10,7 @@ const Wrapper = styled.section`
 
     .shortDescription {
         margin-top: 8px;
-        font-size: 0.875em;
+        font-size: 1em;
         font-family: "Poppins Regular";
         color: #acadb9;
     }
@@ -53,7 +53,6 @@ const Wrapper = styled.section`
     }
 
     .emailBoxText2 {
-        font-size: 0.87em;
         font-family: "Poppins Regular";
         color: #acadb9;
     }
@@ -88,10 +87,12 @@ const Wrapper = styled.section`
 
     @media only screen and (min-width: 768px) {
         .title {
-            font-size: 3em;
+            text-align: center;
         }
+
         .shortDescription {
-            font-size: 1.5em;
+            text-align: center;
+            font-size: 1.25em;
         }
         .emailIcon {
             scale: 1.25;
@@ -100,14 +101,14 @@ const Wrapper = styled.section`
             font-size: 1.5em;
         }
         .emailBoxText2 {
-            font-size: 1.5em;
+            font-size: 1.25em;
         }
         button {
             font-size: 1.25em;
         }
     }
 
-    @media only screen and (min-width: 1024px) {
+    @media only screen and (min-width: 1200px) {
     }
 `;
 
