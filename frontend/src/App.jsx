@@ -28,6 +28,8 @@ import { action as checkEmailAction } from "./components/EmailComponent.jsx";
 import { action as createUsernameAction } from "./components/CreateUsernameComponent.jsx";
 import { action as saveProfilePhotoAction } from "./components/ProfilePictureUpload.jsx";
 
+import { userProfileImageLoader } from "./components/CurrentUserStoryTemplateComponent.jsx";
+
 import { AppProvider } from "./contexts/AppContext";
 
 const router = createBrowserRouter([
@@ -120,6 +122,7 @@ const router = createBrowserRouter([
                 path: "feed",
                 element: <FeedLayoutPage />,
                 errorElement: <Error />,
+                loader: userProfileImageLoader,
             },
         ],
     },
