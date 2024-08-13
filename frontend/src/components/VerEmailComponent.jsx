@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import ReactCodeInput from "react-code-input";
 
 import { toast } from "react-toastify";
+
+import { AppContext } from "../contexts/AppContext";
 
 import useCountdownTimer from "../customHooks/useCountdownTimer";
 
@@ -18,10 +20,26 @@ const VerEmailComponent = () => {
 
     const navigate = useNavigate();
 
+    const { comingFrom } = useContext(AppContext);
+
     const handleVerify = async () => {
         try {
+            // Verify the email code
             await customFetch.post("/auth/verifyEmailCode", { myCode: myCode });
-            navigate("/authentification/resetPassword");
+
+            // Navigate based on what is needed
+            switch (comingFrom) {
+                case "forgotPassword":
+                    navigate("/authentification/resetPassword");
+                    break;
+                case "register":
+                    await customFetch.get("/auth/registerFinal");
+                    navigate("/authentification/createUsername");
+                    break;
+                default:
+                    navigate("/authentification");
+                    break;
+            }
         } catch (error) {
             toast.error(error?.response?.data?.message || "An error occurred");
         }

@@ -3,7 +3,6 @@ const router = Router();
 
 import {
     login,
-    register,
     logout,
     checkEmail,
     verifyEmailCode,
@@ -12,6 +11,8 @@ import {
     resetPassword,
     createUsername,
     saveUserPhoto,
+    registerRequest,
+    registerFinal,
 } from "../controllers/authController.js";
 
 import {
@@ -24,8 +25,9 @@ import {
 
 import upload from "../middleware/multerMiddleware.js";
 
-//Initial auth functionality
-router.post("/register", validateRegisterInput, register, sendEmail);
+// Initial auth functionality
+router.post("/registerRequest", validateRegisterInput, registerRequest, sendEmail);
+router.get("/registerFinal", registerFinal);
 router.post("/login", validateLoginInput, login);
 router.get("/logout", logout);
 router.post("/resetPassword", validateResetPasswordInput, resetPassword);

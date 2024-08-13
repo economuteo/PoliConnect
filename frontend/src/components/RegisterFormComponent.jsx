@@ -1,5 +1,7 @@
 import { Form, redirect, useNavigation } from "react-router-dom";
 
+import { AppContext } from "../contexts/AppContext";
+
 import PasswordComponent from "./PasswordComponent";
 
 import { ReactComponent as Profile } from "../assets/images/RegisterForm/profile.svg";
@@ -11,6 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Wrapper from "../assets/wrappers/RegisterFormComponent";
 
 import customFetch from "../utils/customFetch.js";
+import { useContext } from "react";
 
 export const action = async ({ request }) => {
     const formData = await request.formData();
@@ -27,9 +30,9 @@ export const action = async ({ request }) => {
     }
 
     try {
-        await customFetch.post("/auth/register", data);
-        toast.success("Registration successful!");
-        return redirect("/authentification/createUsername");
+        await customFetch.post("/auth/registerRequest", data);
+        toast.success("Verification code sent to your email!");
+        return redirect("/authentification/verifyEmail");
     } catch (error) {
         toast.error(error?.response?.data?.message || "An error occurred");
         return error;
@@ -37,6 +40,9 @@ export const action = async ({ request }) => {
 };
 
 const RegisterFormComponent = () => {
+    const { setComingFrom } = useContext(AppContext);
+    setComingFrom("register");
+
     const navigation = useNavigation();
     const isSubmitting = navigation.state === "submitting";
 

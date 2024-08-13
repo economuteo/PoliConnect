@@ -5,7 +5,7 @@ import { getCurrentUserUsingToken } from "./userController.js";
 import { sendVerificationEmail } from "../services/emailService.js";
 import { generateVerificationCode } from "../utils/verificationCodeUtils.js";
 import { comparePassword, hashPassword } from "../utils/passwordUtils.js";
-import { createJWT } from "../utils/tokenUtils.js";
+import { createJWT, verifyJWT } from "../utils/tokenUtils.js";
 
 import { StatusCodes } from "http-status-codes";
 import { BadRequestError, NotFoundError, UnauthenticatedError } from "../errors/customErrors.js";
@@ -13,14 +13,41 @@ import { BadRequestError, NotFoundError, UnauthenticatedError } from "../errors/
 import cloudinary from "cloudinary";
 import { formatImage } from "../middleware/multerMiddleware.js";
 
-export const register = async (req, res, next) => {
+export const registerRequest = async (req, res, next) => {
+    const { email, fullName } = req.body;
+    let { password } = req.body;
+
+    const hashedPassword = await hashPassword(password);
+    password = hashedPassword;
+
+    const token = createJWT({ email: email, fullName: fullName, password: password });
+
+    const oneDay = 1000 * 60 * 60 * 24;
+
+    res.cookie("registerRequestToken", token, {
+        httpOnly: true,
+        expires: new Date(Date.now() + oneDay),
+        secure: process.env.NODE_ENV === "production",
+    });
+
+    next();
+};
+
+export const registerFinal = async (req, res) => {
+    const { registerRequestToken } = req.cookies;
+
+    if (!registerRequestToken) {
+        throw new BadRequestError("The token has expired! Please request a new one.");
+    }
+
+    const decodedToken = verifyJWT(registerRequestToken);
+
+    const { email, fullName, password } = decodedToken;
+
     const isFirstAccount = (await User.countDocuments({})) === 0;
-    req.body.role = isFirstAccount ? "admin" : "user";
+    const role = isFirstAccount ? "admin" : "user";
 
-    const hashedPassword = await hashPassword(req.body.password);
-    req.body.password = hashedPassword;
-
-    const user = await User.create(req.body);
+    const user = await User.create({ email, fullName, password, role });
 
     const token = createJWT({ userId: user._id, role: user.role });
 
@@ -32,7 +59,7 @@ export const register = async (req, res, next) => {
         secure: process.env.NODE_ENV === "production",
     });
 
-    next();
+    res.status(StatusCodes.CREATED).json({ msg: "User created successfully" });
 };
 
 export const login = async (req, res) => {
@@ -120,7 +147,9 @@ export const sendEmail = async (req, res, next) => {
     const fiveMinutes = 1000 * 60 * 5;
     const oneDay = 1000 * 60 * 60 * 24;
 
-    res.cookie("verificationCode", verificationCode, {
+    const token = createJWT({ verificationCode: verificationCode });
+
+    res.cookie("verificationCodeToken", token, {
         httpOnly: true,
         expires: new Date(Date.now() + fiveMinutes),
     });
@@ -137,11 +166,14 @@ export const sendEmail = async (req, res, next) => {
 };
 
 export const verifyEmailCode = async (req, res) => {
-    const { verificationCode } = req.cookies;
+    const { verificationCodeToken } = req.cookies;
 
-    if (!verificationCode) {
+    if (!verificationCodeToken) {
         throw new BadRequestError("The code has expired! We can send you another one if you wish.");
     }
+
+    const decodedToken = verifyJWT(verificationCodeToken);
+    const { verificationCode } = decodedToken;
 
     const { myCode } = req.body;
 
