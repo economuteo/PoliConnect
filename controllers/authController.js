@@ -13,7 +13,7 @@ import { BadRequestError, NotFoundError, UnauthenticatedError } from "../errors/
 import cloudinary from "cloudinary";
 import { formatImage } from "../middleware/multerMiddleware.js";
 
-export const register = async (req, res) => {
+export const register = async (req, res, next) => {
     const isFirstAccount = (await User.countDocuments({})) === 0;
     req.body.role = isFirstAccount ? "admin" : "user";
 
@@ -32,7 +32,7 @@ export const register = async (req, res) => {
         secure: process.env.NODE_ENV === "production",
     });
 
-    res.status(StatusCodes.CREATED).json({ msg: "User created" });
+    next();
 };
 
 export const login = async (req, res) => {
@@ -131,7 +131,7 @@ export const sendEmail = async (req, res, next) => {
     });
 
     res.status(StatusCodes.OK).json({
-        msg: "Email associated with an account",
+        msg: "Verification code was sent to the designated email address!",
         verificationCode: verificationCode,
     });
 };

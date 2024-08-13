@@ -25,7 +25,7 @@ import {
 import upload from "../middleware/multerMiddleware.js";
 
 //Initial auth functionality
-router.post("/register", validateRegisterInput, register);
+router.post("/register", validateRegisterInput, register, sendEmail);
 router.post("/login", validateLoginInput, login);
 router.get("/logout", logout);
 router.post("/resetPassword", validateResetPasswordInput, resetPassword);
