@@ -22,6 +22,8 @@ const StoriesComponent = () => {
                     clickable: true,
                 }}
                 modules={[FreeMode, Pagination]}
+                spaceBetween={18}
+                slidesPerView="auto"
                 className="mySwiper">
                 <SwiperSlide>
                     <CurrentUserStoryTemplateComponent

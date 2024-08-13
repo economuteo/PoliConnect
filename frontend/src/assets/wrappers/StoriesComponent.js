@@ -6,12 +6,7 @@ const Wrapper = styled.section`
     justify-content: flex-start;
 
     .swiper {
-        width: 100% !important;
         margin-left: 0px !important;
-    }
-
-    .swiper-wrapper {
-        gap: 18px !important;
     }
 
     .swiper-slide {
@@ -19,7 +14,7 @@ const Wrapper = styled.section`
     }
 
     .swiper-pagination {
-        display: none;
+        display: none !important;
     }
 `;
 
