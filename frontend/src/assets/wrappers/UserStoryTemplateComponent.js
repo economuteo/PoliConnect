@@ -16,7 +16,7 @@ const Wrapper = styled.div`
     .userProfilePicture {
         width: 100%;
         height: 66px;
-        border: 2px solid #0677e8;
+        border: 2px solid gray;
         border-radius: 40px;
     }
 

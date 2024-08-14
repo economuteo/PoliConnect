@@ -32,7 +32,7 @@ const StoriesComponent = () => {
                         addStoryIcon={AddStoryIcon}
                     />
                 </SwiperSlide>
-                <SwiperSlide>
+                {/* <SwiperSlide>
                     <UserStoryTemplateComponent
                         userProfileImage={Jacob}
                         userName={"cosmin_draghici"}
@@ -61,7 +61,7 @@ const StoriesComponent = () => {
                         userProfileImage={Jacob}
                         userName={"victor_todica"}
                     />
-                </SwiperSlide>
+                </SwiperSlide> */}
             </Swiper>
         </Wrapper>
     );
