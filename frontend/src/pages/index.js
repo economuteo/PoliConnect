@@ -16,4 +16,5 @@ export { default as AccountCreatedPage } from "./AccountCreatedPage";
 export { default as AddProfilePicturePage } from "./AddProfilePicturePage";
 export { default as ProfilePhotoQuestionPage } from "./ProfilePhotoQuestionPage";
 export { default as FeedLayoutPage } from "./FeedLayoutPage";
+export { default as AddStoryPage } from "./AddStoryPage";
 export { default as Error } from "./Error";

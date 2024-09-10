@@ -16,3 +16,5 @@ const StorySchema = new mongoose.Schema({
         expires: "24h",
     },
 });
+
+export default mongoose.model("Story", StorySchema);

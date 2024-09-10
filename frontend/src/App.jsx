@@ -1,5 +1,7 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
+import { AddStoryComponent, FinishStoryComponent } from "./components";
+
 import {
     HomeLayout,
     AuthentificationLayout,
@@ -18,6 +20,7 @@ import {
     ProfilePhotoQuestionPage,
     AddProfilePicturePage,
     FeedLayoutPage,
+    AddStoryPage,
     Error,
 } from "./pages";
 
@@ -31,6 +34,7 @@ import { action as saveProfilePhotoAction } from "./components/ProfilePictureUpl
 import { userProfileImageLoader } from "./components/CurrentUserStoryTemplateComponent.jsx";
 
 import { AppProvider } from "./contexts/AppContext";
+import FinishStoryPage from "./pages/FinishStoryPage.jsx";
 
 const router = createBrowserRouter([
     {
@@ -123,6 +127,19 @@ const router = createBrowserRouter([
                 element: <FeedLayoutPage />,
                 errorElement: <Error />,
                 loader: userProfileImageLoader,
+            },
+            {
+                path: "story",
+                children: [
+                    {
+                        index: true,
+                        element: <AddStoryPage />,
+                    },
+                    {
+                        path: "finishStory",
+                        element: <FinishStoryPage />,
+                    },
+                ],
             },
         ],
     },

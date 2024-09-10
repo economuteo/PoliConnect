@@ -9,8 +9,24 @@ export const AppProvider = ({ children }) => {
     // Verify email call
     const [comingFrom, setComingFrom] = useState("");
 
+    // Image URL
+    const [imageUrl, setImageUrl] = useState("");
+
+    // File
+    const [file, setFile] = useState("");
+
     return (
-        <AppContext.Provider value={{ removeNavbar, setRemoveNavbar, comingFrom, setComingFrom }}>
+        <AppContext.Provider
+            value={{
+                removeNavbar,
+                setRemoveNavbar,
+                comingFrom,
+                setComingFrom,
+                imageUrl,
+                setImageUrl,
+                file,
+                setFile,
+            }}>
             {children}
         </AppContext.Provider>
     );

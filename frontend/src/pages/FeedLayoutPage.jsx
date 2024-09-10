@@ -1,3 +1,4 @@
+import { Outlet } from "react-router-dom";
 import { FeedNavbar, StoriesComponent } from "../components";
 
 const FeedLayoutPage = () => {

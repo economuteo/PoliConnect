@@ -11,6 +11,7 @@ import { StatusCodes } from "http-status-codes";
 import { BadRequestError, NotFoundError, UnauthenticatedError } from "../errors/customErrors.js";
 
 import cloudinary from "cloudinary";
+
 import { formatImage } from "../middleware/multerMiddleware.js";
 
 export const registerRequest = async (req, res, next) => {
@@ -126,17 +127,6 @@ export const checkEmail = async (req, res, next) => {
     }
 };
 
-export const resendEmail = async (req, res, next) => {
-    const { email } = req.cookies;
-
-    if (email) {
-        req.body.email = email;
-        return next();
-    } else {
-        throw new BadRequestError("Please provide an email address");
-    }
-};
-
 export const sendEmail = async (req, res, next) => {
     const { email } = req.body;
 
@@ -163,6 +153,17 @@ export const sendEmail = async (req, res, next) => {
         msg: "Verification code was sent to the designated email address!",
         verificationCode: verificationCode,
     });
+};
+
+export const resendEmail = async (req, res, next) => {
+    const { email } = req.cookies;
+
+    if (email) {
+        req.body.email = email;
+        return next();
+    } else {
+        throw new BadRequestError("Please provide an email address");
+    }
 };
 
 export const verifyEmailCode = async (req, res) => {

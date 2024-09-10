@@ -17,6 +17,12 @@ html {
     /* colors */
 }
 
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    font-size: 16px;
+}
+
 .onBoardingSVGS {
     width: 100%;
     max-width: 320px;
@@ -32,7 +38,6 @@ html {
 }
 
 .container {
-    overflow: hidden;
     padding: 0px 24px;
     @media only screen and (min-width: 480px) {
     }

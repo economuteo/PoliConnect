@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
 import customFetch from "../utils/customFetch";
 import Wrapper from "../assets/wrappers/UserStoryTemplateComponent";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 
 export const userProfileImageLoader = async () => {
     const response = await customFetch.get("/users/currentUser");
@@ -10,11 +9,18 @@ export const userProfileImageLoader = async () => {
 };
 
 const CurrentUserStoryTemplateComponent = ({ userName, addStoryIcon }) => {
+    const navigate = useNavigate();
+
+    const handleStoryClick = () => {
+        // Logic to be implemented here with state
+        navigate("/story");
+    };
+
     const userProfileImage = useLoaderData();
 
     return (
         <Wrapper>
-            <div className="images">
+            <div className="images" onClick={handleStoryClick}>
                 <img src={userProfileImage} className="userProfilePicture" alt="UserPhoto" />
                 <img src={addStoryIcon} className="addStoryIcon" alt="Add story" />
             </div>

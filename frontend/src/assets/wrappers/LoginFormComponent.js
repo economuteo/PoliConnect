@@ -20,6 +20,7 @@ const Wrapper = styled.main`
         color: #c2c3cb;
         &::placeholder {
             color: #c2c3cb;
+            font-size: 0.875rem;
         }
     }
 
@@ -80,7 +81,7 @@ const Wrapper = styled.main`
         width: 100%;
         display: flex;
         justify-content: space-between;
-        font-size: 0.75rem;
+        font-size: 0.875rem;
         font-family: "Poppins Medium";
         color: #9d9cb1;
     }

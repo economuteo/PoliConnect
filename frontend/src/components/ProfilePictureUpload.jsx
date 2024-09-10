@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Form, redirect } from "react-router-dom";
+import { Form, redirect, useNavigation } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import Wrapper from "../assets/wrappers/ProfilePictureUpload";
@@ -8,8 +8,8 @@ import customFetch from "../utils/customFetch";
 
 export const action = async ({ request }) => {
     const formData = await request.formData();
-
     const file = formData.get("profileImage");
+
     if (file && file.size > 500000) {
         toast.error("Image size too large");
         return null;
@@ -40,6 +40,9 @@ const ProfilePictureUpload = () => {
         fileInputRef.current.click();
     };
 
+    const navigation = useNavigation();
+    const isSubmitting = navigation.state === "submitting";
+
     return (
         <Wrapper>
             <p className="title">Upload Profile Picture</p>
@@ -64,7 +67,9 @@ const ProfilePictureUpload = () => {
                     <button type="button" onClick={handleChoosePhoto}>
                         Upload Photo
                     </button>
-                    <button type="submit">Next</button>
+                    <button type="submit" disabled={isSubmitting}>
+                        {isSubmitting ? "Submitting..." : "Next"}
+                    </button>
                 </div>
             </Form>
         </Wrapper>

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import StorySchema from "./StoryModel";
+import StorySchema from "./StoryModel.js";
 
 const UserSchema = new mongoose.Schema({
     fullName: String,
@@ -19,7 +19,12 @@ const UserSchema = new mongoose.Schema({
         default:
             "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
-    stories: [StorySchema],
+    stories: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Story",
+        },
+    ],
 });
 
 UserSchema.methods.toJSON = function () {
