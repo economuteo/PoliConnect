@@ -31,36 +31,6 @@ const StoriesComponent = () => {
                         addStoryIcon={AddStoryIcon}
                     />
                 </SwiperSlide>
-                {/* <SwiperSlide>
-                    <UserStoryTemplateComponent
-                        userProfileImage={Jacob}
-                        userName={"cosmin_draghici"}
-                    />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <UserStoryTemplateComponent
-                        userProfileImage={Jacob}
-                        userName={"victor_todica"}
-                    />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <UserStoryTemplateComponent
-                        userProfileImage={Jacob}
-                        userName={"victor_todica"}
-                    />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <UserStoryTemplateComponent
-                        userProfileImage={Jacob}
-                        userName={"victor_todica"}
-                    />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <UserStoryTemplateComponent
-                        userProfileImage={Jacob}
-                        userName={"victor_todica"}
-                    />
-                </SwiperSlide> */}
             </Swiper>
         </Wrapper>
     );
