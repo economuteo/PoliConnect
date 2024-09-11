@@ -15,6 +15,10 @@ export const AppProvider = ({ children }) => {
     // File
     const [file, setFile] = useState("");
 
+    // Story logic
+    // Finish story component
+    const [isTextVisible, setIsTextVisible] = useState(false);
+
     return (
         <AppContext.Provider
             value={{
@@ -26,6 +30,8 @@ export const AppProvider = ({ children }) => {
                 setImageUrl,
                 file,
                 setFile,
+                isTextVisible,
+                setIsTextVisible,
             }}>
             {children}
         </AppContext.Provider>

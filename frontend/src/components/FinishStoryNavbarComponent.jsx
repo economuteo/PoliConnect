@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import { useState, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-
-import AddTextIcon from "../assets/images/add-text-icon.png";
 
 import Wrapper from "../assets/wrappers/FinishStoryNavbarComponent.js";
 
+import { AppContext } from "../contexts/AppContext";
+
+import AddTextIcon from "../assets/images/add-text-icon.png";
+
 const FinishStoryNavbarComponent = () => {
+    const { setIsTextVisible } = useContext(AppContext);
+
     const navigate = useNavigate();
     const [isInitialNavVisible, setIsInitialNavVisible] = useState(true);
 
@@ -15,6 +19,7 @@ const FinishStoryNavbarComponent = () => {
 
     const handleAddText = () => {
         setIsInitialNavVisible(!isInitialNavVisible);
+        setIsTextVisible(true);
     };
 
     return (

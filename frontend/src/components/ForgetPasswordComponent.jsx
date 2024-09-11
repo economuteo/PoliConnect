@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ReactComponent as Email } from "../assets/images/email.svg";
 
 import Wrapper from "../assets/wrappers/ForgetPasswordComponent";
+
 import { AppContext } from "../contexts/AppContext";
 
 const ForgetPasswordComponent = () => {
