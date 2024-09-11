@@ -51,7 +51,6 @@ const FinishStoryComponent = () => {
                                     fontSize={24}
                                     fill="white"
                                     draggable
-                                    listening
                                     ref={textRef}
                                 />
                             )}
