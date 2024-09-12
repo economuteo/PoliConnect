@@ -20,9 +20,14 @@ const CurrentUserStoryTemplateComponent = ({ userName, addStoryIcon }) => {
 
     return (
         <Wrapper>
-            <div className="images" onClick={handleStoryClick}>
+            <div className="images">
                 <img src={userProfileImage} className="userProfilePicture" alt="UserPhoto" />
-                <img src={addStoryIcon} className="addStoryIcon" alt="Add story" />
+                <img
+                    onClick={handleStoryClick}
+                    src={addStoryIcon}
+                    className="addStoryIcon"
+                    alt="Add story"
+                />
             </div>
             <p>{userName}</p>
         </Wrapper>
