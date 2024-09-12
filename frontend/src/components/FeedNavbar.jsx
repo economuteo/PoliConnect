@@ -4,7 +4,7 @@ import Wrapper from "../assets/wrappers/FeedNavbar";
 
 const FeedNavbar = () => {
     return (
-        <Wrapper>
+        <Wrapper className="container">
             <span className="special">CONNECT</span>
             <div className="images">
                 <img src={settings} className="settingsImage" alt="settings" />

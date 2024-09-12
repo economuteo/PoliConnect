@@ -14,7 +14,7 @@ import "swiper/css/pagination";
 
 const StoriesComponent = () => {
     return (
-        <Wrapper>
+        <Wrapper className="container">
             <Swiper
                 freeMode={true}
                 pagination={{

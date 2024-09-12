@@ -17,4 +17,8 @@ export { default as AddProfilePicturePage } from "./AddProfilePicturePage";
 export { default as ProfilePhotoQuestionPage } from "./ProfilePhotoQuestionPage";
 export { default as FeedLayoutPage } from "./FeedLayoutPage";
 export { default as AddStoryPage } from "./AddStoryPage";
+export { default as ProfilePage } from "./ProfilePage";
+export { default as MessagesPage } from "./MessagesPage";
+export { default as NotificationsPage } from "./NotificationsPage";
+export { default as IntoAppPage } from "./IntoAppPage";
 export { default as Error } from "./Error";

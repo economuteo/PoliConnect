@@ -21,4 +21,8 @@ export { default as FinishStoryComponent } from "./FinishStoryComponent";
 export { default as FinishStoryNavbarComponent } from "./FinishStoryNavbarComponent";
 export { default as FinishStoryFooterComponent } from "./FinishStoryFooterComponent";
 export { default as StoryNavbarComponent } from "./StoryNavbarComponent";
+export { default as HouseIcon } from "./HouseIcon";
+export { default as MessagesIcon } from "./MessagesIcon";
+export { default as NotificationsIcon } from "./NotificationsIcon";
+export { default as ProfileIcon } from "./ProfileIcon";
 export { default as ErrorElement } from "./ErrorElement";

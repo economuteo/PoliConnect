@@ -21,6 +21,10 @@ import {
     AddProfilePicturePage,
     FeedLayoutPage,
     AddStoryPage,
+    ProfilePage,
+    MessagesPage,
+    NotificationsPage,
+    IntoAppPage,
     Error,
 } from "./pages";
 
@@ -123,10 +127,27 @@ const router = createBrowserRouter([
                 ],
             },
             {
-                path: "feed",
-                element: <FeedLayoutPage />,
-                errorElement: <Error />,
-                loader: userProfileImageLoader,
+                path: "",
+                element: <IntoAppPage />,
+                children: [
+                    {
+                        path: "feed",
+                        element: <FeedLayoutPage />,
+                        loader: userProfileImageLoader,
+                    },
+                    {
+                        path: "messages",
+                        element: <MessagesPage />,
+                    },
+                    {
+                        path: "notifications",
+                        element: <NotificationsPage />,
+                    },
+                    {
+                        path: "profile",
+                        element: <ProfilePage />,
+                    },
+                ],
             },
             {
                 path: "story",

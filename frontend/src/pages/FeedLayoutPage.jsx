@@ -1,12 +1,10 @@
-import { Outlet } from "react-router-dom";
-import { FeedNavbar, StoriesComponent, AppFooterComponent } from "../components";
+import { FeedNavbar, StoriesComponent } from "../components";
 
 const FeedLayoutPage = () => {
     return (
-        <main className="container">
+        <main>
             <FeedNavbar />
             <StoriesComponent />
-            <AppFooterComponent />
         </main>
     );
 };
