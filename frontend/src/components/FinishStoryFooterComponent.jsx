@@ -17,6 +17,7 @@ const FinishStoryFooterComponent = () => {
         }
 
         try {
+            console.log("Da");
             const formData = new FormData();
             formData.append("story", file);
 

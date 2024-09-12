@@ -16,7 +16,6 @@ const FinishStoryComponent = () => {
     const [image, setImage] = useState(null);
 
     const handleTextClick = () => {
-        console.log("Here");
         const newText = prompt("Edit text:", text);
         if (newText !== null) {
             setText(newText);
@@ -38,10 +37,16 @@ const FinishStoryComponent = () => {
         <Wrapper>
             <div>
                 {imageUrl ? (
-                    <Stage width={300} height={450} onClick={handleTextClick}>
+                    <Stage width={300} height={450}>
                         <Layer>
                             {image && (
-                                <Image className="story" image={image} width={300} height={450} />
+                                <Image
+                                    onClick={handleTextClick}
+                                    className="story"
+                                    image={image}
+                                    width={300}
+                                    height={450}
+                                />
                             )}
                             {isTextVisible && (
                                 <Text
