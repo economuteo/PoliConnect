@@ -11,7 +11,12 @@ export const userProfileImageLoader = async () => {
 const CurrentUserStoryTemplateComponent = ({ userName, addStoryIcon }) => {
     const navigate = useNavigate();
 
-    const handleStoryClick = () => {
+    const handleSeeStory = () => {
+        // Logic to be implemented here with state
+        navigate("/stories");
+    };
+
+    const handleAddStory = () => {
         // Logic to be implemented here with state
         navigate("/story");
     };
@@ -21,9 +26,14 @@ const CurrentUserStoryTemplateComponent = ({ userName, addStoryIcon }) => {
     return (
         <Wrapper>
             <div className="images">
-                <img src={userProfileImage} className="userProfilePicture" alt="UserPhoto" />
                 <img
-                    onClick={handleStoryClick}
+                    onClick={handleSeeStory}
+                    src={userProfileImage}
+                    className="userProfilePicture"
+                    alt="UserPhoto"
+                />
+                <img
+                    onClick={handleAddStory}
                     src={addStoryIcon}
                     className="addStoryIcon"
                     alt="Add story"

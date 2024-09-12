@@ -25,6 +25,7 @@ import {
     MessagesPage,
     NotificationsPage,
     IntoAppPage,
+    StoriesPage,
     Error,
 } from "./pages";
 
@@ -161,6 +162,10 @@ const router = createBrowserRouter([
                         element: <FinishStoryPage />,
                     },
                 ],
+            },
+            {
+                path: "stories",
+                element: <StoriesPage />,
             },
         ],
     },
