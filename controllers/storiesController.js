@@ -1,10 +1,10 @@
+import User from "../models/UserModel.js";
+import Story from "../models/StoryModel.js";
+import { StatusCodes } from "http-status-codes";
+import { NotFoundError, BadRequestError } from "../errors/customErrors.js";
 import { getCurrentUserUsingToken } from "./userController.js";
-
 import cloudinary from "cloudinary";
-
-export const getStories = async (req, res) => {
-    const currentUser = await getCurrentUserUsingToken(req);
-};
+import { formatImage } from "../middleware/multerMiddleware.js";
 
 export const addStory = async (req, res) => {
     const currentUser = await getCurrentUserUsingToken(req);
@@ -13,27 +13,24 @@ export const addStory = async (req, res) => {
         throw new NotFoundError("User not found!");
     }
 
-    if (!req.file) {
-        throw new BadRequestError("No file uploaded");
-    }
-
-    const file = formatImage(req.file);
-
-    const response = await cloudinary.v2.uploader.upload(file, {
-        folder: "users-stories",
-    });
-
     if (req.file) {
         const file = formatImage(req.file);
         const response = await cloudinary.v2.uploader.upload(file, {
             folder: "users-stories",
         });
-        // currentUser.profileImage = response.secure_url;
-        // await currentUser.save();
-    }
-    res.status(200).json({ msg: "Story added successfully!" });
-};
 
-export const removeStory = async (req, res) => {
-    const currentUser = await getCurrentUserUsingToken(req);
+        const storyUrl = response.secure_url;
+
+        const newStory = new Story({
+            mediaUrl: storyUrl,
+            mediaType: "image",
+            user: currentUser._id,
+        });
+
+        await newStory.save();
+
+        res.status(StatusCodes.OK).json({ msg: "Story added successfully!" });
+    } else {
+        throw new BadRequestError("No file uploaded");
+    }
 };

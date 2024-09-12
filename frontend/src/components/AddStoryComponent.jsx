@@ -35,7 +35,7 @@ const AddStoryComponent = () => {
         if (file) {
             const imageUrl = URL.createObjectURL(file);
             setSelectedImage(imageUrl);
-            navigate("/story/finishStory", { state: { imageUrl } });
+            navigate("/story/addStory", { state: { imageUrl } });
         }
     };
 

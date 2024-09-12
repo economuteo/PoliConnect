@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import User from "./UserModel.js";
 
 const StorySchema = new mongoose.Schema({
     mediaUrl: {
@@ -13,7 +14,15 @@ const StorySchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now,
-        expires: "24h",
+    },
+    expireAt: {
+        type: Date,
+        default: Date.now() + 30,
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
     },
 });
 

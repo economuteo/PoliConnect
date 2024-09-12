@@ -1,4 +1,6 @@
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { AppContext } from "../contexts/AppContext";
 
 import RightArrow from "../assets/images/right-arrow.png";
@@ -9,6 +11,7 @@ import customFetch from "../utils/customFetch";
 
 const FinishStoryFooterComponent = () => {
     const { file } = useContext(AppContext);
+    const navigate = useNavigate();
 
     const addPhotoToStory = async () => {
         if (!file) {
@@ -17,7 +20,6 @@ const FinishStoryFooterComponent = () => {
         }
 
         try {
-            console.log("Da");
             const formData = new FormData();
             formData.append("story", file);
 
@@ -26,6 +28,8 @@ const FinishStoryFooterComponent = () => {
                     "Content-Type": "multipart/form-data",
                 },
             });
+
+            navigate("/feed");
         } catch (error) {
             console.error(
                 "Error adding photo to story: ",

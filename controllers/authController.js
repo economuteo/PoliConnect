@@ -204,7 +204,7 @@ export const saveUserPhoto = async (req, res) => {
     const currentUser = await getCurrentUserUsingToken(req);
 
     if (!currentUser) {
-        throw new BadRequestError("Current user not found");
+        throw new NotFoundError("User not found!");
     }
 
     if (req.file) {
@@ -214,6 +214,8 @@ export const saveUserPhoto = async (req, res) => {
         });
         currentUser.profileImage = response.secure_url;
         await currentUser.save();
+    } else {
+        throw new BadRequestError("No file uploaded");
     }
 
     res.status(StatusCodes.OK).json({ msg: "update user" });

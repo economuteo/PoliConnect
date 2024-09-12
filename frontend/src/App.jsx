@@ -157,7 +157,7 @@ const router = createBrowserRouter([
                         element: <AddStoryPage />,
                     },
                     {
-                        path: "finishStory",
+                        path: "addStory",
                         element: <FinishStoryPage />,
                     },
                 ],
