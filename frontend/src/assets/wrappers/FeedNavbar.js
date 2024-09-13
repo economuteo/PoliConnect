@@ -18,7 +18,7 @@ const Wrapper = styled.nav`
         height: 24px;
     }
 
-    .messages {
+    .searchIcon {
         width: 24px;
         height: 24px;
     }

@@ -1,5 +1,5 @@
 import settings from "../assets/images/settings.png";
-import messages from "../assets/images/messages.png";
+import searchIcon from "../assets/images/search-icon.png";
 import Wrapper from "../assets/wrappers/FeedNavbar";
 
 const FeedNavbar = () => {
@@ -8,7 +8,7 @@ const FeedNavbar = () => {
             <span className="special">CONNECT</span>
             <div className="images">
                 <img src={settings} className="settingsImage" alt="settings" />
-                <img src={messages} className="messages" alt="messages" />
+                <img src={searchIcon} className="searchIcon" alt="searchIcon" />
             </div>
         </Wrapper>
     );

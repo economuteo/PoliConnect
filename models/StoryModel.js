@@ -17,7 +17,7 @@ const StorySchema = new mongoose.Schema({
     },
     expireAt: {
         type: Date,
-        default: Date.now() + 30,
+        expires: 180,
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,

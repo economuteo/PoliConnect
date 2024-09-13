@@ -34,3 +34,15 @@ export const addStory = async (req, res) => {
         throw new BadRequestError("No file uploaded");
     }
 };
+
+export const getUserStories = async (req, res) => {
+    const currentUser = await getCurrentUserUsingToken(req);
+
+    if (!currentUser) {
+        throw new NotFoundError("User not found!");
+    }
+
+    const userStories = await Story.find({ user: currentUser._id });
+
+    res.status(StatusCodes.OK).json(userStories);
+};
