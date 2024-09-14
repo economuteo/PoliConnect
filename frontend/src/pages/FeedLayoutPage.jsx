@@ -1,11 +1,12 @@
+import Wrapper from "../assets/wrappers/FeedLayoutPage";
 import { FeedNavbar, StoriesComponent } from "../components";
 
 const FeedLayoutPage = () => {
     return (
-        <main>
+        <Wrapper>
             <FeedNavbar />
             <StoriesComponent />
-        </main>
+        </Wrapper>
     );
 };
 

@@ -33,3 +33,17 @@ export const updateUser = async (req, res) => {
 
     res.status(StatusCodes.OK).json({ msg: "User updated" });
 };
+
+export const searchUsers = async (req, res) => {
+    const { searchTerm } = req.query;
+
+    if (!searchTerm) {
+        return res.status(StatusCodes.BAD_REQUEST).json({ msg: "Search term is required" });
+    }
+
+    const users = await User.find({
+        username: { $regex: searchTerm, $options: "i" }, // Case-insensitive search
+    });
+
+    res.status(StatusCodes.OK).json(users);
+};

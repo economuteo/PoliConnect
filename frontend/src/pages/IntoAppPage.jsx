@@ -1,13 +1,14 @@
+import Wrapper from "../assets/wrappers/IntoAppPage";
 import { AppFooterComponent } from "../components";
 
 import { Outlet } from "react-router-dom";
 
 const IntoAppPage = () => {
     return (
-        <main style={{ height: "100vh" }}>
+        <Wrapper>
             <Outlet />
             <AppFooterComponent />
-        </main>
+        </Wrapper>
     );
 };
 
