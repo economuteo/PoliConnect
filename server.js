@@ -15,6 +15,7 @@ import userRouter from "./routes/userRouter.js";
 import storiesRouter from "./routes/storiesRouter.js";
 import authRouter from "./routes/authRouter.js";
 import messageRouter from "./routes/messageRouter.js";
+import followRouter from "./routes/followRouter.js";
 
 // middleware
 import { authenticateUser } from "./middleware/authMiddleware.js";
@@ -53,6 +54,7 @@ app.get("/api/v1/test", (req, res) => {
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", authenticateUser, userRouter);
 app.use("/api/v1/stories", authenticateUser, storiesRouter);
+app.use("/api/v1/followers", authenticateUser, followRouter);
 app.use("/api/v1/messages", authenticateUser, messageRouter);
 
 app.use("*", (req, res) => {

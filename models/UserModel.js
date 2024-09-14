@@ -19,6 +19,12 @@ const UserSchema = new mongoose.Schema({
         default:
             "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
+    following: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+        },
+    ],
 });
 
 UserSchema.methods.toJSON = function () {

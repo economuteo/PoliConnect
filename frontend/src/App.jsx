@@ -28,6 +28,7 @@ import {
     StoriesPage,
     Error,
 } from "./pages";
+import FinishStoryPage from "./pages/FinishStoryPage.jsx";
 
 import { action as registerAction } from "./components/RegisterFormComponent.jsx";
 import { action as loginAction } from "./components/LoginFormComponent.jsx";
@@ -36,10 +37,22 @@ import { action as checkEmailAction } from "./components/EmailComponent.jsx";
 import { action as createUsernameAction } from "./components/CreateUsernameComponent.jsx";
 import { action as saveProfilePhotoAction } from "./components/ProfilePictureUpload.jsx";
 
+import { getStoriesOfFollowedUsersLoader } from "./components/StoriesComponent.jsx";
 import { userProfileImageLoader } from "./components/CurrentUserStoryTemplateComponent.jsx";
 
 import { AppProvider } from "./contexts/AppContext";
-import FinishStoryPage from "./pages/FinishStoryPage.jsx";
+
+const combinedLoader = async () => {
+    const [userProfileImage, getStoriesOfFollowedUsers] = await Promise.all([
+        userProfileImageLoader(),
+        getStoriesOfFollowedUsersLoader(),
+    ]);
+
+    return {
+        userProfileImage,
+        getStoriesOfFollowedUsers,
+    };
+};
 
 const router = createBrowserRouter([
     {
@@ -134,7 +147,8 @@ const router = createBrowserRouter([
                     {
                         path: "feed",
                         element: <FeedLayoutPage />,
-                        loader: userProfileImageLoader,
+                        errorElement: <Error />,
+                        loader: combinedLoader,
                     },
                     {
                         path: "messages",

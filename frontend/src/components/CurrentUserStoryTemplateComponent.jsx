@@ -14,11 +14,11 @@ export const userProfileImageLoader = async () => {
 
 const CurrentUserStoryTemplateComponent = ({ userName, addStoryIcon }) => {
     const navigate = useNavigate();
-    const userProfileImage = useLoaderData();
+    const { userProfileImage } = useLoaderData();
     const { setUserStoriesUrls } = useContext(AppContext);
 
     const handleSeeStory = async () => {
-        const response = await customFetch.get("/stories/getUserStories");
+        const response = await customFetch.get("/stories/getCurrentUserStories");
         const userStories = response.data;
         const userStoriesURLs = [];
         for (let i = 0; i < userStories.length; i++) {
@@ -31,7 +31,6 @@ const CurrentUserStoryTemplateComponent = ({ userName, addStoryIcon }) => {
     };
 
     const handleAddStory = () => {
-        // Logic to be implemented here with state
         navigate("/story");
     };
 

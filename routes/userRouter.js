@@ -5,7 +5,7 @@ import { authorizePermissions } from "../middleware/authMiddleware.js";
 const router = Router();
 
 router.get("/currentUser", getCurrentUser);
-router.get("/admin/appStats", authorizePermissions("admin"), getApplicationStats);
 router.patch("/updateUser", validateUpdateUserInput, updateUser);
+router.get("/admin/appStats", authorizePermissions("admin"), getApplicationStats);
 
 export default router;
