@@ -22,4 +22,5 @@ export { default as MessagesPage } from "./MessagesPage";
 export { default as NotificationsPage } from "./NotificationsPage";
 export { default as IntoAppPage } from "./IntoAppPage";
 export { default as StoriesPage } from "./StoriesPage";
+export { default as SearchUsersPage } from "./SearchUsersPage";
 export { default as Error } from "./Error";

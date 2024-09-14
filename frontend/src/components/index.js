@@ -25,4 +25,6 @@ export { default as HouseIcon } from "./HouseIcon";
 export { default as MessagesIcon } from "./MessagesIcon";
 export { default as NotificationsIcon } from "./NotificationsIcon";
 export { default as ProfileIcon } from "./ProfileIcon";
+export { default as SearchUsersNavbarComponent } from "./SearchUsersNavbarComponent";
+export { default as SearchUsersComponent } from "./SearchUsersComponent";
 export { default as ErrorElement } from "./ErrorElement";

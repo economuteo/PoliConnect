@@ -27,6 +27,7 @@ import {
     IntoAppPage,
     StoriesPage,
     Error,
+    SearchUsersPage,
 } from "./pages";
 import FinishStoryPage from "./pages/FinishStoryPage.jsx";
 
@@ -161,6 +162,10 @@ const router = createBrowserRouter([
                     {
                         path: "profile",
                         element: <ProfilePage />,
+                    },
+                    {
+                        path: "feed/searchUsers",
+                        element: <SearchUsersPage />,
                     },
                 ],
             },

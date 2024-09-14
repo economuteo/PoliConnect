@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 
 const IntoAppPage = () => {
     return (
-        <main>
+        <main style={{ height: "100vh" }}>
             <Outlet />
             <AppFooterComponent />
         </main>
