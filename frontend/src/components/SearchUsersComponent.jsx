@@ -47,7 +47,7 @@ const SearchUsersComponent = () => {
                     <div key={user._id} className="user">
                         <img src={user.profileImage} className="userProfileImage" alt="userImage" />
                         <p className="userName">{user.username}</p>
-                        <span className="followButton">Follow</span>
+                        <div className="followButton">Follow</div>
                     </div>
                 ))}
             </div>

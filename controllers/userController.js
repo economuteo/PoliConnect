@@ -42,7 +42,7 @@ export const searchUsers = async (req, res) => {
     }
 
     const users = await User.find({
-        username: { $regex: searchTerm, $options: "i" }, // Case-insensitive search
+        username: { $regex: `^${searchTerm}`, $options: "i" },
     });
 
     res.status(StatusCodes.OK).json(users);

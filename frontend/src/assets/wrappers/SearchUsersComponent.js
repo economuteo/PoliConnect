@@ -60,7 +60,7 @@ const Wrapper = styled.section`
     .user {
         width: 100%;
         display: grid;
-        grid-template-columns: auto 2fr 1fr;
+        grid-template-columns: auto 3fr 1fr;
         align-items: center;
         padding: 16px 0px;
         border-bottom: 1px solid #292c35;
@@ -68,7 +68,7 @@ const Wrapper = styled.section`
 
     .userName {
         margin-left: 12px;
-        font-size: 1em;
+        font-size: 0.75em;
         font-family: "Poppins SemiBold";
         color: white;
     }
@@ -80,15 +80,32 @@ const Wrapper = styled.section`
     }
 
     .followButton {
-        align-self: end;
-        max-width: 150px;
+        justify-self: end;
+        width: auto;
         text-align: center;
-        padding: 8px;
+        padding: 6px;
         border-radius: 10px;
+        font-size: 0.75em;
         font-family: "Poppins SemiBold";
         cursor: pointer;
         color: #0677e8;
         background-color: #102e53;
+    }
+
+    @media only screen and (min-width: 480px) {
+        .userName {
+            font-size: 1em;
+        }
+
+        .followButton {
+            font-size: 1em;
+        }
+    }
+
+    @media only screen and (min-width: 768px) {
+        .followButton {
+            width: 150px;
+        }
     }
 `;
 

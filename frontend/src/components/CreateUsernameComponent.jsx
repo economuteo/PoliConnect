@@ -27,7 +27,13 @@ const CreateUsernameComponent = () => {
             </p>
             <Form method="post">
                 <div className="parent">
-                    <input type="text" placeholder="Username" name="username" required />
+                    <input
+                        type="text"
+                        placeholder="Username"
+                        name="username"
+                        required
+                        maxLength="18"
+                    />
                 </div>
                 <div className="buttons">
                     <button type="submit" className="emailNextButton">
