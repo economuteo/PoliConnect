@@ -166,8 +166,17 @@ const router = createBrowserRouter([
                         element: <ProfilePage />,
                     },
                     {
-                        path: "feed/searchUsers",
-                        element: <SearchUsersPage />,
+                        path: "feed",
+                        children: [
+                            {
+                                path: "searchUsers",
+                                element: <SearchUsersPage />,
+                            },
+                            {
+                                path: "userProfile/:username",
+                                element: <UserProfilePage />,
+                            },
+                        ],
                     },
                 ],
             },
@@ -187,11 +196,6 @@ const router = createBrowserRouter([
             {
                 path: "stories",
                 element: <StoriesPage />,
-            },
-            {
-                path: "userProfile/:username",
-                element: <UserProfilePage />,
-                loader: isUserFollowedLoader,
             },
         ],
     },

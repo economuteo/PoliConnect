@@ -13,7 +13,7 @@ const SearchUsersComponent = () => {
     const [users, setUsers] = useState([]);
 
     const handleSeeUserProfile = (user) => {
-        navigate(`/userProfile/${user.username}`, { state: { user } });
+        navigate(`/feed/userProfile/${user.username}`, { state: { user } });
     };
 
     const handleInputChange = (event) => {
