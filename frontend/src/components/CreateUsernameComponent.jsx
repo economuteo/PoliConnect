@@ -1,13 +1,13 @@
 import { Form, redirect } from "react-router-dom";
+import { toast } from "react-toastify";
+
+import customFetch from "../utils/customFetch";
 
 import Wrapper from "../assets/wrappers/CreateUsernameComponent";
-import customFetch from "../utils/customFetch";
-import { toast } from "react-toastify";
 
 export const action = async ({ request }) => {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
-    console.log(data);
 
     try {
         await customFetch.post("/auth/saveAdditionalInfo", data);

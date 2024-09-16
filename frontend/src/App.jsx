@@ -15,6 +15,7 @@ import {
     ResetPasswordPage,
     AccountCreatedPage,
     CreateUsernamePage,
+    CreateEventPage,
     ProfilePhotoQuestionPage,
     AddProfilePicturePage,
     FeedLayoutPage,
@@ -37,13 +38,13 @@ import { action as resetPasswordAction } from "./components/ResetPasswordCompone
 import { action as checkEmailAction } from "./components/EmailComponent.jsx";
 import { action as createUsernameAction } from "./components/CreateUsernameComponent.jsx";
 import { action as saveProfilePhotoAction } from "./components/ProfilePictureUpload.jsx";
+import { action as createEventAction } from "./components/CreateEventComponent.jsx";
 
 import { getStoriesOfFollowedUsersLoader } from "./components/StoriesComponent.jsx";
 import { userProfileImageLoader } from "./components/CurrentUserStoryTemplateComponent.jsx";
 import { isUserFollowedLoader } from "./components/UserProfileComponent.jsx";
 
 import { AppProvider } from "./contexts/AppContext";
-import CreateEventComponent from "./components/CreateEventComponent.jsx";
 
 const combinedLoader = async () => {
     const [userProfileImage, getStoriesOfFollowedUsers] = await Promise.all([
@@ -207,7 +208,8 @@ const router = createBrowserRouter([
                 children: [
                     {
                         path: "createEvent",
-                        element: <CreateEventComponent />,
+                        element: <CreateEventPage />,
+                        action: createEventAction,
                     },
                 ],
             },

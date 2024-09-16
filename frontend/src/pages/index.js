@@ -7,6 +7,7 @@ export { default as VerifyPhoneNumberPage } from "./VerifyPhoneNumberPage";
 export { default as VerifyEmailPage } from "./VerifyEmailPage";
 export { default as ForgetPasswordPage } from "./ForgetPasswordPage";
 export { default as CreateUsernamePage } from "./CreateUsernamePage";
+export { default as CreateEventPage } from "./CreateEventPage";
 export { default as ForgetPasswordEmailPage } from "./ForgetPasswordEmailPage";
 export { default as ResetPasswordPage } from "./ResetPasswordPage";
 export { default as WelcomePage } from "./IntroductionPages/WelcomePage";
