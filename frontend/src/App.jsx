@@ -1,7 +1,5 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-import { AddStoryComponent, FinishStoryComponent } from "./components";
-
 import {
     HomeLayout,
     AuthentificationLayout,
@@ -41,7 +39,7 @@ import { action as saveProfilePhotoAction } from "./components/ProfilePictureUpl
 
 import { getStoriesOfFollowedUsersLoader } from "./components/StoriesComponent.jsx";
 import { userProfileImageLoader } from "./components/CurrentUserStoryTemplateComponent.jsx";
-import { isUserFollowedLoader } from "./pages/UserProfilePage.jsx";
+import { isUserFollowedLoader } from "./components/UserProfileComponent.jsx";
 
 import { AppProvider } from "./contexts/AppContext";
 

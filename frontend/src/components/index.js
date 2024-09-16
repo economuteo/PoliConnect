@@ -27,4 +27,6 @@ export { default as NotificationsIcon } from "./NotificationsIcon";
 export { default as ProfileIcon } from "./ProfileIcon";
 export { default as SearchUsersNavbarComponent } from "./SearchUsersNavbarComponent";
 export { default as SearchUsersComponent } from "./SearchUsersComponent";
+export { default as UserProfileComponent } from "./UserProfileComponent";
+export { default as UserProfileNavbarComponent } from "./UserProfileNavbarComponent";
 export { default as ErrorElement } from "./ErrorElement";
