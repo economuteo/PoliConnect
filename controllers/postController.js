@@ -4,7 +4,8 @@ import Message from "../models/MessageModel.js";
 import Event from "../models/EventModel.js";
 
 export const addEvent = async (req, res) => {
-    const { eventName, eventDate, eventTime, eventLocation, eventDescription } = req.body;
+    const { eventName, eventDate, eventTime, eventLocation, eventDescription, createdBy } =
+        req.body;
 
     try {
         const event = new Event({
@@ -13,6 +14,7 @@ export const addEvent = async (req, res) => {
             eventTime,
             eventLocation,
             eventDescription,
+            createdBy,
         });
 
         await event.save();

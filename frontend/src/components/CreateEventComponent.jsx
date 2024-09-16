@@ -9,6 +9,10 @@ export const action = async ({ request }) => {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
 
+    const response = await customFetch.get("/users/currentUser");
+    const currentUserID = response.data.user._id;
+    data.createdBy = currentUserID;
+
     try {
         await customFetch.post("/posts/addEvent", data);
         return redirect("/feed");
