@@ -21,7 +21,9 @@ import {
     AddProfilePicturePage,
     FeedLayoutPage,
     AddStoryPage,
+    FinishStoryPage,
     ProfilePage,
+    UserProfilePage,
     MessagesPage,
     NotificationsPage,
     IntoAppPage,
@@ -29,7 +31,6 @@ import {
     Error,
     SearchUsersPage,
 } from "./pages";
-import FinishStoryPage from "./pages/FinishStoryPage.jsx";
 
 import { action as registerAction } from "./components/RegisterFormComponent.jsx";
 import { action as loginAction } from "./components/LoginFormComponent.jsx";
@@ -40,6 +41,7 @@ import { action as saveProfilePhotoAction } from "./components/ProfilePictureUpl
 
 import { getStoriesOfFollowedUsersLoader } from "./components/StoriesComponent.jsx";
 import { userProfileImageLoader } from "./components/CurrentUserStoryTemplateComponent.jsx";
+import { isUserFollowedLoader } from "./pages/UserProfilePage.jsx";
 
 import { AppProvider } from "./contexts/AppContext";
 
@@ -123,7 +125,7 @@ const router = createBrowserRouter([
                         errorElement: <Error />,
                     },
                     {
-                        path: "createUsername",
+                        path: "saveAdditionalInfo",
                         element: <CreateUsernamePage />,
                         action: createUsernameAction,
                         errorElement: <Error />,
@@ -185,6 +187,11 @@ const router = createBrowserRouter([
             {
                 path: "stories",
                 element: <StoriesPage />,
+            },
+            {
+                path: "userProfile/:username",
+                element: <UserProfilePage />,
+                loader: isUserFollowedLoader,
             },
         ],
     },

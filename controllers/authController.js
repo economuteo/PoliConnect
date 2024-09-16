@@ -186,7 +186,7 @@ export const verifyEmailCode = async (req, res) => {
 };
 
 export const createUsername = async (req, res) => {
-    const { username } = req.body;
+    const { username, university, profile, year } = req.body;
 
     const user = await getCurrentUserUsingToken(req);
 
@@ -195,6 +195,9 @@ export const createUsername = async (req, res) => {
     }
 
     user.username = username;
+    user.university = university;
+    user.profile = profile;
+    user.year = year;
     await user.save();
 
     res.status(200).json({ message: "Username created successfully" });

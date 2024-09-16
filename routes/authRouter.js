@@ -33,7 +33,7 @@ router.get("/logout", logout);
 router.post("/resetPassword", validateResetPasswordInput, resetPassword);
 
 // Post auth functionality
-router.post("/createUsername", validateUsername, createUsername);
+router.post("/saveAdditionalInfo", validateUsername, createUsername);
 router.patch("/savePhoto", upload.single("profileImage"), saveUserPhoto);
 
 // Email functionality

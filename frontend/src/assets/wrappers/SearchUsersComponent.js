@@ -57,10 +57,17 @@ const Wrapper = styled.section`
         display: none;
     }
 
+    .seeUserProfile {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        align-items: center;
+        cursor: pointer;
+    }
+
     .user {
         width: 100%;
         display: grid;
-        grid-template-columns: auto 3fr 1fr;
+        grid-template-columns: 5fr 1fr;
         align-items: center;
         padding: 16px 0px;
         border-bottom: 1px solid #292c35;
@@ -98,6 +105,7 @@ const Wrapper = styled.section`
         }
 
         .followButton {
+            width: 100px;
             font-size: 1em;
         }
     }

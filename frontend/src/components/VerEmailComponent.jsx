@@ -34,7 +34,7 @@ const VerEmailComponent = () => {
                     break;
                 case "register":
                     await customFetch.get("/auth/registerFinal");
-                    navigate("/authentification/createUsername");
+                    navigate("/authentification/saveAdditionalInfo");
                     break;
                 default:
                     navigate("/authentification");

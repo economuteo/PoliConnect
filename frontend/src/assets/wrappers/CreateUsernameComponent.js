@@ -17,11 +17,9 @@ const Wrapper = styled.main`
         color: #acadb9;
     }
 
-    button {
+    input,
+    select {
         font-size: 1em;
-    }
-
-    input {
         width: 100%;
         padding: 20px;
         border: none;
@@ -97,7 +95,8 @@ const Wrapper = styled.main`
             text-align: center;
         }
 
-        input {
+        input,
+        select {
             font-size: 1.25rem;
         }
 

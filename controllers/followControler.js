@@ -47,3 +47,15 @@ export const unfollowUser = async (req, res) => {
 
     res.status(StatusCodes.OK).json({ msg: "You have unfollowed this user!" });
 };
+
+export const isUserFollowed = async (req, res) => {
+    const currentUser = await getCurrentUserUsingToken(req);
+    const { username } = req.query;
+
+    const userToCheck = await User.findOne({ username });
+    const userToCheckId = userToCheck._id;
+
+    const isFollowing = currentUser.following.includes(userToCheckId);
+
+    res.status(StatusCodes.OK).json({ isFollowing });
+};
