@@ -29,4 +29,5 @@ export { default as SearchUsersNavbarComponent } from "./SearchUsersNavbarCompon
 export { default as SearchUsersComponent } from "./SearchUsersComponent";
 export { default as UserProfileComponent } from "./UserProfileComponent";
 export { default as UserProfileNavbarComponent } from "./UserProfileNavbarComponent";
+export { default as AddPostComponent } from "./AddPostComponent";
 export { default as ErrorElement } from "./ErrorElement";

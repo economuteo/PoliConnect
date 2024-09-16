@@ -19,6 +19,7 @@ import {
     AddProfilePicturePage,
     FeedLayoutPage,
     AddStoryPage,
+    AddPostPage,
     FinishStoryPage,
     ProfilePage,
     UserProfilePage,
@@ -42,6 +43,7 @@ import { userProfileImageLoader } from "./components/CurrentUserStoryTemplateCom
 import { isUserFollowedLoader } from "./components/UserProfileComponent.jsx";
 
 import { AppProvider } from "./contexts/AppContext";
+import CreateEventComponent from "./components/CreateEventComponent.jsx";
 
 const combinedLoader = async () => {
     const [userProfileImage, getStoriesOfFollowedUsers] = await Promise.all([
@@ -195,6 +197,19 @@ const router = createBrowserRouter([
             {
                 path: "stories",
                 element: <StoriesPage />,
+            },
+            {
+                path: "addPost",
+                element: <AddPostPage />,
+            },
+            {
+                path: "event",
+                children: [
+                    {
+                        path: "createEvent",
+                        element: <CreateEventComponent />,
+                    },
+                ],
             },
         ],
     },

@@ -18,6 +18,7 @@ export { default as ProfilePhotoQuestionPage } from "./ProfilePhotoQuestionPage"
 export { default as FeedLayoutPage } from "./FeedLayoutPage";
 export { default as FinishStoryPage } from "./FinishStoryPage";
 export { default as AddStoryPage } from "./AddStoryPage";
+export { default as AddPostPage } from "./AddPostPage";
 export { default as ProfilePage } from "./ProfilePage";
 export { default as MessagesPage } from "./MessagesPage";
 export { default as NotificationsPage } from "./NotificationsPage";

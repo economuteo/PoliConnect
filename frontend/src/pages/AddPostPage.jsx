@@ -1,5 +1,12 @@
+import Wrapper from "../assets/wrappers/AddPostPage";
+import { AddPostComponent } from "../components";
+
 const AddPostPage = () => {
-    return <main></main>;
+    return (
+        <Wrapper className="container">
+            <AddPostComponent />
+        </Wrapper>
+    );
 };
 
 export default AddPostPage;
