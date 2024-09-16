@@ -8,7 +8,8 @@ import customFetch from "../utils/customFetch";
 export const isUserFollowedLoader = async ({ params }) => {
     const { username } = params;
     const response = await customFetch.post(`/followers/isUserFollowed?username=${username}`);
-    return response.data.isFollowing;
+    const isFollowing = response.data.isFollowing;
+    return isFollowing;
 };
 
 const UserProfilePage = () => {

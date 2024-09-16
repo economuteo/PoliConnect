@@ -175,6 +175,7 @@ const router = createBrowserRouter([
                             {
                                 path: "userProfile/:username",
                                 element: <UserProfilePage />,
+                                loader: isUserFollowedLoader,
                             },
                         ],
                     },
