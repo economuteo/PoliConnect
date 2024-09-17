@@ -35,24 +35,28 @@ export const addPhotoPost = async (req, res) => {
         throw new UnauthenticatedError("Token expired!");
     }
 
-    if (req.file) {
-        const file = formatImage(req.file);
-        const response = await cloudinary.v2.uploader.upload(file, {
-            folder: "photo-posts",
-        });
+    try {
+        if (req.file) {
+            const file = formatImage(req.file);
+            const response = await cloudinary.v2.uploader.upload(file, {
+                folder: "photo-posts",
+            });
 
-        const photoPostUrl = response.secure_url;
+            const photoPostUrl = response.secure_url;
 
-        const newPhotoPost = new PhotoPost({
-            mediaUrl: photoPostUrl,
-            createdBy: currentUser._id,
-        });
+            const newPhotoPost = new PhotoPost({
+                mediaUrl: photoPostUrl,
+                createdBy: currentUser._id,
+            });
 
-        await newPhotoPost.save();
+            await newPhotoPost.save();
 
-        res.status(StatusCodes.OK).json({ msg: "Photo post added successfully!" });
-    } else {
-        throw new BadRequestError("No file uploaded");
+            res.status(StatusCodes.OK).json({ msg: "Photo post added successfully!" });
+        } else {
+            res.status(StatusCodes.BAD_REQUEST).json({ error: "No file uploaded" });
+        }
+    } catch {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
     }
 };
 

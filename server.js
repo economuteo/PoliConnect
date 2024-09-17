@@ -17,6 +17,7 @@ import authRouter from "./routes/authRouter.js";
 import messageRouter from "./routes/messageRouter.js";
 import followRouter from "./routes/followRouter.js";
 import postRouter from "./routes/postRouter.js";
+import commentsRouter from "./routes/commentsRouter.js";
 
 // middleware
 import { authenticateUser } from "./middleware/authMiddleware.js";
@@ -54,10 +55,11 @@ app.get("/api/v1/test", (req, res) => {
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", authenticateUser, userRouter);
-app.use("/api/v1/stories", authenticateUser, storiesRouter);
 app.use("/api/v1/followers", authenticateUser, followRouter);
+app.use("/api/v1/stories", authenticateUser, storiesRouter);
 app.use("/api/v1/messages", authenticateUser, messageRouter);
 app.use("/api/v1/posts", authenticateUser, postRouter);
+app.use("/api/v1/comments", authenticateUser, commentsRouter);
 
 app.use("*", (req, res) => {
     res.status(404).json({ msg: "Not found" });

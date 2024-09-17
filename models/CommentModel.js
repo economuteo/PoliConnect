@@ -1,28 +1,30 @@
-const { Schema } = mongoose;
+import mongoose from "mongoose";
 
-const commentSchema = new Schema(
+const CommentSchema = new mongoose.Schema(
     {
         content: {
             type: String,
             required: true,
-            trim: true,
-        },
-        createdBy: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
-            required: true,
         },
         postId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Post",
             required: true,
+            refPath: "postType",
         },
-        createdAt: {
-            type: Date,
-            default: Date.now,
+        postType: {
+            type: String,
+            required: true,
+            enum: ["PhotoPost", "Event"],
+        },
+        createdBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+            ref: "User",
         },
     },
-    {
-        timestamps: true,
-    }
+    { timestamps: true }
 );
+
+const Comment = mongoose.model("Comment", CommentSchema);
+
+export default Comment;
