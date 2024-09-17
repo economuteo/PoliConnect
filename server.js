@@ -18,6 +18,8 @@ import messageRouter from "./routes/messageRouter.js";
 import followRouter from "./routes/followRouter.js";
 import postRouter from "./routes/postRouter.js";
 import commentsRouter from "./routes/commentsRouter.js";
+import likesRouter from "./routes/likesRouter.js";
+import joinEventRouter from "./routes/joinEventRouter.js";
 
 // middleware
 import { authenticateUser } from "./middleware/authMiddleware.js";
@@ -60,6 +62,8 @@ app.use("/api/v1/stories", authenticateUser, storiesRouter);
 app.use("/api/v1/messages", authenticateUser, messageRouter);
 app.use("/api/v1/posts", authenticateUser, postRouter);
 app.use("/api/v1/comments", authenticateUser, commentsRouter);
+app.use("/api/v1/likes", authenticateUser, likesRouter);
+app.use("/api/v1/joinEvent", authenticateUser, joinEventRouter);
 
 app.use("*", (req, res) => {
     res.status(404).json({ msg: "Not found" });

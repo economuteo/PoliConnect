@@ -20,7 +20,6 @@ export const addComment = async (req, res) => {
 
         await comment.save();
 
-        // Add the comment to the appropriate post type
         let post;
         if (postType === "PhotoPost") {
             post = await PhotoPost.findById(postId);
@@ -45,13 +44,11 @@ export const removeComment = async (req, res) => {
     const { commentId } = req.body;
 
     try {
-        // Find and delete the comment
         const comment = await Comment.findByIdAndDelete(commentId);
         if (!comment) {
             throw new NotFoundError("Comment not found");
         }
 
-        // Determine the type of post and remove the comment reference
         let post;
         if (comment.postType === "PhotoPost") {
             post = await PhotoPost.findById(comment.postId);
