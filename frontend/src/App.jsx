@@ -43,18 +43,21 @@ import { action as createEventAction } from "./components/CreateEventComponent.j
 import { getStoriesOfFollowedUsersLoader } from "./components/StoriesComponent.jsx";
 import { userProfileImageLoader } from "./components/CurrentUserStoryTemplateComponent.jsx";
 import { isUserFollowedLoader } from "./components/UserProfileComponent.jsx";
+// import { firstPostLoader } from "./components/PostsComponent.jsx";
 
 import { AppProvider } from "./contexts/AppContext";
 
 const combinedLoader = async () => {
-    const [userProfileImage, getStoriesOfFollowedUsers] = await Promise.all([
+    const [userProfileImage, getStoriesOfFollowedUsers, firstPostLoader] = await Promise.all([
         userProfileImageLoader(),
         getStoriesOfFollowedUsersLoader(),
+        // firstPostLoader(),
     ]);
 
     return {
         userProfileImage,
         getStoriesOfFollowedUsers,
+        firstPostLoader,
     };
 };
 

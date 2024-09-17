@@ -24,3 +24,21 @@ export const addEvent = async (req, res) => {
         res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
     }
 };
+
+export const getFirstPost = async (req, res) => {
+    const { userId } = req.params; // Assuming userId is passed as a URL parameter
+
+    try {
+        const post = await Post.findOne({ createdBy: userId }).sort({ createdAt: -1 }).exec();
+
+        if (!post) {
+            return res
+                .status(StatusCodes.NOT_FOUND)
+                .json({ error: "No posts found for this user" });
+        }
+
+        res.status(StatusCodes.OK).json(post);
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
+    }
+};
