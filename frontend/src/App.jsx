@@ -26,6 +26,7 @@ import {
     UserProfilePage,
     MessagesPage,
     NotificationsPage,
+    CreatePhotoPostPage,
     IntoAppPage,
     StoriesPage,
     Error,
@@ -213,6 +214,15 @@ const router = createBrowserRouter([
                         path: "createEvent",
                         element: <CreateEventPage />,
                         action: createEventAction,
+                    },
+                ],
+            },
+            {
+                path: "photo",
+                children: [
+                    {
+                        path: "createPhotoPost",
+                        element: <CreatePhotoPostPage />,
                     },
                 ],
             },

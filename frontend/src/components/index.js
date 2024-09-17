@@ -32,4 +32,7 @@ export { default as AddPostComponent } from "./AddPostComponent";
 export { default as PostsComponent } from "./PostsComponent";
 export { default as UserProfileNavbarComponent } from "./UserProfileNavbarComponent";
 export { default as CreateEventComponent } from "./CreateEventComponent";
+export { default as CreatePhotoPostComponent } from "./CreatePhotoPostComponent";
+export { default as CreatePhotoPostNavbarComponent } from "./CreatePhotoPostNavbarComponent";
+export { default as CreatePhotoPostFooterComponent } from "./CreatePhotoPostFooterComponent";
 export { default as ErrorElement } from "./ErrorElement";
