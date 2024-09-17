@@ -1,7 +1,10 @@
 import { StatusCodes } from "http-status-codes";
-import User from "../models/UserModel.js";
-import Message from "../models/MessageModel.js";
+import PhotoPost from "../models/PhotoPostModel.js";
 import Event from "../models/EventModel.js";
+import { UnauthenticatedError } from "../errors/customErrors.js";
+import { getCurrentUserUsingToken } from "./userController.js";
+import { formatImage } from "../middleware/multerMiddleware.js";
+import cloudinary from "cloudinary";
 
 export const addEvent = async (req, res) => {
     const { eventName, eventDate, eventTime, eventLocation, eventDescription, createdBy } =
@@ -25,8 +28,36 @@ export const addEvent = async (req, res) => {
     }
 };
 
+export const addPhotoPost = async (req, res) => {
+    const currentUser = await getCurrentUserUsingToken(req);
+
+    if (!currentUser) {
+        throw new UnauthenticatedError("Token expired!");
+    }
+
+    if (req.file) {
+        const file = formatImage(req.file);
+        const response = await cloudinary.v2.uploader.upload(file, {
+            folder: "photo-posts",
+        });
+
+        const photoPostUrl = response.secure_url;
+
+        const newPhotoPost = new PhotoPost({
+            mediaUrl: photoPostUrl,
+            createdBy: currentUser._id,
+        });
+
+        await newPhotoPost.save();
+
+        res.status(StatusCodes.OK).json({ msg: "Photo post added successfully!" });
+    } else {
+        throw new BadRequestError("No file uploaded");
+    }
+};
+
 export const getFirstPost = async (req, res) => {
-    const { userId } = req.params; // Assuming userId is passed as a URL parameter
+    const { userId } = req.params;
 
     try {
         const post = await Post.findOne({ createdBy: userId }).sort({ createdAt: -1 }).exec();

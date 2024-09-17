@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import EventIcon from "../assets/images/event-icon.png";
@@ -7,8 +6,6 @@ import CameraIcon from "../assets/images/camera-icon.png";
 import Wrapper from "../assets/wrappers/AddPostComponent";
 
 const AddPostComponent = () => {
-    const [selectedPhoto, setSelectedPhoto] = useState(null);
-
     const navigate = useNavigate();
 
     const handleCreateEventClick = () => {
@@ -19,8 +16,7 @@ const AddPostComponent = () => {
         const file = event.target.files[0];
         if (file) {
             const imageUrl = URL.createObjectURL(file);
-            setSelectedPhoto(imageUrl);
-            navigate("/photo/createPhotoPost", { state: { imageUrl } });
+            navigate("/photo/createPhotoPost", { state: { imageUrl, file } });
         }
     };
 

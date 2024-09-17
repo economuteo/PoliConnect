@@ -1,3 +1,4 @@
+import { useLocation } from "react-router-dom";
 import Wrapper from "../assets/wrappers/CreatePhotoPostPage";
 import {
     CreatePhotoPostNavbarComponent,
@@ -6,11 +7,14 @@ import {
 } from "../components";
 
 const CreatePhotoPostPage = () => {
+    const location = useLocation();
+    const { file } = location.state || {};
+
     return (
         <Wrapper className="container">
             <CreatePhotoPostNavbarComponent />
             <CreatePhotoPostComponent />
-            <CreatePhotoPostFooterComponent />
+            <CreatePhotoPostFooterComponent file={file} />
         </Wrapper>
     );
 };

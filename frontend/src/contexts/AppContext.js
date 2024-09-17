@@ -12,8 +12,11 @@ export const AppProvider = ({ children }) => {
     // Image URL
     const [imageUrl, setImageUrl] = useState("");
 
-    // File
+    // File story
     const [file, setFile] = useState("");
+
+    // Photo post file
+    const [photoPostFile, setPhotoPostFile] = useState("");
 
     // Story logic
     // Finish story component

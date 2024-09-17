@@ -1,7 +1,4 @@
-import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-
-import { AppContext } from "../contexts/AppContext";
 
 import RightArrow from "../assets/images/right-arrow.png";
 
@@ -9,21 +6,20 @@ import Wrapper from "../assets/wrappers/CreatePhotoPostFooterComponent";
 
 import customFetch from "../utils/customFetch";
 
-const CreatePhotoPostFooterComponent = () => {
-    const { file } = useContext(AppContext);
+const CreatePhotoPostFooterComponent = ({ file }) => {
     const navigate = useNavigate();
 
-    const addPhotoToStory = async () => {
+    const addPhotoPost = async () => {
         if (!file) {
-            console.error("No file found in context");
+            console.error("No photo post file found in context");
             return;
         }
 
         try {
             const formData = new FormData();
-            formData.append("story", file);
+            formData.append("photoPost", file);
 
-            await customFetch.post("/stories/addStory", formData, {
+            await customFetch.post("/posts/addPhotoPost", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
@@ -41,12 +37,7 @@ const CreatePhotoPostFooterComponent = () => {
     return (
         <Wrapper>
             <p></p>
-            <img
-                onClick={addPhotoToStory}
-                className="rightArrow"
-                src={RightArrow}
-                alt="Right Arrow"
-            />
+            <img onClick={addPhotoPost} className="rightArrow" src={RightArrow} alt="Right Arrow" />
         </Wrapper>
     );
 };

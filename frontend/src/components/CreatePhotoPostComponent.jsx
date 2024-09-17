@@ -1,4 +1,5 @@
 import { useLocation } from "react-router-dom";
+
 import Wrapper from "../assets/wrappers/CreatePhotoPostComponent";
 
 const CreatePhotoPostComponent = () => {
