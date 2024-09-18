@@ -77,3 +77,24 @@ export const getFirstPost = async (req, res) => {
         res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
     }
 };
+
+export const getAllPostsForAUser = async (req, res) => {
+    const currentUser = await getCurrentUserUsingToken(req);
+
+    if (!currentUser) {
+        throw new UnauthenticatedError("Token expired!");
+    }
+
+    try {
+        const photoPosts = await PhotoPost.find({ createdBy: currentUser._id });
+        const events = await Event.find({ createdBy: currentUser._id });
+
+        const combinedPosts = [...photoPosts, ...events].sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+
+        res.status(StatusCodes.OK).json(combinedPosts);
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
+    }
+};

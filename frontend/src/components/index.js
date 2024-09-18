@@ -35,4 +35,5 @@ export { default as CreateEventComponent } from "./CreateEventComponent";
 export { default as CreatePhotoPostComponent } from "./CreatePhotoPostComponent";
 export { default as CreatePhotoPostNavbarComponent } from "./CreatePhotoPostNavbarComponent";
 export { default as CreatePhotoPostFooterComponent } from "./CreatePhotoPostFooterComponent";
+export { default as EventComponent } from "./EventComponent";
 export { default as ErrorElement } from "./ErrorElement";
