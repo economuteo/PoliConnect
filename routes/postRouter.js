@@ -12,7 +12,7 @@ const router = Router();
 
 // Get posts
 router.get("/firstPost", getFirstPost);
-router.get("/getAllPostsForAUser", getAllPostsForAUser); // Sorted by creation date (newest)
+router.get("/getAllPostsForAUser", getAllPostsForAUser);
 
 // Add posts
 router.post("/addEvent", addEvent);

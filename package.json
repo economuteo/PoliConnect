@@ -9,7 +9,9 @@
         "setup-project": "npm i && cd frontend && npm i",
         "server": "nodemon server",
         "client": "cd frontend && npm start",
-        "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
+        "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+        "data:import": "node seeder",
+        "data:destroy": "node seeder -d"
     },
     "keywords": [],
     "author": "",
@@ -17,6 +19,7 @@
     "dependencies": {
         "bcryptjs": "^2.4.3",
         "cloudinary": "^2.4.0",
+        "colors": "^1.4.0",
         "concurrently": "^8.0.1",
         "cookie-parser": "^1.4.6",
         "datauri": "^4.1.0",

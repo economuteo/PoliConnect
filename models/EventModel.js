@@ -44,10 +44,14 @@ const eventSchema = new mongoose.Schema(
                 ref: "Comment",
             },
         ],
+        eventType: {
+            type: String,
+            enum: ["PhotoPost", "Event"],
+        },
         createdBy: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
-            required: true,
+            // required: true,
         },
     },
     {
@@ -55,6 +59,6 @@ const eventSchema = new mongoose.Schema(
     }
 );
 
-const Event = mongoose.model("Event", eventSchema);
+const Event = mongoose.model("Event", eventSchema, "posts");
 
 export default Event;

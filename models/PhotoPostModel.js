@@ -21,10 +21,14 @@ const photoPostSchema = new mongoose.Schema(
                 ref: "Comment",
             },
         ],
+        eventType: {
+            type: String,
+            enum: ["PhotoPost", "Event"],
+        },
         createdBy: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
-            required: true,
+            // required: true,
         },
     },
     {
@@ -32,6 +36,6 @@ const photoPostSchema = new mongoose.Schema(
     }
 );
 
-const PhotoPost = mongoose.model("PhotoPost", photoPostSchema);
+const PhotoPost = mongoose.model("PhotoPost", photoPostSchema, "posts");
 
 export default PhotoPost;

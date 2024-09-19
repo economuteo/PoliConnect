@@ -6,6 +6,7 @@ import { UnauthenticatedError } from "../errors/customErrors.js";
 import { getCurrentUserUsingToken } from "./userController.js";
 import { formatImage } from "../middleware/multerMiddleware.js";
 import cloudinary from "cloudinary";
+import mongoose from "mongoose";
 
 export const addEvent = async (req, res) => {
     const { eventName, eventDate, eventTime, eventLocation, eventDescription, createdBy } =
@@ -87,18 +88,9 @@ export const getAllPostsForAUser = async (req, res) => {
     }
 
     try {
-        const followingUsers = currentUser.following;
+        const userId = currentUser._id;
 
-        const followingUserIds = followingUsers.map((user) => user._id);
-
-        const photoPosts = await PhotoPost.find({ createdBy: { $in: followingUserIds } });
-        const events = await Event.find({ createdBy: { $in: followingUserIds } });
-
-        const combinedPosts = [...photoPosts, ...events].sort(
-            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-        );
-
-        res.status(StatusCodes.OK).json(combinedPosts);
+        const userPosts = await Post.find({ createdBy: userId });
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
     }

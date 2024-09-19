@@ -14,7 +14,7 @@ const Wrapper = styled.main`
 
     .userBannerImage {
         object-fit: cover;
-        width: 100%;
+        width: 100vw;
         max-height: 200px;
     }
 
@@ -40,6 +40,7 @@ const Wrapper = styled.main`
     }
 
     .aboutUser {
+        text-align: center;
         font-family: "Poppins SemiBold";
         color: #828796;
         font-size: 0.75em;

@@ -30,8 +30,8 @@ const PostsComponent = () => {
         const fetchBatch = async () => {
             try {
                 const [postsResponse, eventsResponse] = await Promise.all([
-                    customFetch.get(`/posts?skip=${batch * batchSize}&limit=${batchSize}`),
-                    customFetch.get(`/events?skip=${batch * batchSize}&limit=${batchSize}`),
+                    // customFetch.get(`/posts?skip=${batch * batchSize}&limit=${batchSize}`),
+                    // customFetch.get(`/events?skip=${batch * batchSize}&limit=${batchSize}`),
                 ]);
 
                 const posts = postsResponse.data;

@@ -3,7 +3,7 @@ import { UserProfileComponent, UserProfileNavbarComponent } from "../components"
 
 const UserProfilePage = () => {
     return (
-        <Wrapper>
+        <Wrapper className="container">
             <UserProfileNavbarComponent />
             <UserProfileComponent />
         </Wrapper>
