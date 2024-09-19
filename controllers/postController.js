@@ -24,6 +24,8 @@ export const addEvent = async (req, res) => {
 
         await event.save();
 
+        console.log("Event added successfully!");
+
         res.status(StatusCodes.CREATED).json(event);
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
@@ -81,16 +83,33 @@ export const getFirstPost = async (req, res) => {
 };
 
 export const getAllPostsForAUser = async (req, res) => {
-    const currentUser = await getCurrentUserUsingToken(req);
-
-    if (!currentUser) {
-        throw new UnauthenticatedError("Token expired!");
-    }
-
     try {
-        const userId = currentUser._id;
+        const currentUser = await getCurrentUserUsingToken(req);
 
-        const userPosts = await Post.find({ createdBy: userId });
+        if (!currentUser) {
+            throw new UnauthenticatedError("Token expired!");
+        }
+
+        const usersFollowed = currentUser.following;
+
+        if (!usersFollowed || usersFollowed.length === 0) {
+            return res.status(StatusCodes.NOT_FOUND).json({ error: "No followed users found" });
+        }
+
+        const events = await Event.find({ createdBy: { $in: usersFollowed } }).exec();
+        const photoPosts = await PhotoPost.find({ createdBy: { $in: usersFollowed } }).exec();
+
+        const combinedResults = [...events, ...photoPosts];
+
+        combinedResults.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+        if (combinedResults.length === 0) {
+            return res
+                .status(StatusCodes.NOT_FOUND)
+                .json({ error: "No posts or events found for followed users" });
+        }
+
+        res.status(StatusCodes.OK).json(combinedResults);
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
     }

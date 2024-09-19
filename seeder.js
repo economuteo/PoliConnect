@@ -17,7 +17,7 @@ connectDB();
 
 const importData = async () => {
     try {
-        await User.insertMany(users);
+        // await User.insertMany(users);
         await PhotoPost.insertMany(photoPosts);
         await Event.insertMany(events);
 
@@ -31,7 +31,7 @@ const importData = async () => {
 
 const destroyData = async () => {
     try {
-        await User.deleteMany();
+        // await User.deleteMany();
         await PhotoPost.deleteMany();
         await Event.deleteMany();
 

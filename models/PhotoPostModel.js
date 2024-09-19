@@ -33,6 +33,7 @@ const photoPostSchema = new mongoose.Schema(
     },
     {
         timestamps: true,
+        collection: "posts",
     }
 );
 
