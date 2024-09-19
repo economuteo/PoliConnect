@@ -30,10 +30,15 @@ const UserSchema = new mongoose.Schema({
     },
     bannerImage: {
         type: String,
-        default:
-            "https://console.cloudinary.com/pm/c-fe1b4f0d8aba638b61152d48e20896/media-explorer?assetId=74e4e7989d30741fbb2999620e748826",
+        default: "https://res.cloudinary.com/diydmnphf/image/upload/v1726415614/default-banner.png",
     },
     following: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+        },
+    ],
+    followers: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",

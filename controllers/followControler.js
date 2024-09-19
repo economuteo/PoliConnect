@@ -23,6 +23,11 @@ export const followUser = async (req, res) => {
     currentUser.following.push(followedUserId);
     await currentUser.save();
 
+    if (!followedUser.followers.includes(currentUser._id)) {
+        followedUser.followers.push(currentUser._id);
+        await followedUser.save();
+    }
+
     res.status(StatusCodes.OK).json({ msg: "You are now following this user!" });
 };
 
@@ -36,14 +41,17 @@ export const unfollowUser = async (req, res) => {
         throw new NotFoundError("User not found!");
     }
 
-    // Check if the user is actually following the user they want to unfollow
     if (!currentUser.following.includes(followedUserId)) {
         throw new BadRequestError("You are not following this user!");
     }
 
-    // Remove the followedUserId from the currentUser's followedUsers array
     currentUser.following = currentUser.following.filter((id) => id.toString() !== followedUserId);
     await currentUser.save();
+
+    followedUser.followers = followedUser.followers.filter(
+        (id) => id.toString() !== currentUser._id.toString()
+    );
+    await followedUser.save();
 
     res.status(StatusCodes.OK).json({ msg: "You have unfollowed this user!" });
 };

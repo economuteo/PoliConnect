@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { EventComponent } from "../components";
-import { customFetch } from "../utils/customFetch";
+import customFetch from "../utils/customFetch";
 
 export const firstPostLoader = async () => {
     const response = await customFetch.get("/posts/firstPost");

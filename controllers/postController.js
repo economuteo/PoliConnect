@@ -1,6 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import PhotoPost from "../models/PhotoPostModel.js";
 import Event from "../models/EventModel.js";
+import User from "../models/EventModel.js";
 import { UnauthenticatedError } from "../errors/customErrors.js";
 import { getCurrentUserUsingToken } from "./userController.js";
 import { formatImage } from "../middleware/multerMiddleware.js";
@@ -86,8 +87,12 @@ export const getAllPostsForAUser = async (req, res) => {
     }
 
     try {
-        const photoPosts = await PhotoPost.find({ createdBy: currentUser._id });
-        const events = await Event.find({ createdBy: currentUser._id });
+        const followingUsers = currentUser.following;
+
+        const followingUserIds = followingUsers.map((user) => user._id);
+
+        const photoPosts = await PhotoPost.find({ createdBy: { $in: followingUserIds } });
+        const events = await Event.find({ createdBy: { $in: followingUserIds } });
 
         const combinedPosts = [...photoPosts, ...events].sort(
             (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
