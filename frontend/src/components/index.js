@@ -16,6 +16,7 @@ export { default as AuthNavbar } from "./AuthNavbar";
 export { default as FeedNavbar } from "./FeedNavbar";
 export { default as StoriesComponent } from "./StoriesComponent";
 export { default as AppFooterComponent } from "./AppFooterComponent";
+export { default as AppSidebarComponent } from "./AppSidebarComponent";
 export { default as AddStoryComponent } from "./AddStoryComponent";
 export { default as FinishStoryComponent } from "./FinishStoryComponent";
 export { default as FinishStoryNavbarComponent } from "./FinishStoryNavbarComponent";

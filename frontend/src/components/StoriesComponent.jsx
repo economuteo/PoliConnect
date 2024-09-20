@@ -26,7 +26,7 @@ const StoriesComponent = () => {
     const { getStoriesOfFollowedUsers } = useLoaderData();
 
     return (
-        <Wrapper className="container">
+        <Wrapper>
             <Swiper
                 freeMode={true}
                 pagination={{

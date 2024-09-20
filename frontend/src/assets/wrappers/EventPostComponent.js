@@ -2,19 +2,18 @@ import styled from "styled-components";
 
 const Wrapper = styled.div`
     max-width: 550px;
-    margin-top: 15px;
-    padding: 0px 24px;
+    padding: 0px 10px;
 
     .postCreatorBasicInformation {
         display: flex;
         align-items: center;
         gap: 10px;
-        padding: 10px 0px;
+        margin-bottom: 10px;
     }
 
     #userProfileImage {
-        width: 35px;
-        height: 35px;
+        width: 30px;
+        height: 30px;
         border-radius: 50%;
     }
 
@@ -102,7 +101,7 @@ const Wrapper = styled.div`
 
     #descriptionUserUsername {
         margin-right: 10px;
-        font-size: 0.85em;
+        font-size: 0.9em;
         font-family: "Poppins SemiBold";
         color: white;
     }

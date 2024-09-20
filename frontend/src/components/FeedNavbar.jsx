@@ -4,8 +4,11 @@ import settings from "../assets/images/settings.png";
 import searchIcon from "../assets/images/search-icon.png";
 
 import Wrapper from "../assets/wrappers/FeedNavbar";
+import useIsSmallDevice from "../customHooks/useIsSmallDevice";
 
 const FeedNavbar = () => {
+    const isSmallDevice = useIsSmallDevice();
+
     const navigate = useNavigate();
 
     const handleSearchIconClick = () => {
@@ -13,8 +16,8 @@ const FeedNavbar = () => {
     };
 
     return (
-        <Wrapper className="container">
-            <span className="special">CONNECT</span>
+        <Wrapper>
+            {isSmallDevice ? <span className="special">CONNECT</span> : <span></span>}
             <div className="images">
                 <img src={settings} className="settingsImage" alt="settings" />
                 <img

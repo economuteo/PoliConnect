@@ -7,12 +7,13 @@ const Wrapper = styled.div`
         display: flex;
         align-items: center;
         gap: 10px;
-        padding: 10px 24px;
+        padding: 0px 10px;
+        margin-bottom: 10px;
     }
 
     #userProfileImage {
-        width: 35px;
-        height: 35px;
+        width: 30px;
+        height: 30px;
         border-radius: 50%;
     }
 
@@ -31,6 +32,7 @@ const Wrapper = styled.div`
     }
 
     #descriptionSection {
+        padding: 0px 10px;
         font-size: 0.85em;
         font-family: "Poppins Light";
         color: white;
@@ -51,7 +53,7 @@ const Wrapper = styled.div`
 
     #descriptionUserUsername {
         margin-right: 10px;
-        font-size: 0.85em;
+        font-size: 0.9em;
         font-family: "Poppins SemiBold";
         color: white;
     }
@@ -67,6 +69,7 @@ const Wrapper = styled.div`
     }
 
     .postReactions {
+        padding: 0px 10px;
         margin-top: 10px;
         display: flex;
         gap: 20px;

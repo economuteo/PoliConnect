@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 const Wrapper = styled.nav`
+    padding: 0px 10px;
     margin-top: 15px;
     display: flex;
     justify-content: space-between;

@@ -1,7 +1,9 @@
 import styled from "styled-components";
 
 const Wrapper = styled.section`
+    padding: 0px 10px;
     margin-top: 15px;
+    margin-bottom: 25px;
     display: flex;
     justify-content: flex-start;
 
