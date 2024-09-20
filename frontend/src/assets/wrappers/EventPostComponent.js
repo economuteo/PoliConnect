@@ -77,16 +77,6 @@ const Wrapper = styled.div`
         }
     }
 
-    .readMoreButton {
-        background: none;
-        border: none;
-        color: #1e90ff;
-        cursor: pointer;
-        font-family: "Poppins Medium";
-        padding: 0;
-        margin-top: 5px;
-    }
-
     .eventPostDescription {
         margin-top: 10px;
     }
@@ -117,8 +107,18 @@ const Wrapper = styled.div`
         color: white;
     }
 
+    .readMoreButton {
+        background: none;
+        border: none;
+        color: #1e90ff;
+        cursor: pointer;
+        font-family: "Poppins Medium";
+        padding: 0;
+        margin-top: 5px;
+    }
+
     .postReactions {
-        margin-top: 15px;
+        margin-top: 10px;
         display: flex;
         gap: 20px;
         flex-wrap: wrap;

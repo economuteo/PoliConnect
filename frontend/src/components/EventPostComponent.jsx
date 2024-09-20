@@ -9,8 +9,8 @@ import ShareIcon from "../assets/images/share-icon.png";
 import Wrapper from "../assets/wrappers/EventPostComponent";
 
 const EventPostComponent = ({ eventPost }) => {
-    const [isExpanded, setIsExpanded] = useState(false);
     const [isJoined, setIsJoined] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(false);
     const [showReadMore, setShowReadMore] = useState(false);
     const descriptionRef = useRef(null);
 
@@ -76,9 +76,9 @@ const EventPostComponent = ({ eventPost }) => {
                     <span id="descriptionUserUsername">{eventPost.userUsername}</span>
                     {eventPost.eventDescription}
                 </span>
-                {showReadMore && (
+                {!isExpanded && showReadMore && (
                     <button onClick={toggleReadMore} className="readMoreButton">
-                        {isExpanded ? "" : "Read More"}
+                        Read More
                     </button>
                 )}
             </div>
