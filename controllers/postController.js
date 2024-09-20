@@ -91,13 +91,20 @@ export const getAllPostsForAUser = async (req, res) => {
         }
 
         const usersFollowed = currentUser.following;
+        console.log(usersFollowed);
 
         if (!usersFollowed || usersFollowed.length === 0) {
             return res.status(StatusCodes.NOT_FOUND).json({ error: "No followed users found" });
         }
 
-        const events = await Event.find({ createdBy: { $in: usersFollowed } }).exec();
-        const photoPosts = await PhotoPost.find({ createdBy: { $in: usersFollowed } }).exec();
+        const events = await Event.find({
+            createdBy: { $in: usersFollowed },
+            typeOfPost: "EventPost",
+        }).exec();
+        const photoPosts = await PhotoPost.find({
+            createdBy: { $in: usersFollowed },
+            typeOfPost: "PhotoPost",
+        }).exec();
 
         const combinedResults = [...events, ...photoPosts];
 

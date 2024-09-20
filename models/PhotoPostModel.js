@@ -21,14 +21,15 @@ const photoPostSchema = new mongoose.Schema(
                 ref: "Comment",
             },
         ],
-        eventType: {
+        typeOfPost: {
             type: String,
-            enum: ["PhotoPost", "Event"],
+            enum: ["PhotoPost", "EventPost"],
+            required: true,
         },
         createdBy: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
-            // required: true,
+            required: true,
         },
     },
     {

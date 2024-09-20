@@ -1,4 +1,4 @@
-import Wrapper from "../assets/wrappers/EventComponent";
+import Wrapper from "../assets/wrappers/EventPostComponent";
 
 const EventComponent = () => {
     return (

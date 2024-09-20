@@ -4,8 +4,8 @@ const eventSchema = new mongoose.Schema(
     {
         eventName: {
             type: String,
-            required: true,
             trim: true,
+            required: true,
         },
         eventDate: {
             type: Date,
@@ -13,18 +13,18 @@ const eventSchema = new mongoose.Schema(
         },
         eventTime: {
             type: String,
-            required: true,
             trim: true,
+            required: true,
         },
         eventLocation: {
             type: String,
-            required: true,
             trim: true,
+            required: true,
         },
         eventDescription: {
             type: String,
-            required: true,
             trim: true,
+            required: true,
         },
         participants: [
             {
@@ -44,13 +44,15 @@ const eventSchema = new mongoose.Schema(
                 ref: "Comment",
             },
         ],
-        eventType: {
+        typeOfPost: {
             type: String,
-            enum: ["PhotoPost", "Event"],
+            enum: ["PhotoPost", "EventPost"],
+            required: true,
         },
         createdBy: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
+            required: true,
         },
     },
     {
