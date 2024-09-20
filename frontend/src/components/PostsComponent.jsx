@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { EventPostComponent, PhotoPostComponent } from ".";
+import { EventPostComponent, PhotoPostComponent } from "../components";
 import customFetch from "../utils/customFetch";
+import Wrapper from "../assets/wrappers/PostsComponent";
 
 const PostsComponent = () => {
     const [posts, setPosts] = useState([]);
@@ -29,7 +30,7 @@ const PostsComponent = () => {
     }
 
     return (
-        <section>
+        <Wrapper>
             {error && <div>Error: {error}</div>}
             {posts === null && <div>Loading...</div>}
             {posts?.length === 0 && <div>No posts available.</div>}
@@ -40,7 +41,7 @@ const PostsComponent = () => {
                     <PhotoPostComponent key={post._id} photoPost={post} />
                 )
             )}
-        </section>
+        </Wrapper>
     );
 };
 

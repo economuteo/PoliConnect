@@ -46,6 +46,7 @@ const Wrapper = styled.section`
     }
 
     .users {
+        margin-top: 10px;
         width: 90%;
         overflow: scroll;
         height: 100%;
