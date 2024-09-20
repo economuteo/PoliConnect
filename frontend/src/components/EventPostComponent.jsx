@@ -1,12 +1,12 @@
 import Wrapper from "../assets/wrappers/EventPostComponent";
 
-const EventComponent = () => {
+const EventPostComponent = ({ eventPost }) => {
     return (
         <Wrapper>
             <img src="" alt="" />
-            <p></p>
+            <p>{eventPost.userUsername}</p>
             <div>
-                <p></p>
+                <p>{eventPost.eventName}</p>
                 <div>
                     <img src="" alt="" />
                     <p></p>
@@ -34,4 +34,4 @@ const EventComponent = () => {
     );
 };
 
-export default EventComponent;
+export default EventPostComponent;

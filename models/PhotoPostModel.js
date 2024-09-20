@@ -27,8 +27,15 @@ const photoPostSchema = new mongoose.Schema(
             required: true,
         },
         createdBy: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
+            type: "string",
+            required: true,
+        },
+        userProfileImage: {
+            type: "string",
+            required: true,
+        },
+        userUsername: {
+            type: "string",
             required: true,
         },
     },

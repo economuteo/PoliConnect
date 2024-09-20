@@ -4,10 +4,10 @@ import Message from "../models/MessageModel.js";
 
 import { verifyJWT } from "../utils/tokenUtils.js";
 
-export const getCurrentUser = async (req, res) => {
+export const getSpecificUser = async (req, res) => {
     const user = await User.findOne({ _id: req.user.userId });
     const userWithoutPassword = user.toJSON();
-    res.status(StatusCodes.OK).json({ user: userWithoutPassword });
+    res.status(StatusCodes.OK).json(userWithoutPassword);
     return userWithoutPassword;
 };
 

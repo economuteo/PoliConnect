@@ -1,6 +1,6 @@
 import Wrapper from "../assets/wrappers/PhotoPostComponent";
 
-const PhotoPostComponent = () => {
+const PhotoPostComponent = ({ post }) => {
     return <Wrapper></Wrapper>;
 };
 

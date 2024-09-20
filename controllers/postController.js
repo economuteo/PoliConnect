@@ -9,8 +9,17 @@ import cloudinary from "cloudinary";
 import mongoose from "mongoose";
 
 export const addEvent = async (req, res) => {
-    const { eventName, eventDate, eventTime, eventLocation, eventDescription, createdBy } =
-        req.body;
+    const { eventName, eventDate, eventTime, eventLocation, eventDescription } = req.body;
+
+    const currentUser = await getCurrentUserUsingToken(req);
+
+    if (!currentUser) {
+        throw new UnauthenticatedError("Token expired!");
+    }
+
+    const createdBy = currentUser._id;
+    const userProfileImage = currentUser.profileImage;
+    const userUsername = currentUser.username;
 
     try {
         const event = new Event({
@@ -20,6 +29,9 @@ export const addEvent = async (req, res) => {
             eventLocation,
             eventDescription,
             createdBy,
+            typeOfPost: "EventPost",
+            userProfileImage,
+            userUsername,
         });
 
         await event.save();
@@ -48,9 +60,16 @@ export const addPhotoPost = async (req, res) => {
 
             const photoPostUrl = response.secure_url;
 
+            const userId = currentUser._id;
+            const userProfileImage = currentUser.profileImage;
+            const userUsername = currentUser.username;
+
             const newPhotoPost = new PhotoPost({
                 mediaUrl: photoPostUrl,
-                createdBy: currentUser._id,
+                typeOfPost: "PhotoPost",
+                createdBy: userId,
+                userProfileImage: userProfileImage,
+                userUsername: userUsername,
             });
 
             await newPhotoPost.save();

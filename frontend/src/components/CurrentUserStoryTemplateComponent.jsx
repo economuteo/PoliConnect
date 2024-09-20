@@ -7,8 +7,8 @@ import Wrapper from "../assets/wrappers/UserStoryTemplateComponent";
 import { AppContext } from "../contexts/AppContext";
 
 export const userProfileImageLoader = async () => {
-    const response = await customFetch.get("/users/currentUser");
-    const currentUserProfileImage = response.data.user.profileImage;
+    const response = await customFetch.get("/users/specificUser");
+    const currentUserProfileImage = response.data.profileImage;
     return currentUserProfileImage;
 };
 

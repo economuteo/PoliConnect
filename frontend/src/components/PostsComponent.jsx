@@ -35,9 +35,9 @@ const PostsComponent = () => {
             {posts?.length === 0 && <div>No posts available.</div>}
             {posts?.map((post) =>
                 post.typeOfPost === "EventPost" ? (
-                    <EventPostComponent key={post._id} event={post} />
+                    <EventPostComponent key={post._id} eventPost={post} />
                 ) : (
-                    <PhotoPostComponent key={post._id} post={post} />
+                    <PhotoPostComponent key={post._id} photoPost={post} />
                 )
             )}
         </section>
