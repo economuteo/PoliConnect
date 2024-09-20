@@ -65,6 +65,29 @@ const Wrapper = styled.div`
         padding: 0;
         margin-top: 5px;
     }
+
+    .postReactions {
+        margin-top: 10px;
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+
+        .reaction {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        img {
+            width: 24px;
+            height: 24px;
+        }
+
+        p {
+            font-family: "Poppins Medium";
+            color: white;
+        }
+    }
 `;
 
 export default Wrapper;
