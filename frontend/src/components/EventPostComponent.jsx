@@ -8,7 +8,7 @@ import CommentsIcon from "../assets/images/comments-icon.png";
 import ShareIcon from "../assets/images/share-icon.png";
 import Wrapper from "../assets/wrappers/EventPostComponent";
 
-const EventPostComponent = ({ eventPost, onDoubleClick, onTouch }) => {
+const EventPostComponent = ({ eventPost }) => {
     const [isJoined, setIsJoined] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
     const [showReadMore, setShowReadMore] = useState(false);
@@ -41,7 +41,7 @@ const EventPostComponent = ({ eventPost, onDoubleClick, onTouch }) => {
     }, []);
 
     return (
-        <Wrapper onTouchEnd={onTouch} onDoubleClick={onDoubleClick}>
+        <Wrapper>
             <div className="postCreatorBasicInformation">
                 <img id="userProfileImage" src={eventPost.userProfileImage} alt="" />
                 <p id="userUsername">{eventPost.userUsername}</p>
