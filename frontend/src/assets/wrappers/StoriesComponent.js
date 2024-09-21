@@ -1,9 +1,10 @@
 import styled from "styled-components";
 
 const Wrapper = styled.section`
+    position: relative;
     padding: 0px 10px;
     margin-top: 15px;
-    margin-bottom: 25px;
+    margin-bottom: 35px;
     display: flex;
     justify-content: flex-start;
 
@@ -17,6 +18,16 @@ const Wrapper = styled.section`
 
     .swiper-pagination {
         display: none !important;
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        bottom: -17.5px;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background-color: white;
     }
 `;
 

@@ -4,7 +4,7 @@ import CommentsIcon from "../assets/images/comments-icon.png";
 import ShareIcon from "../assets/images/share-icon.png";
 import Wrapper from "../assets/wrappers/PhotoPostComponent";
 
-const PhotoPostComponent = ({ photoPost }) => {
+const PhotoPostComponent = ({ photoPost, onDoubleClick, onTouch }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [showReadMore, setShowReadMore] = useState(false);
     const descriptionRef = useRef(null);
@@ -14,7 +14,7 @@ const PhotoPostComponent = ({ photoPost }) => {
     };
 
     return (
-        <Wrapper>
+        <Wrapper onTouchEnd={onTouch} onDoubleClick={onDoubleClick}>
             <div className="postCreatorBasicInformation">
                 <img id="userProfileImage" src={photoPost.userProfileImage} alt="" />
                 <p id="userUsername">{photoPost.userUsername}</p>
