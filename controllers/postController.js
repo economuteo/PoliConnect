@@ -1,7 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import PhotoPost from "../models/PhotoPostModel.js";
 import Event from "../models/EventModel.js";
-import User from "../models/EventModel.js";
 import { UnauthenticatedError } from "../errors/customErrors.js";
 import { getCurrentUserUsingToken } from "./userController.js";
 import { formatImage } from "../middleware/multerMiddleware.js";
@@ -35,8 +34,6 @@ export const addEvent = async (req, res) => {
         });
 
         await event.save();
-
-        console.log("Event added successfully!");
 
         res.status(StatusCodes.CREATED).json(event);
     } catch (error) {
@@ -101,6 +98,31 @@ export const getFirstPost = async (req, res) => {
     }
 };
 
+export const getSpecificPost = async (req, res, next) => {
+    const { postId, typeOfPost } = req.body;
+
+    try {
+        let post;
+
+        if (typeOfPost === "EventPost") {
+            post = await Event.findById(postId);
+        } else if (typeOfPost === "PhotoPost") {
+            post = await PhotoPost.findById(postId);
+        } else {
+            return res.status(StatusCodes.BAD_REQUEST).json({ error: "Invalid post type" });
+        }
+
+        if (!post) {
+            return res.status(StatusCodes.NOT_FOUND).json({ error: "Post not found" });
+        }
+
+        req.post = post;
+        next();
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
+    }
+};
+
 export const getAllPostsForAUser = async (req, res) => {
     try {
         const currentUser = await getCurrentUserUsingToken(req);
@@ -110,7 +132,6 @@ export const getAllPostsForAUser = async (req, res) => {
         }
 
         const usersFollowed = currentUser.following;
-        console.log(usersFollowed);
 
         if (!usersFollowed || usersFollowed.length === 0) {
             return res.status(StatusCodes.NOT_FOUND).json({ error: "No followed users found" });

@@ -9,7 +9,6 @@ import customFetch from "../utils/customFetch";
 export const action = async ({ request }) => {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
-    console.log("here");
 
     // Validations
     if (data.password !== data.confirmPassword) {

@@ -3,6 +3,7 @@ import {
     addEvent,
     addPhotoPost,
     getFirstPost,
+    getSpecificPost,
     getAllPostsForAUser,
 } from "../controllers/postController.js";
 
@@ -12,6 +13,7 @@ const router = Router();
 
 // Get posts
 router.get("/firstPost", getFirstPost);
+router.get("/specificPost", getSpecificPost);
 router.get("/getAllPostsForAUser", getAllPostsForAUser);
 
 // Add posts

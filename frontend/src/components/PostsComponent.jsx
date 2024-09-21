@@ -30,7 +30,16 @@ const PostsComponent = () => {
         return <div>Loading...</div>;
     }
 
-    const handleDoubleClick = (postId) => {};
+    const handleDoubleClick = async (post) => {
+        try {
+            const likedPost = await customFetch.post("/likes/likePost", {
+                postId: post._id,
+                typeOfPost: post.typeOfPost,
+            });
+        } catch (err) {
+            console.error("Error fetching specific post:", err.message);
+        }
+    };
 
     const handleTouch = (postId) => {
         const currentTime = new Date().getTime();
@@ -53,15 +62,15 @@ const PostsComponent = () => {
                     <EventPostComponent
                         key={post._id}
                         eventPost={post}
-                        onDoubleClick={() => handleDoubleClick(post._id)}
-                        onTouch={() => handleTouch(post._id)}
+                        onDoubleClick={() => handleDoubleClick(post)}
+                        onTouch={() => handleTouch(post)}
                     />
                 ) : (
                     <PhotoPostComponent
                         key={post._id}
                         photoPost={post}
-                        onDoubleClick={() => handleDoubleClick(post._id)}
-                        onTouch={() => handleTouch(post._id)}
+                        onDoubleClick={() => handleDoubleClick(post)}
+                        onTouch={() => handleTouch(post)}
                     />
                 )
             )}

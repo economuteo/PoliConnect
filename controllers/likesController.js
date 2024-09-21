@@ -5,20 +5,10 @@ import PhotoPost from "../models/PhotoPostModel.js";
 import Event from "../models/EventModel.js";
 
 export const likePost = async (req, res) => {
-    const currentUser = await getCurrentUserUsingToken(req);
-    const { postId, postType } = req.body;
-
     try {
-        let post;
-        if (postType === "PhotoPost") {
-            post = await PhotoPost.findById(postId);
-        } else if (postType === "Event") {
-            post = await Event.findById(postId);
-        }
+        const currentUser = await getCurrentUserUsingToken(req);
 
-        if (!post) {
-            throw new NotFoundError(`${postType} not found`);
-        }
+        const post = req.post;
 
         if (!post.likes.includes(currentUser._id)) {
             post.likes.push(currentUser._id);
@@ -32,20 +22,10 @@ export const likePost = async (req, res) => {
 };
 
 export const unlikePost = async (req, res) => {
-    const currentUser = await getCurrentUserUsingToken(req);
-    const { postId, postType } = req.body;
-
     try {
-        let post;
-        if (postType === "PhotoPost") {
-            post = await PhotoPost.findById(postId);
-        } else if (postType === "Event") {
-            post = await Event.findById(postId);
-        }
+        const currentUser = await getCurrentUserUsingToken(req);
 
-        if (!post) {
-            throw new NotFoundError(`${postType} not found`);
-        }
+        const post = req.post;
 
         const likeIndex = post.likes.indexOf(currentUser._id);
         if (likeIndex !== -1) {

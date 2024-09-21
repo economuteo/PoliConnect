@@ -3,6 +3,7 @@ import User from "../models/UserModel.js";
 import Message from "../models/MessageModel.js";
 
 import { verifyJWT } from "../utils/tokenUtils.js";
+import { BadRequestError } from "../errors/customErrors.js";
 
 export const getSpecificUser = async (req, res) => {
     const user = await User.findOne({ _id: req.user.userId });
@@ -16,7 +17,11 @@ export const getCurrentUserUsingToken = async (req) => {
     const tokenDecoded = verifyJWT(token);
     const { userId } = tokenDecoded;
     const user = await User.findOne({ _id: userId });
-    return user;
+    if (!user) {
+        throw new BadRequestError("User not found");
+    }
+    const userWithoutPassword = user.toJSON();
+    return userWithoutPassword;
 };
 
 export const getApplicationStats = async (req, res) => {
