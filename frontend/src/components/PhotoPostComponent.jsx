@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import LoveIcon from "../assets/images/love-icon.png";
+import LikeIcon from "../assets/images/like-icon.svg";
 import CommentsIcon from "../assets/images/comments-icon.png";
 import ShareIcon from "../assets/images/share-icon.png";
 import Wrapper from "../assets/wrappers/PhotoPostComponent";
@@ -25,6 +25,19 @@ const PhotoPostComponent = ({ photoPost }) => {
         }
     };
 
+    const handleUnlike = async (post) => {
+        try {
+            const response = await customFetch.post("/likes/unlikePost", {
+                postId: post._id,
+                typeOfPost: post.typeOfPost,
+            });
+            const unlikedPost = response.data.post;
+            setPost(unlikedPost);
+        } catch (err) {
+            console.error("Error fetching specific post:", err.message);
+        }
+    };
+
     const handleTouch = (postId) => {
         const currentTime = new Date().getTime();
         const tapLength = currentTime - lastTap;
@@ -41,12 +54,15 @@ const PhotoPostComponent = ({ photoPost }) => {
     };
 
     return (
-        <Wrapper onDoubleClick={() => handleDoubleClick(post)} onTouchEnd={() => handleTouch(post)}>
+        <Wrapper>
             <div className="postCreatorBasicInformation">
                 <img id="userProfileImage" src={post.userProfileImage} alt="" />
                 <p id="userUsername">{post.userUsername}</p>
             </div>
-            <div className="postContent">
+            <div
+                className="postContent"
+                onDoubleClick={() => handleDoubleClick(post)}
+                onTouchEnd={() => handleTouch(post._id)}>
                 <img id="photo" src={post.mediaUrl} alt="" />
             </div>
             <div className="postDescription">
@@ -66,8 +82,8 @@ const PhotoPostComponent = ({ photoPost }) => {
                 )}
             </div>
             <div className="postReactions">
-                <div className="reaction">
-                    <img src={LoveIcon} alt="" />
+                <div className="reaction" onClick={() => handleUnlike(post)}>
+                    <img src={LikeIcon} alt="" />
                     <p>{post.likes.length}</p>
                 </div>
                 <div className="reaction">

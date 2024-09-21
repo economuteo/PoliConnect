@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
+import LikeIcon from "../assets/images/like-icon.svg";
 import DateIcon from "../assets/images/date-icon.png";
 import TimeIcon from "../assets/images/time-icon.png";
 import LocationIcon from "../assets/images/location-icon.png";
 import ParticipantsIcon from "../assets/images/participants-icon.png";
-import LoveIcon from "../assets/images/love-icon.png";
 import CommentsIcon from "../assets/images/comments-icon.png";
 import ShareIcon from "../assets/images/share-icon.png";
 import Wrapper from "../assets/wrappers/EventPostComponent";
@@ -88,7 +88,7 @@ const EventPostComponent = ({ eventPost }) => {
                     <p>{eventPost.participants.length}</p>
                 </div>
                 <div className="reaction">
-                    <img src={LoveIcon} alt="" />
+                    <img src={LikeIcon} alt="" />
                     <p>{eventPost.likes.length}</p>
                 </div>
                 <div className="reaction">
