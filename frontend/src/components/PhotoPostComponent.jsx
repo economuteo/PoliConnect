@@ -10,43 +10,59 @@ const PhotoPostComponent = ({ photoPost }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [showReadMore, setShowReadMore] = useState(false);
     const [lastTap, setLastTap] = useState(0);
+    const [wasLiked, setWasLiked] = useState(false);
     const descriptionRef = useRef(null);
 
+    // Passing the logic fast
     const handleDoubleClick = async (post) => {
-        try {
-            const response = await customFetch.post("/likes/likePost", {
-                postId: post._id,
-                typeOfPost: post.typeOfPost,
-            });
-            const likedPost = response.data.post;
-            setPost(likedPost);
-        } catch (err) {
-            console.error("Error fetching specific post:", err.message);
+        if (!wasLiked) {
+            setWasLiked(true);
+            try {
+                const response = await customFetch.post("/likes/likePost", {
+                    postId: post._id,
+                    typeOfPost: post.typeOfPost,
+                });
+
+                if (response.data.post) {
+                    const likedPost = response.data.post;
+                    setPost(likedPost);
+                } else {
+                    setWasLiked(false);
+                }
+            } catch (err) {
+                console.error("Error fetching specific post:", err.message);
+            }
+        }
+    };
+
+    // Tricky timer here
+    const handleTouch = (post) => {
+        if (!wasLiked) {
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTap;
+
+            if (tapLength < 500 && tapLength > 0) {
+                handleDoubleClick(post);
+            }
+
+            setLastTap(currentTime);
         }
     };
 
     const handleUnlike = async (post) => {
-        try {
-            const response = await customFetch.post("/likes/unlikePost", {
-                postId: post._id,
-                typeOfPost: post.typeOfPost,
-            });
-            const unlikedPost = response.data.post;
-            setPost(unlikedPost);
-        } catch (err) {
-            console.error("Error fetching specific post:", err.message);
+        if (wasLiked) {
+            try {
+                const response = await customFetch.post("/likes/unlikePost", {
+                    postId: post._id,
+                    typeOfPost: post.typeOfPost,
+                });
+                const unlikedPost = response.data.post;
+                setPost(unlikedPost);
+                setWasLiked(false);
+            } catch (err) {
+                console.error("Error fetching specific post:", err.message);
+            }
         }
-    };
-
-    const handleTouch = (postId) => {
-        const currentTime = new Date().getTime();
-        const tapLength = currentTime - lastTap;
-
-        if (tapLength < 500 && tapLength > 0) {
-            handleDoubleClick(postId);
-        }
-
-        setLastTap(currentTime);
     };
 
     const toggleReadMore = () => {
@@ -62,7 +78,7 @@ const PhotoPostComponent = ({ photoPost }) => {
             <div
                 className="postContent"
                 onDoubleClick={() => handleDoubleClick(post)}
-                onTouchEnd={() => handleTouch(post._id)}>
+                onTouchEnd={() => handleTouch(post)}>
                 <img id="photo" src={post.mediaUrl} alt="" />
             </div>
             <div className="postDescription">

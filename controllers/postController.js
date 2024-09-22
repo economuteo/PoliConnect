@@ -109,7 +109,7 @@ export const getSpecificPost = async (req, res, next) => {
         } else if (typeOfPost === "PhotoPost") {
             post = await PhotoPost.findById(postId);
         } else {
-            return res.status(StatusCodes.BAD_REQUEST).json({ error: "Invalid post type" });
+            return res.status(StatusCodes.NOT_FOUND).json({ error: "Invalid post type" });
         }
 
         if (!post) {
