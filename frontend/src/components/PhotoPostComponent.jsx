@@ -10,58 +10,55 @@ const PhotoPostComponent = ({ photoPost }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [showReadMore, setShowReadMore] = useState(false);
     const [lastTap, setLastTap] = useState(0);
-    const [wasLiked, setWasLiked] = useState(false);
+    const [isApiCallInProgress, setIsApiCallInProgress] = useState(false);
     const descriptionRef = useRef(null);
 
-    // Passing the logic fast
     const handleDoubleClick = async (post) => {
-        if (!wasLiked) {
-            setWasLiked(true);
-            try {
-                const response = await customFetch.post("/likes/likePost", {
-                    postId: post._id,
-                    typeOfPost: post.typeOfPost,
-                });
+        if (isApiCallInProgress) return;
 
-                if (response.data.post) {
-                    const likedPost = response.data.post;
-                    setPost(likedPost);
-                } else {
-                    setWasLiked(false);
-                }
-            } catch (err) {
-                console.error("Error fetching specific post:", err.message);
-            }
+        setIsApiCallInProgress(true);
+        try {
+            const response = await customFetch.post("/likes/likePost", {
+                postId: post._id,
+                typeOfPost: post.typeOfPost,
+            });
+
+            const likedPost = response.data.post;
+            setPost(likedPost);
+        } catch (err) {
+            console.error("Error fetching specific post:", err.message);
+        } finally {
+            setIsApiCallInProgress(false);
         }
     };
 
-    // Tricky timer here
     const handleTouch = (post) => {
-        if (!wasLiked) {
-            const currentTime = new Date().getTime();
-            const tapLength = currentTime - lastTap;
+        const currentTime = new Date().getTime();
+        const tapLength = currentTime - lastTap;
 
-            if (tapLength < 500 && tapLength > 0) {
-                handleDoubleClick(post);
-            }
-
-            setLastTap(currentTime);
+        if (tapLength < 500 && tapLength > 0) {
+            handleDoubleClick(post);
         }
+
+        setLastTap(currentTime);
     };
 
     const handleUnlike = async (post) => {
-        if (wasLiked) {
-            try {
-                const response = await customFetch.post("/likes/unlikePost", {
-                    postId: post._id,
-                    typeOfPost: post.typeOfPost,
-                });
-                const unlikedPost = response.data.post;
-                setPost(unlikedPost);
-                setWasLiked(false);
-            } catch (err) {
-                console.error("Error fetching specific post:", err.message);
-            }
+        if (isApiCallInProgress) return;
+
+        setIsApiCallInProgress(true);
+        try {
+            const response = await customFetch.post("/likes/unlikePost", {
+                postId: post._id,
+                typeOfPost: post.typeOfPost,
+            });
+
+            const unlikedPost = response.data.post;
+            setPost(unlikedPost);
+        } catch (err) {
+            console.error("Error fetching specific post:", err.message);
+        } finally {
+            setIsApiCallInProgress(false);
         }
     };
 
