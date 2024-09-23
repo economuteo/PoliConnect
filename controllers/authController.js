@@ -189,6 +189,7 @@ export const createUsername = async (req, res) => {
     const { username, university, profile, year } = req.body;
 
     const user = await getCurrentUserUsingToken(req);
+    const currentUser = await User.findById(user._id);
 
     if (!user) {
         throw new NotFoundError("User not found!");
@@ -198,13 +199,14 @@ export const createUsername = async (req, res) => {
     user.university = university;
     user.profile = profile;
     user.year = year;
-    await user.save();
+    await currentUser.save();
 
     res.status(200).json({ message: "Username created successfully" });
 };
 
 export const saveUserPhoto = async (req, res) => {
-    const currentUser = await getCurrentUserUsingToken(req);
+    const user = await getCurrentUserUsingToken(req);
+    const currentUser = await User.findById(user._id);
 
     if (!currentUser) {
         throw new NotFoundError("User not found!");
@@ -218,7 +220,9 @@ export const saveUserPhoto = async (req, res) => {
         currentUser.profileImage = response.secure_url;
         await currentUser.save();
     } else {
-        throw new BadRequestError("No file uploaded");
+        currentUser.profileImage =
+            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png";
+        await currentUser.save();
     }
 
     res.status(StatusCodes.OK).json({ msg: "update user" });

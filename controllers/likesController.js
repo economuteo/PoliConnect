@@ -71,7 +71,7 @@ export const getUsersThatLikedThePost = async (req, res) => {
                 const userWhoLiked = await User.findById(userId);
                 return {
                     username: userWhoLiked.username,
-                    profilePicture: userWhoLiked.profileImage,
+                    profileImage: userWhoLiked.profileImage,
                 };
             })
         );

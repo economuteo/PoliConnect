@@ -31,7 +31,10 @@ const PhotoPostComponent = ({ photoPost }) => {
             postId: post._id,
             typeOfPost: post.typeOfPost,
         });
-        navigate("/likes");
+
+        const usersInformation = response.data;
+
+        navigate("/likes", { state: { usersInformation } });
     };
 
     useEffect(() => {
