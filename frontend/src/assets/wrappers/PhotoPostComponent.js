@@ -81,6 +81,11 @@ const Wrapper = styled.div`
             gap: 8px;
         }
 
+        svg {
+            width: 24px;
+            height: 24px;
+        }
+
         img {
             width: 24px;
             height: 24px;

@@ -1,9 +1,12 @@
 import { useRef, useState } from "react";
-import LikeIcon from "../assets/images/like-icon.svg";
+import { LikeIconComponent } from "../components";
+
 import CommentsIcon from "../assets/images/comments-icon.png";
 import ShareIcon from "../assets/images/share-icon.png";
-import Wrapper from "../assets/wrappers/PhotoPostComponent";
+
 import customFetch from "../utils/customFetch";
+
+import Wrapper from "../assets/wrappers/PhotoPostComponent";
 
 const PhotoPostComponent = ({ photoPost }) => {
     const [post, setPost] = useState(photoPost);
@@ -95,8 +98,10 @@ const PhotoPostComponent = ({ photoPost }) => {
                 )}
             </div>
             <div className="postReactions">
-                <div className="reaction" onClick={() => handleUnlike(post)}>
-                    <img src={LikeIcon} alt="" />
+                <div className="reaction">
+                    <div onClick={() => handleUnlike(post)}>
+                        <LikeIconComponent className="likeIcon" />
+                    </div>
                     <p>{post.likes.length}</p>
                 </div>
                 <div className="reaction">

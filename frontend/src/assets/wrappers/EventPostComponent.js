@@ -133,6 +133,11 @@ const Wrapper = styled.div`
             height: 24px;
         }
 
+        svg {
+            width: 24px;
+            height: 24px;
+        }
+
         p {
             font-family: "Poppins Medium";
             color: white;
