@@ -39,4 +39,6 @@ export { default as CreatePhotoPostFooterComponent } from "./CreatePhotoPostFoot
 export { default as EventPostComponent } from "./EventPostComponent";
 export { default as PhotoPostComponent } from "./PhotoPostComponent";
 export { default as LikeIconComponent } from "./LikeIconComponent";
+export { default as LikesNavbarComponent } from "./LikesNavbarComponent";
+export { default as UsersWhoLikedComponent } from "./UsersWhoLikedComponent";
 export { default as ErrorElement } from "./ErrorElement";

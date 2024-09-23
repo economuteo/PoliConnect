@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { LikeIconComponent } from "../components";
 
 import CommentsIcon from "../assets/images/comments-icon.png";
@@ -23,6 +24,15 @@ const PhotoPostComponent = ({ photoPost }) => {
     const [isLiked, setIsLiked] = useState(false);
 
     const descriptionRef = useRef(null);
+    const navigate = useNavigate();
+
+    const goToLikesPage = async (post) => {
+        const response = await customFetch.post("/likes/getUsersThatLikedThePost", {
+            postId: post._id,
+            typeOfPost: post.typeOfPost,
+        });
+        navigate("/likes");
+    };
 
     useEffect(() => {
         const getLikeStatus = async () => {
@@ -157,7 +167,7 @@ const PhotoPostComponent = ({ photoPost }) => {
                     <div onClick={() => handleLikeUnlike(post)}>
                         <LikeIconComponent fill={isLiked ? "#0677E8" : ""} />
                     </div>
-                    <p>{post.likes.length}</p>
+                    <p onClick={() => goToLikesPage(post)}>{post.likes.length}</p>
                 </div>
                 <div className="reaction">
                     <img src={CommentsIcon} alt="" />

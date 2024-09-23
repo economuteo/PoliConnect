@@ -46,6 +46,7 @@ import { userProfileImageLoader } from "./components/CurrentUserStoryTemplateCom
 import { isUserFollowedLoader } from "./components/UserProfileComponent.jsx";
 
 import { AppProvider } from "./contexts/AppContext";
+import LikesPage from "./pages/LikesPage.jsx";
 
 const combinedLoader = async () => {
     const [userProfileImage, getStoriesOfFollowedUsers, firstPostLoader] = await Promise.all([
@@ -206,21 +207,25 @@ const router = createBrowserRouter([
                 element: <AddPostPage />,
             },
             {
+                path: "photo",
+                children: [
+                    {
+                        path: "createPhotoPost",
+                        element: <CreatePhotoPostPage />,
+                    },
+                ],
+            },
+            {
+                path: "likes",
+                element: <LikesPage />,
+            },
+            {
                 path: "event",
                 children: [
                     {
                         path: "createEvent",
                         element: <CreateEventPage />,
                         action: createEventAction,
-                    },
-                ],
-            },
-            {
-                path: "photo",
-                children: [
-                    {
-                        path: "createPhotoPost",
-                        element: <CreatePhotoPostPage />,
                     },
                 ],
             },

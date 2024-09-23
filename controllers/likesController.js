@@ -3,6 +3,7 @@ import { getCurrentUserUsingToken } from "./userController.js";
 import { StatusCodes } from "http-status-codes";
 import PhotoPost from "../models/PhotoPostModel.js";
 import Event from "../models/EventModel.js";
+import User from "../models/UserModel.js";
 
 export const likePost = async (req, res) => {
     try {
@@ -54,6 +55,28 @@ export const checkLikeStatus = async (req, res) => {
         }
 
         res.status(StatusCodes.OK).json(isLiked);
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
+    }
+};
+
+export const getUsersThatLikedThePost = async (req, res) => {
+    try {
+        const post = req.post;
+
+        const postLikes = post.likes;
+
+        const usersInformation = await Promise.all(
+            postLikes.map(async (userId) => {
+                const userWhoLiked = await User.findById(userId);
+                return {
+                    username: userWhoLiked.username,
+                    profilePicture: userWhoLiked.profileImage,
+                };
+            })
+        );
+
+        res.status(StatusCodes.OK).json(usersInformation);
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
     }

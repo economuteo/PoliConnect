@@ -2,9 +2,9 @@ import { useNavigate } from "react-router-dom";
 
 import SearchUsersBackIcon from "../assets/images/search-users-back-icon.png";
 
-import Wrapper from "../assets/wrappers/SearchUsersNavbarComponent";
+import Wrapper from "../assets/wrappers/LikesNavbarComponent";
 
-const SearchUsersNavbarComponent = () => {
+const LikesNavbarComponent = () => {
     const navigate = useNavigate();
 
     const handleBackClick = () => {
@@ -16,12 +16,12 @@ const SearchUsersNavbarComponent = () => {
             <img
                 onClick={handleBackClick}
                 src={SearchUsersBackIcon}
-                className="searchUsersBackIcon"
+                className="likesBackIcon"
                 alt=""
             />
-            <p>Search</p>
+            <p>Likes</p>
         </Wrapper>
     );
 };
 
-export default SearchUsersNavbarComponent;
+export default LikesNavbarComponent;
