@@ -38,3 +38,23 @@ export const unlikePost = async (req, res) => {
         res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
     }
 };
+
+export const checkLikeStatus = async (req, res) => {
+    try {
+        let isLiked;
+
+        const currentUser = await getCurrentUserUsingToken(req);
+
+        const post = req.post;
+
+        if (post.likes.includes(currentUser._id)) {
+            isLiked = true;
+        } else {
+            isLiked = false;
+        }
+
+        res.status(StatusCodes.OK).json(isLiked);
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
+    }
+};

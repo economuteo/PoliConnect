@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LikeIconComponent } from "../components";
 
 import CommentsIcon from "../assets/images/comments-icon.png";
@@ -7,19 +7,49 @@ import ShareIcon from "../assets/images/share-icon.png";
 import customFetch from "../utils/customFetch";
 
 import Wrapper from "../assets/wrappers/PhotoPostComponent";
+import { ClipLoader } from "react-spinners";
 
 const PhotoPostComponent = ({ photoPost }) => {
     const [post, setPost] = useState(photoPost);
-    const [isExpanded, setIsExpanded] = useState(false);
-    const [showReadMore, setShowReadMore] = useState(false);
-    const [lastTap, setLastTap] = useState(0);
+
+    const [loading, setLoading] = useState(true);
     const [isApiCallInProgress, setIsApiCallInProgress] = useState(false);
+
+    const [lastTap, setLastTap] = useState(0);
+
+    const [showReadMore, setShowReadMore] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    const [isLiked, setIsLiked] = useState(false);
+
     const descriptionRef = useRef(null);
+
+    useEffect(() => {
+        const getLikeStatus = async () => {
+            try {
+                const response = await customFetch.post("/likes/checkLikeStatus", {
+                    postId: post._id,
+                    typeOfPost: post.typeOfPost,
+                });
+
+                const isLiked = response.data;
+
+                setIsLiked(isLiked);
+            } catch (err) {
+                console.error("Error fetching like status:", err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        getLikeStatus();
+    }, [post.likes]);
 
     const handleDoubleClick = async (post) => {
         if (isApiCallInProgress) return;
 
         setIsApiCallInProgress(true);
+
         try {
             const response = await customFetch.post("/likes/likePost", {
                 postId: post._id,
@@ -46,18 +76,29 @@ const PhotoPostComponent = ({ photoPost }) => {
         setLastTap(currentTime);
     };
 
-    const handleUnlike = async (post) => {
+    const handleLikeUnlike = async (post) => {
         if (isApiCallInProgress) return;
 
         setIsApiCallInProgress(true);
-        try {
-            const response = await customFetch.post("/likes/unlikePost", {
-                postId: post._id,
-                typeOfPost: post.typeOfPost,
-            });
 
-            const unlikedPost = response.data.post;
-            setPost(unlikedPost);
+        try {
+            if (isLiked) {
+                const response = await customFetch.post("/likes/unlikePost", {
+                    postId: post._id,
+                    typeOfPost: post.typeOfPost,
+                });
+
+                const unlikedPost = response.data.post;
+                setPost(unlikedPost);
+            } else {
+                const response = await customFetch.post("/likes/likePost", {
+                    postId: post._id,
+                    typeOfPost: post.typeOfPost,
+                });
+
+                const likedPost = response.data.post;
+                setPost(likedPost);
+            }
         } catch (err) {
             console.error("Error fetching specific post:", err.message);
         } finally {
@@ -68,6 +109,20 @@ const PhotoPostComponent = ({ photoPost }) => {
     const toggleReadMore = () => {
         setIsExpanded(!isExpanded);
     };
+
+    if (loading) {
+        return (
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "100vh",
+                }}>
+                <ClipLoader color="#ffffff" size={150} />
+            </div>
+        );
+    }
 
     return (
         <Wrapper>
@@ -99,8 +154,8 @@ const PhotoPostComponent = ({ photoPost }) => {
             </div>
             <div className="postReactions">
                 <div className="reaction">
-                    <div onClick={() => handleUnlike(post)}>
-                        <LikeIconComponent className="likeIcon" />
+                    <div onClick={() => handleLikeUnlike(post)}>
+                        <LikeIconComponent fill={isLiked ? "#0677E8" : ""} />
                     </div>
                     <p>{post.likes.length}</p>
                 </div>
