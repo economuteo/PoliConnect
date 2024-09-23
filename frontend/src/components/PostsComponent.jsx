@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { ClipLoader } from "react-spinners";
+
 import { EventPostComponent, PhotoPostComponent } from "../components";
 import customFetch from "../utils/customFetch";
 import Wrapper from "../assets/wrappers/PostsComponent";
@@ -6,6 +8,7 @@ import Wrapper from "../assets/wrappers/PostsComponent";
 const PostsComponent = () => {
     const [posts, setPosts] = useState([]);
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const getAllPostsForTheCurrentUser = async () => {
@@ -15,6 +18,8 @@ const PostsComponent = () => {
                 setPosts(posts);
             } catch (err) {
                 setError(err.message);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -25,8 +30,18 @@ const PostsComponent = () => {
         return <div>Error: {error}</div>;
     }
 
-    if (posts.length === 0) {
-        return <div>Loading...</div>;
+    if (loading) {
+        return (
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "100vh",
+                }}>
+                <ClipLoader color="#ffffff" size={150} />
+            </div>
+        );
     }
 
     return (
@@ -36,19 +51,9 @@ const PostsComponent = () => {
             {posts?.length === 0 && <div>No posts available.</div>}
             {posts?.map((post) =>
                 post.typeOfPost === "EventPost" ? (
-                    <EventPostComponent
-                        key={post._id}
-                        eventPost={post}
-                        // onDoubleClick={() => handleDoubleClick(post)}
-                        // onTouch={() => handleTouch(post)}
-                    />
+                    <EventPostComponent key={post._id} eventPost={post} />
                 ) : (
-                    <PhotoPostComponent
-                        key={post._id}
-                        photoPost={post}
-                        // onDoubleClick={() => handleDoubleClick(post)}
-                        // onTouch={() => handleTouch(post)}
-                    />
+                    <PhotoPostComponent key={post._id} photoPost={post} />
                 )
             )}
         </Wrapper>
