@@ -7,7 +7,8 @@ import { StatusCodes } from "http-status-codes";
 import { BadRequestError, NotFoundError } from "../errors/customErrors.js";
 
 export const followUser = async (req, res) => {
-    const currentUser = await getCurrentUserUsingToken(req);
+    const currentUserToken = await getCurrentUserUsingToken(req);
+    const currentUser = await User.findById(currentUserToken._id);
 
     const { followedUserId } = req.body;
     const followedUser = await User.findById(followedUserId);
@@ -32,20 +33,28 @@ export const followUser = async (req, res) => {
 };
 
 export const unfollowUser = async (req, res) => {
-    const currentUser = await getCurrentUserUsingToken(req);
+    const currentUserToken = await getCurrentUserUsingToken(req);
+    const currentUser = await User.findById(currentUserToken._id);
 
     const { followedUserId } = req.body;
+
     const followedUser = await User.findById(followedUserId);
 
     if (!followedUser) {
         throw new NotFoundError("User not found!");
     }
 
-    if (!currentUser.following.includes(followedUserId)) {
+    const isFollowing = currentUser.following.some(
+        (id) => id.toString() === followedUserId.toString()
+    );
+
+    if (!isFollowing) {
         throw new BadRequestError("You are not following this user!");
     }
 
-    currentUser.following = currentUser.following.filter((id) => id.toString() !== followedUserId);
+    currentUser.following = currentUser.following.filter(
+        (id) => id.toString() !== followedUserId.toString()
+    );
     await currentUser.save();
 
     followedUser.followers = followedUser.followers.filter(
@@ -61,9 +70,9 @@ export const isUserFollowed = async (req, res) => {
     const { username } = req.query;
 
     const userToCheck = await User.findOne({ username });
-    const userToCheckId = userToCheck._id;
+    const userToCheckId = userToCheck._id.toString();
 
-    const isFollowing = currentUser.following.includes(userToCheckId);
+    const isFollowing = currentUser.following.some((id) => id.toString() === userToCheckId);
 
     res.status(StatusCodes.OK).json({ isFollowing });
 };

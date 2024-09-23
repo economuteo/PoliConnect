@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import PhotoPost from "../models/PhotoPostModel.js";
 import Event from "../models/EventModel.js";
-import { UnauthenticatedError } from "../errors/customErrors.js";
+import { NotFoundError, UnauthenticatedError } from "../errors/customErrors.js";
 import { getCurrentUserUsingToken } from "./userController.js";
 import { formatImage } from "../middleware/multerMiddleware.js";
 import cloudinary from "cloudinary";
@@ -123,9 +123,10 @@ export const getSpecificPost = async (req, res, next) => {
     }
 };
 
-export const getAllPostsForAUser = async (req, res) => {
+export const getAllPostsForTheCurrentUser = async (req, res) => {
     try {
         const currentUser = await getCurrentUserUsingToken(req);
+        const currentUserObjectId = new mongoose.Types.ObjectId(currentUser._id);
 
         if (!currentUser) {
             throw new UnauthenticatedError("Token expired!");
@@ -133,31 +134,28 @@ export const getAllPostsForAUser = async (req, res) => {
 
         const usersFollowed = currentUser.following;
 
-        if (!usersFollowed || usersFollowed.length === 0) {
-            return res.status(StatusCodes.NOT_FOUND).json({ error: "No followed users found" });
-        }
+        const usersToLookFor = [...usersFollowed, currentUserObjectId];
 
         const events = await Event.find({
-            createdBy: { $in: usersFollowed },
+            createdBy: { $in: usersToLookFor },
             typeOfPost: "EventPost",
         }).exec();
+
         const photoPosts = await PhotoPost.find({
-            createdBy: { $in: usersFollowed },
+            createdBy: { $in: usersToLookFor },
             typeOfPost: "PhotoPost",
         }).exec();
 
         const combinedResults = [...events, ...photoPosts];
 
-        combinedResults.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
         if (combinedResults.length === 0) {
-            return res
-                .status(StatusCodes.NOT_FOUND)
-                .json({ error: "No posts or events found for followed users" });
+            throw new NotFoundError("No posts had been made yet!");
         }
+
+        combinedResults.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
         res.status(StatusCodes.OK).json(combinedResults);
     } catch (error) {
-        res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
+        res.status(StatusCodes.NOT_FOUND).json({ error: error.message });
     }
 };

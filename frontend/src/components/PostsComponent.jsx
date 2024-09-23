@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
-
 import { EventPostComponent, PhotoPostComponent } from "../components";
+
 import customFetch from "../utils/customFetch";
+
 import Wrapper from "../assets/wrappers/PostsComponent";
 
 const PostsComponent = () => {
     const [posts, setPosts] = useState([]);
-    const [error, setError] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const getAllPostsForTheCurrentUser = async () => {
             try {
-                const response = await customFetch.get("/posts/getAllPostsForAUser");
+                const response = await customFetch.get("/posts/getAllPostsForTheCurrentUser");
                 const posts = response.data;
                 setPosts(posts);
             } catch (err) {
-                setError(err.message);
+                setErrorMessage(err.response.data.error);
             } finally {
                 setLoading(false);
             }
@@ -25,10 +26,6 @@ const PostsComponent = () => {
 
         getAllPostsForTheCurrentUser();
     }, []);
-
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
 
     if (loading) {
         return (
@@ -46,9 +43,7 @@ const PostsComponent = () => {
 
     return (
         <Wrapper>
-            {error && <div>Error: {error}</div>}
-            {posts === null && <div>Loading...</div>}
-            {posts?.length === 0 && <div>No posts available.</div>}
+            {errorMessage && <p id="errorMessage">{errorMessage}</p>}
             {posts?.map((post) =>
                 post.typeOfPost === "EventPost" ? (
                     <EventPostComponent key={post._id} eventPost={post} />

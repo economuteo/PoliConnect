@@ -6,6 +6,11 @@ const Wrapper = styled.main`
     display: flex;
     flex-direction: column;
     gap: 30px;
+
+    #errorMessage {
+        font-family: "Poppins Regular";
+        color: white;
+    }
 `;
 
 export default Wrapper;
