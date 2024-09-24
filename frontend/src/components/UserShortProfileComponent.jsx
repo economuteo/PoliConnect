@@ -6,6 +6,7 @@ import customFetch from "../utils/customFetch";
 import Wrapper from "../assets/wrappers/UserShortProfileComponent";
 
 const UserShortProfileComponent = ({ user }) => {
+    console.log(user);
     const [isFollowed, setIsFollowed] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [isApiCalling, setIsApiCalling] = useState(false);
@@ -74,7 +75,7 @@ const UserShortProfileComponent = ({ user }) => {
                     className={`followButton ${isFollowed ? "followed" : ""}`}
                     onClick={() => handleFollowUnfollowUser(user._id)}
                     disabled={isApiCalling}>
-                    {isFollowed ? "Followed" : "Follow"}
+                    {isFollowed ? "Following" : "Follow"}
                 </button>
             </div>
         </Wrapper>

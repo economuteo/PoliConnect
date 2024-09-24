@@ -187,6 +187,7 @@ export const verifyEmailCode = async (req, res) => {
 
 export const createUsername = async (req, res) => {
     const { username, university, profile, year } = req.body;
+    console.log(req.body);
 
     const user = await getCurrentUserUsingToken(req);
     const currentUser = await User.findById(user._id);
@@ -195,10 +196,10 @@ export const createUsername = async (req, res) => {
         throw new NotFoundError("User not found!");
     }
 
-    user.username = username;
-    user.university = university;
-    user.profile = profile;
-    user.year = year;
+    currentUser.username = username;
+    currentUser.university = university;
+    currentUser.profile = profile;
+    currentUser.year = year;
     await currentUser.save();
 
     res.status(200).json({ message: "Username created successfully" });
