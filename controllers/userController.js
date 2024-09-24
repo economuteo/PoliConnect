@@ -5,13 +5,6 @@ import Message from "../models/MessageModel.js";
 import { verifyJWT } from "../utils/tokenUtils.js";
 import { BadRequestError } from "../errors/customErrors.js";
 
-export const getSpecificUser = async (req, res) => {
-    const user = await User.findOne({ _id: req.user.userId });
-    const userWithoutPassword = user.toJSON();
-    res.status(StatusCodes.OK).json(userWithoutPassword);
-    return userWithoutPassword;
-};
-
 export const getCurrentUserUsingToken = async (req) => {
     const { token } = req.cookies;
     const tokenDecoded = verifyJWT(token);
@@ -22,6 +15,31 @@ export const getCurrentUserUsingToken = async (req) => {
     }
     const userWithoutPassword = user.toJSON();
     return userWithoutPassword;
+};
+
+export const getSpecificUser = async (req, res) => {
+    const user = await User.findOne({ _id: req.user.userId });
+    const userWithoutPassword = user.toJSON();
+    res.status(StatusCodes.OK).json(userWithoutPassword);
+    return userWithoutPassword;
+};
+
+export const checkIsCurrentUser = async (req, res) => {
+    try {
+        const currentUser = await getCurrentUserUsingToken(req.cookies);
+
+        const specificUserId = req.body.user?._id;
+        if (!specificUserId) {
+            return res.status(StatusCodes.BAD_REQUEST).json({ error: "User ID is required" });
+        }
+
+        let isCurrentUser = currentUser._id.toString() === specificUserId.toString();
+
+        res.status(StatusCodes.OK).json({ isCurrentUser });
+    } catch (error) {
+        console.error("Error checking if current user:", error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" });
+    }
 };
 
 export const getApplicationStats = async (req, res) => {

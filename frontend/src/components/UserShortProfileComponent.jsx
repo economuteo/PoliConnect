@@ -6,7 +6,6 @@ import customFetch from "../utils/customFetch";
 import Wrapper from "../assets/wrappers/UserShortProfileComponent";
 
 const UserShortProfileComponent = ({ user }) => {
-    console.log(user);
     const [isFollowed, setIsFollowed] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [isApiCalling, setIsApiCalling] = useState(false);
