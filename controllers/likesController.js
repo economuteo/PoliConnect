@@ -4,6 +4,7 @@ import { StatusCodes } from "http-status-codes";
 import PhotoPost from "../models/PhotoPostModel.js";
 import Event from "../models/EventModel.js";
 import User from "../models/UserModel.js";
+import customFetch from "../utils/customFetch.js";
 
 export const likePost = async (req, res) => {
     try {
@@ -62,21 +63,27 @@ export const checkLikeStatus = async (req, res) => {
 
 export const getUsersThatLikedThePost = async (req, res) => {
     try {
+        const currentUser = await getCurrentUserUsingToken(req);
+
         const post = req.post;
+        const postLikes = post.likes.slice(0, 100);
 
-        const postLikes = post.likes;
-
-        const usersInformation = await Promise.all(
+        const users = await Promise.all(
             postLikes.map(async (userId) => {
-                const userWhoLiked = await User.findById(userId);
-                return {
-                    username: userWhoLiked.username,
-                    profileImage: userWhoLiked.profileImage,
-                };
+                let userWhoLiked = await User.findById(userId);
+
+                const isFollowed = currentUser.following.some(
+                    (id) => id.toString() === userWhoLiked._id.toString()
+                );
+
+                userWhoLiked = userWhoLiked.toJSON();
+                userWhoLiked.isFollowed = isFollowed;
+
+                return userWhoLiked;
             })
         );
 
-        res.status(StatusCodes.OK).json(usersInformation);
+        res.status(StatusCodes.OK).json(users);
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
     }

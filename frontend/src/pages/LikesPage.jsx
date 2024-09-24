@@ -6,12 +6,12 @@ import Wrapper from "../assets/wrappers/LikesPage";
 
 const LikesPage = () => {
     const location = useLocation();
-    const { usersInformation } = location.state;
+    const { users } = location.state;
 
     return (
         <Wrapper className="container">
             <LikesNavbarComponent />
-            <UsersWhoLikedComponent usersInformation={usersInformation} />
+            <UsersWhoLikedComponent users={users} />
         </Wrapper>
     );
 };

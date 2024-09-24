@@ -32,9 +32,9 @@ const PhotoPostComponent = ({ photoPost }) => {
             typeOfPost: post.typeOfPost,
         });
 
-        const usersInformation = response.data;
+        const users = response.data;
 
-        navigate("/likes", { state: { usersInformation } });
+        navigate("/likes", { state: { users } });
     };
 
     useEffect(() => {
