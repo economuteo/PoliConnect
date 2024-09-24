@@ -67,7 +67,7 @@ export const unfollowUser = async (req, res) => {
 
 export const isUserFollowed = async (req, res) => {
     const currentUser = await getCurrentUserUsingToken(req);
-    const { username } = req.query || req.body;
+    const { username } = req.query;
 
     const userToCheck = await User.findOne({ username });
     const userToCheckId = userToCheck._id.toString();

@@ -1,27 +1,67 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ClipLoader } from "react-spinners"; // Import the spinner
 
 import customFetch from "../utils/customFetch";
 import Wrapper from "../assets/wrappers/UserShortProfileComponent";
 
 const UserShortProfileComponent = ({ user }) => {
-    const [isFollowed, setIsFollowed] = useState(user.isFollowed);
+    const [isFollowed, setIsFollowed] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isApiCalling, setIsApiCalling] = useState(false);
+
+    useEffect(() => {
+        const checkIfUserIsFollowed = async () => {
+            try {
+                const username = user.username;
+                const response = await customFetch.post(
+                    `/followers/isUserFollowed?username=${username}`
+                );
+                setIsFollowed(response.data.isFollowing);
+            } catch (error) {
+                console.error("Error checking if user is followed:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        if (user && user.username) {
+            checkIfUserIsFollowed();
+        } else {
+            setIsLoading(false);
+        }
+    }, [user]);
 
     const navigate = useNavigate();
 
     const handleFollowUnfollowUser = async (userId) => {
-        if (!isFollowed) {
-            await customFetch.post("/followers/followUser", { followedUserId: userId });
-            setIsFollowed(true);
-        } else {
-            await customFetch.post("/followers/unfollowUser", { followedUserId: userId });
-            setIsFollowed(false);
+        setIsApiCalling(true);
+        try {
+            if (!isFollowed) {
+                await customFetch.post("/followers/followUser", { followedUserId: userId });
+                setIsFollowed(true);
+            } else {
+                await customFetch.post("/followers/unfollowUser", { followedUserId: userId });
+                setIsFollowed(false);
+            }
+        } catch (error) {
+            console.error("Error following/unfollowing user:", error);
+        } finally {
+            setIsApiCalling(false);
         }
     };
 
     const handleSeeUserProfile = (user) => {
         navigate(`/feed/userProfile/${user.username}`, { state: { user } });
     };
+
+    if (isLoading) {
+        return (
+            <div className="spinner-container">
+                <ClipLoader size={50} color={"#123abc"} loading={isLoading} />
+            </div>
+        );
+    }
 
     return (
         <Wrapper>
@@ -30,7 +70,10 @@ const UserShortProfileComponent = ({ user }) => {
                     <img src={user.profileImage} className="userProfileImage" alt="userImage" />
                     <p className="userName">{user.username}</p>
                 </div>
-                <button className="followButton" onClick={() => handleFollowUnfollowUser(user._id)}>
+                <button
+                    className="followButton"
+                    onClick={() => handleFollowUnfollowUser(user._id)}
+                    disabled={isApiCalling}>
                     {isFollowed ? "Followed" : "Follow"}
                 </button>
             </div>

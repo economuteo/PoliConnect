@@ -4,7 +4,6 @@ import { StatusCodes } from "http-status-codes";
 import PhotoPost from "../models/PhotoPostModel.js";
 import Event from "../models/EventModel.js";
 import User from "../models/UserModel.js";
-import customFetch from "../utils/customFetch.js";
 
 export const likePost = async (req, res) => {
     try {
@@ -72,12 +71,7 @@ export const getUsersThatLikedThePost = async (req, res) => {
             postLikes.map(async (userId) => {
                 let userWhoLiked = await User.findById(userId);
 
-                const isFollowed = currentUser.following.some(
-                    (id) => id.toString() === userWhoLiked._id.toString()
-                );
-
                 userWhoLiked = userWhoLiked.toJSON();
-                userWhoLiked.isFollowed = isFollowed;
 
                 return userWhoLiked;
             })
