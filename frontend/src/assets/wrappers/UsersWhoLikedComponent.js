@@ -6,7 +6,7 @@ const Wrapper = styled.section`
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow: hidden;
+    overflow: scroll;
 
     .user {
         width: 100%;
@@ -21,8 +21,10 @@ const Wrapper = styled.section`
         scrollbar-width: none;
     }
 
-    .users::-webkit-scrollbar {
-        display: none;
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
+    &::-webkit-scrollbar {
+        display: none; /* Safari, Chrome, and Edge */
     }
 `;
 

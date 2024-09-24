@@ -10,7 +10,7 @@ const LikesPage = () => {
 
     return (
         <Wrapper className="container">
-            <LikesNavbarComponent />
+            <LikesNavbarComponent className="likesNavbar" />
             <UsersWhoLikedComponent users={users} />
         </Wrapper>
     );
