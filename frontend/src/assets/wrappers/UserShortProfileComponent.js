@@ -41,10 +41,15 @@ const Wrapper = styled.div`
         font-size: 0.85em;
         font-family: "Poppins SemiBold";
         cursor: pointer;
-        color: #0677e8;
-        background-color: #102e53;
+        color: white;
+        background-color: #0677e8;
         border: none;
         outline: none;
+    }
+
+    .followed {
+        color: #0677e8;
+        background-color: #102e53;
     }
 
     @media only screen and (min-width: 480px) {

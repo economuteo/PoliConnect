@@ -71,7 +71,7 @@ const UserShortProfileComponent = ({ user }) => {
                     <p className="userName">{user.username}</p>
                 </div>
                 <button
-                    className="followButton"
+                    className={`followButton ${isFollowed ? "followed" : ""}`}
                     onClick={() => handleFollowUnfollowUser(user._id)}
                     disabled={isApiCalling}>
                     {isFollowed ? "Followed" : "Follow"}
