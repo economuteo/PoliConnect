@@ -7,6 +7,7 @@ import Wrapper from "../assets/wrappers/UserShortProfileComponent";
 
 const UserShortProfileComponent = ({ user }) => {
     const [isFollowed, setIsFollowed] = useState(false);
+    const [isCurrentUser, setIsCurrentUser] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [isApiCalling, setIsApiCalling] = useState(false);
 
@@ -14,9 +15,14 @@ const UserShortProfileComponent = ({ user }) => {
         const checkIfUserIsFollowed = async () => {
             try {
                 const username = user.username;
+
                 const response = await customFetch.post(
                     `/followers/isUserFollowed?username=${username}`
                 );
+                const secondResponse = await customFetch.post("/users/isCurrentUser", {
+                    userId: user._id,
+                });
+                console.log(secondResponse);
                 setIsFollowed(response.data.isFollowing);
             } catch (error) {
                 console.error("Error checking if user is followed:", error);

@@ -13,10 +13,11 @@ import { authorizePermissions } from "../middleware/authMiddleware.js";
 const router = Router();
 
 router.get("/currentUser", getCurrentUserUsingToken);
-router.get("/isCurrentUser", checkIsCurrentUser);
 router.get("/specificUser", getSpecificUser);
 router.get("/searchUsers", searchUsers);
 router.get("/admin/appStats", authorizePermissions("admin"), getApplicationStats);
+
+router.post("/isCurrentUser", checkIsCurrentUser);
 
 router.patch("/updateUser", validateUpdateUserInput, updateUser);
 

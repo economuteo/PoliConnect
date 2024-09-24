@@ -27,8 +27,10 @@ export const getSpecificUser = async (req, res) => {
 export const checkIsCurrentUser = async (req, res) => {
     try {
         const currentUser = await getCurrentUserUsingToken(req.cookies);
+        console.log(currentUser);
 
-        const specificUserId = req.body.user?._id;
+        const specificUserId = req.body.userId;
+        console.log(specificUserId);
         if (!specificUserId) {
             return res.status(StatusCodes.BAD_REQUEST).json({ error: "User ID is required" });
         }
