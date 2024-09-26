@@ -19,11 +19,14 @@ const UserShortProfileComponent = ({ user }) => {
                 const response = await customFetch.post(
                     `/followers/isUserFollowed?username=${username}`
                 );
+                const isFollowed = response.data.following;
+                setIsFollowed(isFollowed);
+                
                 const secondResponse = await customFetch.post("/users/isCurrentUser", {
                     userId: user._id,
                 });
-                console.log(secondResponse);
-                setIsFollowed(response.data.isFollowing);
+                const isCurrentUser = secondResponse.data.isCurrentUser;
+                setIsCurrentUser(isCurrentUser);
             } catch (error) {
                 console.error("Error checking if user is followed:", error);
             } finally {
@@ -76,12 +79,12 @@ const UserShortProfileComponent = ({ user }) => {
                     <img src={user.profileImage} className="userProfileImage" alt="userImage" />
                     <p className="userName">{user.username}</p>
                 </div>
-                <button
+                {!isCurrentUser && <button
                     className={`followButton ${isFollowed ? "followed" : ""}`}
                     onClick={() => handleFollowUnfollowUser(user._id)}
                     disabled={isApiCalling}>
                     {isFollowed ? "Following" : "Follow"}
-                </button>
+                </button>}
             </div>
         </Wrapper>
     );
