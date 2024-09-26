@@ -19,9 +19,9 @@ const UserShortProfileComponent = ({ user }) => {
                 const response = await customFetch.post(
                     `/followers/isUserFollowed?username=${username}`
                 );
-                const isFollowed = response.data.following;
+                const isFollowed = response.data.isFollowing;
                 setIsFollowed(isFollowed);
-                
+
                 const secondResponse = await customFetch.post("/users/isCurrentUser", {
                     userId: user._id,
                 });
@@ -79,12 +79,14 @@ const UserShortProfileComponent = ({ user }) => {
                     <img src={user.profileImage} className="userProfileImage" alt="userImage" />
                     <p className="userName">{user.username}</p>
                 </div>
-                {!isCurrentUser && <button
-                    className={`followButton ${isFollowed ? "followed" : ""}`}
-                    onClick={() => handleFollowUnfollowUser(user._id)}
-                    disabled={isApiCalling}>
-                    {isFollowed ? "Following" : "Follow"}
-                </button>}
+                {!isCurrentUser && (
+                    <button
+                        className={`followButton ${isFollowed ? "followed" : ""}`}
+                        onClick={() => handleFollowUnfollowUser(user._id)}
+                        disabled={isApiCalling}>
+                        {isFollowed ? "Following" : "Follow"}
+                    </button>
+                )}
             </div>
         </Wrapper>
     );
