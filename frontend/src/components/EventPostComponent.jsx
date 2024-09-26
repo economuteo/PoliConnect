@@ -170,23 +170,24 @@ const EventPostComponent = ({ eventPost }) => {
                 <img id="userProfileImage" src={post.userProfileImage} alt="" />
                 <p id="userUsername">{post.userUsername}</p>
             </div>
-            <div
-                className="eventPostContent"
-                onDoubleClick={() => handleDoubleClick(post)}
-                onTouchEnd={() => handleTouch(post)}>
-                <p id="eventName">{post.eventName}</p>
-                <div className="eventDetails">
-                    <div className="eventDetail">
-                        <img id="icons" src={DateIcon} alt="" />
-                        <p>{formattedDate}</p>
-                    </div>
-                    <div className="eventDetail">
-                        <img id="icons" src={TimeIcon} alt="" />
-                        <p>{post.eventTime}</p>
-                    </div>
-                    <div className="eventDetail">
-                        <img id="icons" src={LocationIcon} alt="" />
-                        <p>{post.eventLocation}</p>
+            <div className="eventPostContent">
+                <div
+                    onDoubleClick={() => handleDoubleClick(post)}
+                    onTouchEnd={() => handleTouch(post)}>
+                    <p id="eventName">{post.eventName}</p>
+                    <div className="eventDetails">
+                        <div className="eventDetail">
+                            <img id="icons" src={DateIcon} alt="" />
+                            <p>{formattedDate}</p>
+                        </div>
+                        <div className="eventDetail">
+                            <img id="icons" src={TimeIcon} alt="" />
+                            <p>{post.eventTime}</p>
+                        </div>
+                        <div className="eventDetail">
+                            <img id="icons" src={LocationIcon} alt="" />
+                            <p>{post.eventLocation}</p>
+                        </div>
                     </div>
                 </div>
                 <div
