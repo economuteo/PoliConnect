@@ -11,6 +11,8 @@ import Wrapper from "../assets/wrappers/PhotoPostComponent";
 import { ClipLoader } from "react-spinners";
 
 const PhotoPostComponent = ({ photoPost }) => {
+    const navigate = useNavigate();
+
     const [post, setPost] = useState(photoPost);
 
     const [loading, setLoading] = useState(true);
@@ -24,7 +26,6 @@ const PhotoPostComponent = ({ photoPost }) => {
     const [isLiked, setIsLiked] = useState(false);
 
     const descriptionRef = useRef(null);
-    const navigate = useNavigate();
 
     const goToLikesPage = async (post) => {
         const response = await customFetch.post("/likes/getUsersThatLikedThePost", {
