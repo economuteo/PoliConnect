@@ -9,33 +9,65 @@ import CommentsIcon from "../assets/images/comments-icon.png";
 import ShareIcon from "../assets/images/share-icon.png";
 import Wrapper from "../assets/wrappers/EventPostComponent";
 import customFetch from "../utils/customFetch";
+import { useNavigate } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
 
 const EventPostComponent = ({ eventPost }) => {
+    const navigate = useNavigate();
+
     const [post, setPost] = useState(eventPost);
-    const [isJoined, setIsJoined] = useState(false);
+
+    const [loading, setLoading] = useState(true);
+    const [isApiCallInProgress, setIsApiCallInProgress] = useState(false);
+
+    const [lastTap, setLastTap] = useState(0);
+
     const [isExpanded, setIsExpanded] = useState(false);
     const [showReadMore, setShowReadMore] = useState(false);
-    const [lastTap, setLastTap] = useState(0);
-    const [isApiCallInProgress, setIsApiCallInProgress] = useState(false);
+
+    const [isLiked, setIsLiked] = useState(false);
+
+    const [isJoined, setIsJoined] = useState(false);
+
     const descriptionRef = useRef(null);
 
-    // Extract and format the date
-    const eventDate = new Date(eventPost.eventDate);
-    const formattedDate = eventDate.toLocaleDateString("en-GB", {
-        weekday: "long",
-        day: "2-digit",
-        month: "long",
-        year: "numeric",
-    });
+    const goToLikesPage = async (post) => {
+        const response = await customFetch.post("/likes/getUsersThatLikedThePost", {
+            postId: post._id,
+            typeOfPost: post.typeOfPost,
+        });
 
-    const handleJoinClick = () => {
-        setIsJoined(!isJoined);
+        const users = response.data;
+
+        navigate("/likes", { state: { users } });
     };
+
+    useEffect(() => {
+        const getLikeStatus = async () => {
+            try {
+                const response = await customFetch.post("/likes/checkLikeStatus", {
+                    postId: post._id,
+                    typeOfPost: post.typeOfPost,
+                });
+
+                const isLiked = response.data;
+
+                setIsLiked(isLiked);
+            } catch (err) {
+                console.error("Error fetching like status:", err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        getLikeStatus();
+    }, [post.likes]);
 
     const handleDoubleClick = async (post) => {
         if (isApiCallInProgress) return;
 
         setIsApiCallInProgress(true);
+
         try {
             const response = await customFetch.post("/likes/likePost", {
                 postId: post._id,
@@ -51,6 +83,15 @@ const EventPostComponent = ({ eventPost }) => {
         }
     };
 
+    // Extract and format the date
+    const eventDate = new Date(eventPost.eventDate);
+    const formattedDate = eventDate.toLocaleDateString("en-GB", {
+        weekday: "long",
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+    });
+
     const handleTouch = (post) => {
         const currentTime = new Date().getTime();
         const tapLength = currentTime - lastTap;
@@ -62,18 +103,33 @@ const EventPostComponent = ({ eventPost }) => {
         setLastTap(currentTime);
     };
 
-    const handleUnlike = async (post) => {
+    const handleJoinClick = () => {
+        setIsJoined(!isJoined);
+    };
+
+    const handleLikeUnlike = async (post) => {
         if (isApiCallInProgress) return;
 
         setIsApiCallInProgress(true);
-        try {
-            const response = await customFetch.post("/likes/unlikePost", {
-                postId: post._id,
-                typeOfPost: post.typeOfPost,
-            });
 
-            const unlikedPost = response.data.post;
-            setPost(unlikedPost);
+        try {
+            if (isLiked) {
+                const response = await customFetch.post("/likes/unlikePost", {
+                    postId: post._id,
+                    typeOfPost: post.typeOfPost,
+                });
+
+                const unlikedPost = response.data.post;
+                setPost(unlikedPost);
+            } else {
+                const response = await customFetch.post("/likes/likePost", {
+                    postId: post._id,
+                    typeOfPost: post.typeOfPost,
+                });
+
+                const likedPost = response.data.post;
+                setPost(likedPost);
+            }
         } catch (err) {
             console.error("Error fetching specific post:", err.message);
         } finally {
@@ -93,6 +149,20 @@ const EventPostComponent = ({ eventPost }) => {
             }
         }
     }, []);
+
+    if (loading) {
+        return (
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "100vh",
+                }}>
+                <ClipLoader color="#ffffff" size={150} />
+            </div>
+        );
+    }
 
     return (
         <Wrapper>
@@ -145,10 +215,10 @@ const EventPostComponent = ({ eventPost }) => {
                     <p>{post.participants.length}</p>
                 </div>
                 <div className="reaction">
-                    <div onClick={() => handleUnlike(post)}>
-                        <LikeIconComponent className="likeIcon" />
+                    <div onClick={() => handleLikeUnlike(post)}>
+                        <LikeIconComponent fill={isLiked ? "#0677E8" : ""} />
                     </div>
-                    <p>{post.likes.length}</p>
+                    <p onClick={() => goToLikesPage(post)}>{post.likes.length}</p>
                 </div>
                 <div className="reaction">
                     <img src={CommentsIcon} alt="" />
