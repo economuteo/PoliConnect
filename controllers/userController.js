@@ -26,14 +26,18 @@ export const getSpecificUser = async (req, res) => {
 
 export const checkIsCurrentUser = async (req, res) => {
     try {
+        console.log("here");
+
         const currentUser = await getCurrentUserUsingToken(req);
 
-        const specificUserId = req.body.userId;
+        // 2 options here to find the specific user (by ID or by username)
+        let specificUserId = req.body.userId;
         if (!specificUserId) {
-            return res.status(StatusCodes.BAD_REQUEST).json({ error: "User ID is required" });
+            const specificUser = await User.find({ username: req.body.username });
+            specificUserId = specificUser[0]._id;
         }
 
-        let isCurrentUser = (currentUser._id.toString() === specificUserId.toString());
+        let isCurrentUser = currentUser._id.toString() === specificUserId.toString();
 
         res.status(StatusCodes.OK).json({ isCurrentUser });
     } catch (error) {

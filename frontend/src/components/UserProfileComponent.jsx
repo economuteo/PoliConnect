@@ -7,13 +7,23 @@ import customFetch from "../utils/customFetch";
 
 export const isUserFollowedLoader = async ({ params }) => {
     const { username } = params;
+
     const response = await customFetch.post(`/followers/isUserFollowed?username=${username}`);
-    const isFollowing = response.data.isFollowing;
-    return isFollowing;
+    const isFollowed = response.data.isFollowing;
+
+    // Logic for checking if it's the current user profile
+    const secondResponse = await customFetch.post("/users/isCurrentUser", { username });
+    const isCurrentUserProfile = secondResponse.data.isCurrentUser;
+
+    return { isFollowed, isCurrentUserProfile };
 };
 
 const UserProfilePage = () => {
-    const [followed, setFollowed] = useState(useLoaderData());
+    const loaderData = useLoaderData();
+    const { isFollowed, isCurrentUserProfile } = loaderData;
+
+    const [followed, setFollowed] = useState(isFollowed);
+    const [currentUserProfile, setCurrentUserProfile] = useState(isCurrentUserProfile);
 
     const handleFollowUnfollowUser = async (userId) => {
         setFollowed((prevFollowed) => !prevFollowed);
@@ -55,15 +65,26 @@ const UserProfilePage = () => {
                 <p className="aboutUser">{getYearSuffix(user.year)}</p>
             </div>
             <div className="buttons">
-                <div
-                    onClick={() => handleFollowUnfollowUser(user._id)}
-                    className={`button ${followed ? "unfollow" : "follow"}`}
-                    id="followButton">
-                    {followed ? "Unfollow" : "Follow"}
-                </div>
-                <div className="button" id="messageButton">
-                    Message
-                </div>
+                {!currentUserProfile && (
+                    <>
+                        <div
+                            onClick={() => handleFollowUnfollowUser(user._id)}
+                            className={`button ${followed ? "unfollow" : "follow"}`}
+                            id="followButton">
+                            {followed ? "Unfollow" : "Follow"}
+                        </div>
+                        <div className="button" id="messageButton">
+                            Message
+                        </div>
+                    </>
+                )}
+                {currentUserProfile && (
+                    <>
+                        <div className="button" id="editProfileButton">
+                            Edit Profile
+                        </div>
+                    </>
+                )}
             </div>
         </Wrapper>
     );

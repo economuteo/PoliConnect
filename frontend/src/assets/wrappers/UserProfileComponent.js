@@ -61,7 +61,8 @@ const Wrapper = styled.main`
         color: white;
     }
 
-    .follow {
+    .follow,
+    #editProfileButton {
         background-color: #2f80ed;
     }
 
