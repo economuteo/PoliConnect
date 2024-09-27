@@ -45,3 +45,23 @@ export const leaveEvent = async (req, res) => {
         res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
     }
 };
+
+export const checkJoinedStatus = async (req, res) => {
+    try {
+        let hasJoined;
+
+        const currentUser = await getCurrentUserUsingToken(req);
+
+        const post = req.body.post;
+
+        if (post.participants.includes(currentUser._id)) {
+            hasJoined = true;
+        } else {
+            hasJoined = false;
+        }
+
+        res.status(StatusCodes.OK).json(hasJoined);
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
+    }
+};
