@@ -67,29 +67,28 @@ export const getUserStories = async (req, res) => {
 
 export const getStoriesOfFollowingUsers = async (req, res) => {
     const currentUser = await getCurrentUserUsingToken(req);
+    const followedUsers = currentUser.following;
 
-    if (!currentUser) {
-        throw new NotFoundError("User not found");
-    }
+    const followedUsersStories = [];
 
-    const following = currentUser.following;
+    for (let i = 0; i < followedUsers.length; i++) {
+        const followedUserId = followedUsers[i];
 
-    const usersData = [];
+        const followedUserStories = await Story.find({ user: followedUserId });
 
-    for (let i = 0; i < following.length; i++) {
-        const user = following[i];
-        const userInfo = await User.findById(user);
-        const { _id, username, profileImage } = userInfo;
+        // Checks if the user has stories
+        if (followedUserStories.length !== 0) {
+            const followedUser = await User.findById(followedUserId);
+            const { _id, username, profileImage } = followedUser;
+            const followedUserStories = {
+                _id,
+                username,
+                profileImage,
+                stories: followedUserStories,
+            };
 
-        // Find stories created by the user
-        const userStories = await Story.find({ user: _id });
-
-        usersData.push({
-            _id,
-            username,
-            profileImage,
-            stories: userStories,
-        });
+            followedUsersStories.push(followedUserStories);
+        }
     }
 
     res.status(StatusCodes.OK).json({ usersData });
