@@ -91,5 +91,5 @@ export const getStoriesOfFollowingUsers = async (req, res) => {
         }
     }
 
-    res.status(StatusCodes.OK).json({ usersData });
+    res.status(StatusCodes.OK).json({ followedUsersStoriesInfo });
 };

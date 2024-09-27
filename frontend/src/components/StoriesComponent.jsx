@@ -18,8 +18,8 @@ import customFetch from "../utils/customFetch";
 
 export const getStoriesOfFollowedUsersLoader = async () => {
     const response = await customFetch.get("/stories/getStoriesOfFollowingUsers");
-    const usersData = response.data.usersData;
-    return usersData;
+    const followedUsersStoriesInfo = response.data.followedUsersStoriesInfo;
+    return followedUsersStoriesInfo;
 };
 
 const StoriesComponent = () => {
