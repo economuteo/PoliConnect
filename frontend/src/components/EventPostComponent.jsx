@@ -19,6 +19,7 @@ const EventPostComponent = ({ eventPost }) => {
 
     const [loading, setLoading] = useState(true);
     const [isApiCallInProgress, setIsApiCallInProgress] = useState(false);
+    const [isApiCallInProgress2, setIsApiCallInProgress2] = useState(false);
 
     const [lastTap, setLastTap] = useState(0);
 
@@ -26,7 +27,6 @@ const EventPostComponent = ({ eventPost }) => {
     const [showReadMore, setShowReadMore] = useState(false);
 
     const [isLiked, setIsLiked] = useState(false);
-
     const [isJoined, setIsJoined] = useState(false);
 
     const descriptionRef = useRef(null);
@@ -103,8 +103,32 @@ const EventPostComponent = ({ eventPost }) => {
         setLastTap(currentTime);
     };
 
-    const handleJoinClick = () => {
-        setIsJoined(!isJoined);
+    const handleJoinUnjoin = async (post) => {
+        if (isApiCallInProgress2) return;
+
+        setIsApiCallInProgress2(true);
+
+        try {
+            if (isJoined) {
+                const response = await customFetch.post("/events/leaveEvent", {
+                    eventId: post._id,
+                });
+
+                const leftEvent = response.data.event;
+                setPost(leftEvent);
+            } else {
+                const response = await customFetch.post("/events/joinEvent", {
+                    eventId: post._id,
+                });
+
+                const joinedEvent = response.data.event;
+                setPost(joinedEvent);
+            }
+        } catch (err) {
+            console.error("Error fetching specific post:", err.message);
+        } finally {
+            setIsApiCallInProgress2(false);
+        }
     };
 
     const handleLikeUnlike = async (post) => {
@@ -192,7 +216,7 @@ const EventPostComponent = ({ eventPost }) => {
                 </div>
                 <div
                     className={`joinNowButton ${isJoined ? "joined" : ""}`}
-                    onClick={handleJoinClick}>
+                    onClick={() => handleJoinUnjoin(post)}>
                     <p>{isJoined ? "Joined" : "Join Now"}</p>
                 </div>
             </div>

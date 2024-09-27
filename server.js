@@ -61,9 +61,9 @@ app.use("/api/v1/followers", authenticateUser, followRouter);
 app.use("/api/v1/stories", authenticateUser, storiesRouter);
 app.use("/api/v1/messages", authenticateUser, messageRouter);
 app.use("/api/v1/posts", authenticateUser, postRouter);
+app.use("/api/v1/events", authenticateUser, joinEventRouter);
 app.use("/api/v1/comments", authenticateUser, commentsRouter);
 app.use("/api/v1/likes", authenticateUser, likesRouter);
-app.use("/api/v1/joinEvent", authenticateUser, joinEventRouter);
 
 app.use("*", (req, res) => {
     res.status(404).json({ msg: "Not found" });
