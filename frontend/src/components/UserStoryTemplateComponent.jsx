@@ -23,10 +23,6 @@ const UserStoryTemplateComponent = ({ userName, userProfileImage, userId }) => {
         }
     };
 
-    const handleAddStory = () => {
-        navigate("/story");
-    };
-
     return (
         <Wrapper>
             <div className="images">

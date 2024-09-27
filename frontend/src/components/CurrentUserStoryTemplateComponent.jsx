@@ -26,7 +26,7 @@ const CurrentUserStoryTemplateComponent = ({ userName, addStoryIcon }) => {
         }
         if (userStoriesURLs.length !== 0) {
             setUserStoriesUrls(userStoriesURLs);
-            navigate("/stories");
+            navigate("/stories", { state: { isCurrentUser: true } });
         }
     };
 
