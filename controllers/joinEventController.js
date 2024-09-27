@@ -54,7 +54,7 @@ export const checkJoinedStatus = async (req, res) => {
 
         const post = req.body.post;
 
-        if (post.participants.includes(currentUser._id)) {
+        if (post.participants.some((userId) => userId.toString() === currentUser._id.toString())) {
             hasJoined = true;
         } else {
             hasJoined = false;

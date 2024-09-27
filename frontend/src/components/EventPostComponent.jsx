@@ -27,7 +27,7 @@ const EventPostComponent = ({ eventPost }) => {
     const [showReadMore, setShowReadMore] = useState(false);
 
     const [isLiked, setIsLiked] = useState(false);
-    const [isJoined, setIsJoined] = useState(false);
+    const [hasJoined, setHasJoined] = useState(false);
 
     const descriptionRef = useRef(null);
 
@@ -55,13 +55,31 @@ const EventPostComponent = ({ eventPost }) => {
                 setIsLiked(isLiked);
             } catch (err) {
                 console.error("Error fetching like status:", err.message);
-            } finally {
-                setLoading(false);
             }
         };
 
         getLikeStatus();
     }, [post.likes]);
+
+    useEffect(() => {
+        const getJoinStatus = async () => {
+            try {
+                const response = await customFetch.post("/events/checkJoinedStatus", {
+                    post,
+                });
+
+                const hasJoined = response.data;
+
+                setHasJoined(hasJoined);
+            } catch (err) {
+                console.error("Error fetching join status:", err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        getJoinStatus();
+    }, [post.participants]);
 
     const handleDoubleClick = async (post) => {
         if (isApiCallInProgress) return;
@@ -109,7 +127,9 @@ const EventPostComponent = ({ eventPost }) => {
         setIsApiCallInProgress2(true);
 
         try {
-            if (isJoined) {
+            console.log(hasJoined);
+
+            if (hasJoined) {
                 const response = await customFetch.post("/events/leaveEvent", {
                     eventId: post._id,
                 });
@@ -215,9 +235,9 @@ const EventPostComponent = ({ eventPost }) => {
                     </div>
                 </div>
                 <div
-                    className={`joinNowButton ${isJoined ? "joined" : ""}`}
+                    className={`joinNowButton ${hasJoined ? "joined" : ""}`}
                     onClick={() => handleJoinUnjoin(post)}>
-                    <p>{isJoined ? "Joined" : "Join Now"}</p>
+                    <p>{hasJoined ? "Joined" : "Join Now"}</p>
                 </div>
             </div>
             <div className="eventPostDescription">
