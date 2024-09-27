@@ -31,16 +31,14 @@ const EventPostComponent = ({ eventPost }) => {
 
     const descriptionRef = useRef(null);
 
-    const goToLikesPage = async (post) => {
-        const response = await customFetch.post("/likes/getUsersThatLikedThePost", {
-            postId: post._id,
-            typeOfPost: post.typeOfPost,
-        });
-
-        const users = response.data;
-
-        navigate("/likes", { state: { users } });
-    };
+    // Extract and format the date
+    const eventDate = new Date(eventPost.eventDate);
+    const formattedDate = eventDate.toLocaleDateString("en-GB", {
+        weekday: "long",
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+    });
 
     useEffect(() => {
         const getLikeStatus = async () => {
@@ -64,7 +62,7 @@ const EventPostComponent = ({ eventPost }) => {
     useEffect(() => {
         const getJoinStatus = async () => {
             try {
-                const response = await customFetch.post("/events/checkJoinedStatus", {
+                const response = await customFetch.post("/participants/checkJoinedStatus", {
                     post,
                 });
 
@@ -101,15 +99,6 @@ const EventPostComponent = ({ eventPost }) => {
         }
     };
 
-    // Extract and format the date
-    const eventDate = new Date(eventPost.eventDate);
-    const formattedDate = eventDate.toLocaleDateString("en-GB", {
-        weekday: "long",
-        day: "2-digit",
-        month: "long",
-        year: "numeric",
-    });
-
     const handleTouch = (post) => {
         const currentTime = new Date().getTime();
         const tapLength = currentTime - lastTap;
@@ -130,14 +119,14 @@ const EventPostComponent = ({ eventPost }) => {
             console.log(hasJoined);
 
             if (hasJoined) {
-                const response = await customFetch.post("/events/leaveEvent", {
+                const response = await customFetch.post("/participants/leaveEvent", {
                     eventId: post._id,
                 });
 
                 const leftEvent = response.data.event;
                 setPost(leftEvent);
             } else {
-                const response = await customFetch.post("/events/joinEvent", {
+                const response = await customFetch.post("/participants/joinEvent", {
                     eventId: post._id,
                 });
 
@@ -179,6 +168,27 @@ const EventPostComponent = ({ eventPost }) => {
         } finally {
             setIsApiCallInProgress(false);
         }
+    };
+
+    const goToLikesPage = async (post) => {
+        const response = await customFetch.post("/likes/getUsersThatLikedThePost", {
+            postId: post._id,
+            typeOfPost: post.typeOfPost,
+        });
+
+        const users = response.data;
+
+        navigate("/likes", { state: { users } });
+    };
+
+    const goToParticipantsPage = async (post) => {
+        const response = await customFetch.post("/participants/getUsersWhoJoined", {
+            post,
+        });
+
+        const participants = response.data;
+
+        navigate("/participants", { state: { participants } });
     };
 
     const toggleReadMore = () => {
@@ -257,7 +267,7 @@ const EventPostComponent = ({ eventPost }) => {
             <div className="postReactions">
                 <div className="reaction">
                     <img src={ParticipantsIcon} alt="" />
-                    <p>{post.participants.length}</p>
+                    <p onClick={() => goToParticipantsPage(post)}>{post.participants.length}</p>
                 </div>
                 <div className="reaction">
                     <div onClick={() => handleLikeUnlike(post)}>

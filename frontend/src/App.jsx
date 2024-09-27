@@ -31,6 +31,8 @@ import {
     StoriesPage,
     Error,
     SearchUsersPage,
+    LikesPage,
+    ParticipantsPage,
 } from "./pages";
 
 import { action as registerAction } from "./components/RegisterFormComponent.jsx";
@@ -46,7 +48,6 @@ import { userProfileImageLoader } from "./components/CurrentUserStoryTemplateCom
 import { isUserFollowedLoader } from "./components/UserProfileComponent.jsx";
 
 import { AppProvider } from "./contexts/AppContext";
-import LikesPage from "./pages/LikesPage.jsx";
 
 const combinedLoader = async () => {
     const [userProfileImage, getStoriesOfFollowedUsers, firstPostLoader] = await Promise.all([
@@ -218,6 +219,10 @@ const router = createBrowserRouter([
             {
                 path: "likes",
                 element: <LikesPage />,
+            },
+            {
+                path: "participants",
+                element: <ParticipantsPage />,
             },
             {
                 path: "event",

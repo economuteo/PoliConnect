@@ -1,6 +1,7 @@
+import Event from "../models/EventModel.js";
+import User from "../models/UserModel.js";
 import { getCurrentUserUsingToken } from "./userController.js";
 import { StatusCodes } from "http-status-codes";
-import Event from "../models/EventModel.js";
 import { NotFoundError, BadRequestError } from "../errors/customErrors.js";
 
 export const joinEvent = async (req, res) => {
@@ -61,6 +62,28 @@ export const checkJoinedStatus = async (req, res) => {
         }
 
         res.status(StatusCodes.OK).json(hasJoined);
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
+    }
+};
+
+export const getUsersWhoJoined = async (req, res) => {
+    try {
+        const post = req.body.post;
+
+        const participants = post.participants.slice(0, 100);
+
+        const usersWhoJoined = await Promise.all(
+            participants.map(async (userId) => {
+                let participant = await User.findById(userId);
+
+                participant = participant.toJSON();
+
+                return participant;
+            })
+        );
+
+        res.status(StatusCodes.OK).json(usersWhoJoined);
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
     }
