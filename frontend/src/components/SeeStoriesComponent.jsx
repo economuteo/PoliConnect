@@ -13,6 +13,15 @@ const SeeStoriesComponent = () => {
 
     const { userStoriesUrls } = useContext(AppContext);
     const stories = userStoriesUrls;
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleOpenOptionsModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleCloseOptionsModal = () => {
+        setIsModalOpen(false);
+    };
 
     return (
         <Wrapper>
@@ -25,9 +34,25 @@ const SeeStoriesComponent = () => {
             />
             {isCurrentUser && (
                 <div className="storyFooter">
-                    <div className="currentUserMoreOptions">
+                    <div
+                        className={
+                            isModalOpen ? "currentUserMoreOptionsHidden" : "currentUserMoreOptions"
+                        }
+                        onClick={handleOpenOptionsModal}>
                         <MoreIcon />
                         <p>More</p>
+                    </div>
+                </div>
+            )}
+            {isModalOpen && (
+                <div className="modal" onClick={handleCloseOptionsModal}>
+                    <div className="modalContent">
+                        <div className="option">
+                            <p id="deleteText">Delete Story</p>
+                        </div>
+                    </div>
+                    <div className="option cancelButton" onClick={handleCloseOptionsModal}>
+                        <p>Cancel</p>
                     </div>
                 </div>
             )}
