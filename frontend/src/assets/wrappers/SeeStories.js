@@ -24,6 +24,12 @@ const Wrapper = styled.main`
         font-size: 0.75em;
         font-family: "Poppins Regular";
     }
+
+    @media only screen and (min-width: 768px) {
+        .currentUserMoreOptions {
+            font-size: 1em;
+        }
+    }
 `;
 
 export default Wrapper;
