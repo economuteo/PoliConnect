@@ -34,6 +34,10 @@ const CurrentUserStoryTemplateComponent = ({ userName, addStoryIcon }) => {
         navigate("/story");
     };
 
+    const navigateToUserProfilePage = (userName) => {
+        navigate(`/feed/userProfile/${userName}`);
+    };
+
     return (
         <Wrapper>
             <div className="images">
@@ -50,7 +54,7 @@ const CurrentUserStoryTemplateComponent = ({ userName, addStoryIcon }) => {
                     alt="Add story"
                 />
             </div>
-            <p>{userName}</p>
+            <p onClick={() => navigateToUserProfilePage(userName)}>Your story</p>
         </Wrapper>
     );
 };

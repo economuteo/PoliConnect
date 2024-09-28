@@ -8,7 +8,6 @@ import { FreeMode, Pagination } from "swiper/modules";
 
 import Wrapper from "../assets/wrappers/StoriesComponent";
 
-import Jacob from "../assets/images/user.png";
 import AddStoryIcon from "../assets/images/add-story-icon.png";
 
 import "swiper/css";
@@ -18,12 +17,14 @@ import customFetch from "../utils/customFetch";
 
 export const getStoriesOfFollowedUsersLoader = async () => {
     const response = await customFetch.get("/stories/getStoriesOfFollowingUsers");
-    const followedUsersStoriesInfo = response.data.followedUsersStoriesInfo;
-    return followedUsersStoriesInfo;
+    const followedUsers = response.data.followedUsers;
+    const currentUserUsername = response.data.currentUserUsername;
+    return { currentUserUsername, followedUsersStoriesInfo };
 };
 
 const StoriesComponent = () => {
     const { getStoriesOfFollowedUsers } = useLoaderData();
+    const { currentUser, followedUsers } = getStoriesOfFollowedUsers;
 
     return (
         <Wrapper>
@@ -38,17 +39,16 @@ const StoriesComponent = () => {
                 className="mySwiper">
                 <SwiperSlide>
                     <CurrentUserStoryTemplateComponent
-                        userProfileImage={Jacob}
-                        userName={"Your story"}
+                        userName={currentUser}
                         addStoryIcon={AddStoryIcon}
                     />
                 </SwiperSlide>
-                {getStoriesOfFollowedUsers.map((userData, index) => (
+                {followedUsers.map((followedUser, index) => (
                     <SwiperSlide key={index}>
                         <UserStoryTemplateComponent
-                            userProfileImage={userData.profileImage}
-                            userName={userData.username}
-                            userId={userData._id}
+                            userProfileImage={followedUser.profileImage}
+                            userName={followedUser.username}
+                            userId={followedUser._id}
                         />
                     </SwiperSlide>
                 ))}

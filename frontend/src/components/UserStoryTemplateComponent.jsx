@@ -23,6 +23,10 @@ const UserStoryTemplateComponent = ({ userName, userProfileImage, userId }) => {
         }
     };
 
+    const navigateToUserProfilePage = (userName) => {
+        navigate(`/feed/userProfile/${userName}`);
+    };
+
     return (
         <Wrapper>
             <div className="images">
@@ -33,7 +37,7 @@ const UserStoryTemplateComponent = ({ userName, userProfileImage, userId }) => {
                     alt="UserPhoto"
                 />
             </div>
-            <p>{userName}</p>
+            <p onClick={() => navigateToUserProfilePage(userName)}>{userName}</p>
         </Wrapper>
     );
 };

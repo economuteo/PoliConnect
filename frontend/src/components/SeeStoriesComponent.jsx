@@ -13,7 +13,10 @@ const SeeStoriesComponent = () => {
 
     const { userStoriesUrls } = useContext(AppContext);
     const stories = userStoriesUrls;
+
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleDeleteStory = () => {};
 
     const handleOpenOptionsModal = () => {
         setIsModalOpen(true);
@@ -47,7 +50,7 @@ const SeeStoriesComponent = () => {
             {isModalOpen && (
                 <div className="modal" onClick={handleCloseOptionsModal}>
                     <div className="modalContent">
-                        <div className="option">
+                        <div className="option" onClick={handleDeleteStory}>
                             <p id="deleteText">Delete Story</p>
                         </div>
                     </div>
