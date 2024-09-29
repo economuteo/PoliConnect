@@ -6,13 +6,15 @@ import customFetch from "../utils/customFetch";
 import Wrapper from "../assets/wrappers/UserStoryTemplateComponent";
 import { AppContext } from "../contexts/AppContext";
 
+import AddStoryIcon from "../assets/images/add-story-icon.png";
+
 export const userProfileImageLoader = async () => {
     const response = await customFetch.get("/users/specificUser");
     const currentUserProfileImage = response.data.profileImage;
     return currentUserProfileImage;
 };
 
-const CurrentUserStoryTemplateComponent = ({ userName, addStoryIcon }) => {
+const CurrentUserStoryTemplateComponent = ({ user }) => {
     const navigate = useNavigate();
     const { userProfileImage } = useLoaderData();
     const { setUserStoriesUrls } = useContext(AppContext);
@@ -35,7 +37,7 @@ const CurrentUserStoryTemplateComponent = ({ userName, addStoryIcon }) => {
     };
 
     const navigateToUserProfilePage = (userName) => {
-        navigate(`/feed/userProfile/${userName}`);
+        navigate(`/feed/userProfile/${userName}`, { state: { user } });
     };
 
     return (
@@ -49,12 +51,12 @@ const CurrentUserStoryTemplateComponent = ({ userName, addStoryIcon }) => {
                 />
                 <img
                     onClick={handleAddStory}
-                    src={addStoryIcon}
+                    src={AddStoryIcon}
                     className="addStoryIcon"
                     alt="Add story"
                 />
             </div>
-            <p onClick={() => navigateToUserProfilePage(userName)}>Your story</p>
+            <p onClick={() => navigateToUserProfilePage(user.username)}>Your story</p>
         </Wrapper>
     );
 };

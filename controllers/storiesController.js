@@ -79,7 +79,6 @@ export const getStoriesOfFollowingUsers = async (req, res) => {
 
         if (followedUserStories.length !== 0) {
             const followedUser = await User.findById(followedUserId);
-            followedUser.stories = followedUserStories;
             followedUsers.push(followedUser);
         }
     }

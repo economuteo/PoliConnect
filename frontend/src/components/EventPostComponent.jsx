@@ -116,8 +116,6 @@ const EventPostComponent = ({ eventPost }) => {
         setIsApiCallInProgress2(true);
 
         try {
-            console.log(hasJoined);
-
             if (hasJoined) {
                 const response = await customFetch.post("/participants/leaveEvent", {
                     eventId: post._id,

@@ -8,8 +8,6 @@ import { FreeMode, Pagination } from "swiper/modules";
 
 import Wrapper from "../assets/wrappers/StoriesComponent";
 
-import AddStoryIcon from "../assets/images/add-story-icon.png";
-
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/pagination";
@@ -18,8 +16,8 @@ import customFetch from "../utils/customFetch";
 export const getStoriesOfFollowedUsersLoader = async () => {
     const response = await customFetch.get("/stories/getStoriesOfFollowingUsers");
     const followedUsers = response.data.followedUsers;
-    const currentUserUsername = response.data.currentUserUsername;
-    return { currentUserUsername, followedUsersStoriesInfo };
+    const currentUser = response.data.currentUser;
+    return { currentUser, followedUsers };
 };
 
 const StoriesComponent = () => {
@@ -38,18 +36,11 @@ const StoriesComponent = () => {
                 slidesPerView="auto"
                 className="mySwiper">
                 <SwiperSlide>
-                    <CurrentUserStoryTemplateComponent
-                        userName={currentUser}
-                        addStoryIcon={AddStoryIcon}
-                    />
+                    <CurrentUserStoryTemplateComponent user={currentUser} />
                 </SwiperSlide>
                 {followedUsers.map((followedUser, index) => (
                     <SwiperSlide key={index}>
-                        <UserStoryTemplateComponent
-                            userProfileImage={followedUser.profileImage}
-                            userName={followedUser.username}
-                            userId={followedUser._id}
-                        />
+                        <UserStoryTemplateComponent user={followedUser} />
                     </SwiperSlide>
                 ))}
             </Swiper>
