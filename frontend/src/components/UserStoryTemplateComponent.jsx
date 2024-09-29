@@ -24,7 +24,7 @@ const UserStoryTemplateComponent = ({ user }) => {
     };
 
     const navigateToUserProfilePage = (userName) => {
-        navigate(`/feed/userProfile/${userName}`);
+        navigate(`/feed/userProfile/${userName}`, { state: { user } });
     };
 
     return (
