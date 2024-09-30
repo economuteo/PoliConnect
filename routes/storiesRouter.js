@@ -3,6 +3,7 @@ const router = Router();
 
 import {
     addStory,
+    deleteStory,
     getUserStories,
     getCurrentUserStories,
     getStoriesOfFollowingUsers,
@@ -15,6 +16,6 @@ router.get("/getCurrentUserStories", getCurrentUserStories);
 router.get("/getStoriesOfFollowingUsers", getStoriesOfFollowingUsers);
 
 router.post("/addStory", upload.single("story"), addStory);
-// router.post("/removeStory", removeStory);
+router.post("/deleteStory", deleteStory);
 
 export default router;

@@ -35,6 +35,18 @@ export const addStory = async (req, res) => {
     }
 };
 
+export const deleteStory = async (req, res) => {
+    const storyURL = req.body.storyURL;
+
+    const story = await Story.findOneAndDelete({ mediaUrl: storyURL });
+
+    if (!story) {
+        throw new NotFoundError("Story not found!");
+    }
+
+    res.status(StatusCodes.OK).json({ msg: "Story removed successfully!" });
+};
+
 export const getCurrentUserStories = async (req, res) => {
     const currentUser = await getCurrentUserUsingToken(req);
 
@@ -79,6 +91,7 @@ export const getStoriesOfFollowingUsers = async (req, res) => {
 
         if (followedUserStories.length !== 0) {
             const followedUser = await User.findById(followedUserId);
+            followedUser.stories = followedUserStories;
             followedUsers.push(followedUser);
         }
     }

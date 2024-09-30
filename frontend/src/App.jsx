@@ -50,7 +50,7 @@ import { isUserFollowedLoader } from "./components/UserProfileComponent.jsx";
 import { AppProvider } from "./contexts/AppContext";
 
 const combinedLoader = async () => {
-    const [userProfileImage, getStoriesOfFollowedUsers, firstPostLoader] = await Promise.all([
+    const [userProfileImage, getStoriesOfFollowedUsers] = await Promise.all([
         userProfileImageLoader(),
         getStoriesOfFollowedUsersLoader(),
     ]);
@@ -58,7 +58,6 @@ const combinedLoader = async () => {
     return {
         userProfileImage,
         getStoriesOfFollowedUsers,
-        firstPostLoader,
     };
 };
 
