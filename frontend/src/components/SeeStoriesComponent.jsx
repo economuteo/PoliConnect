@@ -1,8 +1,7 @@
 import { useContext, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { redirect, useLocation } from "react-router-dom";
 import Stories from "react-insta-stories";
 
-import { AppContext } from "../contexts/AppContext";
 import { ReactComponent as MoreIcon } from "../assets/images/more-icon.svg";
 
 import Wrapper from "../assets/wrappers/SeeStories";
@@ -11,9 +10,8 @@ import customFetch from "../utils/customFetch";
 const SeeStoriesComponent = () => {
     const location = useLocation();
     const [isCurrentUser, setIsCurrentUser] = useState(location.state?.isCurrentUser || false);
-    const [refresh, setRefresh] = useState(false);
-    const { userStoriesUrls, setUserStoriesUrls } = useContext(AppContext);
-    const stories = userStoriesUrls;
+    const [stories, setStories] = location.state?.stories || [];
+    console.log(stories);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isPaused, setIsPaused] = useState(false);
@@ -26,9 +24,12 @@ const SeeStoriesComponent = () => {
         // Delete that story from the database
         setIsModalOpen(false);
         await customFetch.post("/stories/deleteStory", { storyURL: specificStoryUrl });
-        setRefresh(!refresh);
+        setStories(stories.filter((storyUrl) => storyUrl !== specificStoryUrl));
 
         // Redirect to other page
+        if (stories.length === 0) {
+            redirect("/feed");
+        }
     };
 
     const handleOpenOptionsModal = () => {

@@ -80,7 +80,8 @@ export const getUserStories = async (req, res) => {
 export const getStoriesOfFollowingUsers = async (req, res) => {
     const currentUser = await getCurrentUserUsingToken(req);
     const currentUserStories = await Story.find({ user: currentUser._id });
-    currentUser.stories = currentUserStories;
+    const currentUserMediaURLs = currentUserStories.map((story) => story.mediaUrl);
+    currentUser.currentUserMediaURLs = currentUserMediaURLs;
 
     const followedUsersIds = currentUser.following;
 
@@ -93,7 +94,9 @@ export const getStoriesOfFollowingUsers = async (req, res) => {
 
         if (followedUserStories.length !== 0) {
             const followedUser = await User.findById(followedUserId);
-            followedUser.stories = followedUserStories;
+            const followedUserMediaURLs = followedUserStories.map((story) => story.mediaUrl);
+            followedUser.followedUserMediaURLs = followedUserMediaURLs;
+
             followedUsers.push(followedUser);
         }
     }

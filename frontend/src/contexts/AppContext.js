@@ -22,9 +22,6 @@ export const AppProvider = ({ children }) => {
     // Finish story component
     const [isTextVisible, setIsTextVisible] = useState(false);
 
-    // Stories URL
-    const [userStoriesUrls, setUserStoriesUrls] = useState([]);
-
     return (
         <AppContext.Provider
             value={{
@@ -38,8 +35,6 @@ export const AppProvider = ({ children }) => {
                 setFile,
                 isTextVisible,
                 setIsTextVisible,
-                userStoriesUrls,
-                setUserStoriesUrls,
             }}>
             {children}
         </AppContext.Provider>

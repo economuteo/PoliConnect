@@ -4,7 +4,6 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 import customFetch from "../utils/customFetch";
 
 import Wrapper from "../assets/wrappers/UserStoryTemplateComponent";
-import { AppContext } from "../contexts/AppContext";
 
 import AddStoryIcon from "../assets/images/add-story-icon.png";
 
@@ -17,19 +16,9 @@ export const userProfileImageLoader = async () => {
 const CurrentUserStoryTemplateComponent = ({ user }) => {
     const navigate = useNavigate();
     const { userProfileImage } = useLoaderData();
-    const { setUserStoriesUrls } = useContext(AppContext);
 
     const handleSeeStory = async () => {
-        const response = await customFetch.get("/stories/getCurrentUserStories");
-        const userStories = response.data;
-        const userStoriesURLs = [];
-        for (let i = 0; i < userStories.length; i++) {
-            userStoriesURLs.push(userStories[i].mediaUrl);
-        }
-        if (userStoriesURLs.length !== 0) {
-            setUserStoriesUrls(userStoriesURLs);
-            navigate("/stories", { state: { isCurrentUser: true } });
-        }
+        navigate("/stories", { state: { isCurrentUser: true, stories: user.stories } });
     };
 
     const handleAddStory = () => {
