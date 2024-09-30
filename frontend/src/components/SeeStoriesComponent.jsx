@@ -1,5 +1,5 @@
-import { useContext, useState } from "react";
-import { redirect, useLocation } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { redirect, useLocation, useNavigate } from "react-router-dom";
 import Stories from "react-insta-stories";
 
 import { ReactComponent as MoreIcon } from "../assets/images/more-icon.svg";
@@ -9,25 +9,24 @@ import customFetch from "../utils/customFetch";
 
 const SeeStoriesComponent = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const [isCurrentUser, setIsCurrentUser] = useState(location.state?.isCurrentUser || false);
-    const [stories, setStories] = useState(location.state?.stories || []);
+    const [stories, setStories] = useState(location.state?.stories);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isPaused, setIsPaused] = useState(false);
     const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
 
+    useEffect(() => {
+        console.log("Updated stories:", stories);
+    }, [stories]);
+
     const handleDeleteStory = async () => {
-        // Get specific story
         const specificStoryUrl = stories[currentStoryIndex];
-
-        // Delete that story from the database
         setIsModalOpen(false);
+        setIsPaused(true);
         await customFetch.post("/stories/deleteStory", { storyURL: specificStoryUrl });
-        setStories(stories.filter((storyUrl) => storyUrl !== specificStoryUrl));
-
-        // Redirect to other page
-        if (stories.length === 0) {
-            redirect("/feed");
-        }
+        setIsPaused(false);
+        navigate("/feed");
     };
 
     const handleOpenOptionsModal = () => {
@@ -46,15 +45,19 @@ const SeeStoriesComponent = () => {
 
     return (
         <Wrapper>
-            <Stories
-                width={"100vw"}
-                height={"90vh"}
-                className="stories"
-                stories={stories}
-                defaultInterval={2000}
-                isPaused={isPaused}
-                onStoryStart={handleStoryStart}
-            />
+            {stories.length > 0 ? (
+                <Stories
+                    width={"100vw"}
+                    height={"90vh"}
+                    className="stories"
+                    stories={stories}
+                    defaultInterval={2000}
+                    isPaused={isPaused}
+                    onStoryStart={handleStoryStart}
+                />
+            ) : (
+                <div>Loading stories...</div>
+            )}
             {isCurrentUser && (
                 <div className="storyFooter">
                     <div
