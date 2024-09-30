@@ -79,6 +79,7 @@ export const getUserStories = async (req, res) => {
 
 export const getStoriesOfFollowingUsers = async (req, res) => {
     const currentUser = await getCurrentUserUsingToken(req);
+    const currentUserStories = await Story.find({ user: currentUser._id });
 
     const followedUsersIds = currentUser.following;
 
