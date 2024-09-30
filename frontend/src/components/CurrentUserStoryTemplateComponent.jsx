@@ -18,7 +18,7 @@ const CurrentUserStoryTemplateComponent = ({ user }) => {
     const { userProfileImage } = useLoaderData();
 
     const handleSeeStory = async () => {
-        navigate("/stories", { state: { isCurrentUser: true, stories: user.stories } });
+        navigate("/stories", { state: { isCurrentUser: true, stories: user.storiesMediaURLs } });
     };
 
     const handleAddStory = () => {

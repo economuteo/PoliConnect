@@ -1,7 +1,4 @@
-import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-
-import customFetch from "../utils/customFetch";
 
 import Wrapper from "../assets/wrappers/UserStoryTemplateComponent";
 
@@ -9,7 +6,7 @@ const UserStoryTemplateComponent = ({ user }) => {
     const navigate = useNavigate();
 
     const handleSeeStory = async () => {
-        navigate("/stories", { state: { stories: user.stories } });
+        navigate("/stories", { state: { stories: user.storiesMediaURLs } });
     };
 
     const navigateToUserProfilePage = (userName) => {

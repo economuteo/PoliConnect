@@ -10,9 +10,7 @@ import customFetch from "../utils/customFetch";
 const SeeStoriesComponent = () => {
     const location = useLocation();
     const [isCurrentUser, setIsCurrentUser] = useState(location.state?.isCurrentUser || false);
-    const [stories, setStories] = location.state?.stories || [];
-    console.log(stories);
-
+    const [stories, setStories] = useState(location.state?.stories || []);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isPaused, setIsPaused] = useState(false);
     const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
