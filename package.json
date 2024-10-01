@@ -11,9 +11,7 @@
         "client": "cd frontend && npm start",
         "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
         "data:import": "node seeder",
-        "data:destroy": "node seeder -d",
-        "stories:import": "node storySeeder",
-        "stories:destroy": "node storySeeder -d"
+        "data:destroy": "node seeder -d"
     },
     "keywords": [],
     "author": "",

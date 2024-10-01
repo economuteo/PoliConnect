@@ -4,8 +4,8 @@ import PhotoPost from "./models/PhotoPostModel.js";
 import Story from "./models/StoryModel.js";
 
 import users from "./data/users.js";
+import {stories} from "./data/stories.js";
 import { events, photoPosts } from "./data/posts.js";
-import stories from "./data/stories.js";
 
 import mongoose from "mongoose";
 import dotenv from "dotenv";
