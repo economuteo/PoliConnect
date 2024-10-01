@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import { useLoaderData, useNavigate } from "react-router-dom";
 
 import customFetch from "../utils/customFetch";
