@@ -1,6 +1,9 @@
 import { StatusCodes } from "http-status-codes";
+
 import PhotoPost from "../models/PhotoPostModel.js";
 import Event from "../models/EventModel.js";
+import Base from "../models/BaseModel.js";
+
 import { NotFoundError, UnauthenticatedError } from "../errors/customErrors.js";
 import { getCurrentUserUsingToken } from "./userController.js";
 import { formatImage } from "../middleware/multerMiddleware.js";
@@ -123,6 +126,34 @@ export const getSpecificPost = async (req, res, next) => {
     }
 };
 
+export const getFirstPostForTheCurrentUser = async (req, res) => {
+    try {
+        const currentUser = await getCurrentUserUsingToken(req);
+        const currentUserObjectId = new mongoose.Types.ObjectId(currentUser._id);
+
+        if (!currentUser) {
+            throw new UnauthenticatedError("Token expired!");
+        }
+
+        const usersFollowed = currentUser.following;
+        const usersToLookFor = [...usersFollowed, currentUserObjectId];
+
+        const firstPost = await Base.findOne({
+            createdBy: { $in: usersToLookFor },
+        })
+            .sort({ createdAt: -1 })
+            .exec();
+
+        if (!firstPost) {
+            throw new NotFoundError("No posts had been made yet!");
+        }
+
+        res.status(StatusCodes.OK).json(firstPost);
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
+    }
+};
+
 export const getAllPostsForTheCurrentUser = async (req, res) => {
     try {
         const currentUser = await getCurrentUserUsingToken(req);
@@ -138,7 +169,7 @@ export const getAllPostsForTheCurrentUser = async (req, res) => {
 
         const posts = await Post.find({
             createdBy: { $in: usersToLookFor },
-            typeOfPost: { $in: ["EventPost", "PhotoPost"] }
+            typeOfPost: { $in: ["EventPost", "PhotoPost"] },
         }).exec();
 
         if (posts.length === 0) {

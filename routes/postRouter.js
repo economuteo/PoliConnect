@@ -4,6 +4,7 @@ import {
     addPhotoPost,
     getFirstPost,
     getSpecificPost,
+    getFirstPostForTheCurrentUser,
     getAllPostsForTheCurrentUser,
 } from "../controllers/postController.js";
 
@@ -14,6 +15,7 @@ const router = Router();
 // Get posts
 router.get("/firstPost", getFirstPost);
 router.get("/specificPost", getSpecificPost);
+router.get("/getFirstPostForTheCurrentUser", getFirstPostForTheCurrentUser);
 router.get("/getAllPostsForTheCurrentUser", getAllPostsForTheCurrentUser);
 
 // Add posts

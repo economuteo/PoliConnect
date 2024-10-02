@@ -51,14 +51,16 @@ import { firstPostLoader } from "./components/PostsComponent.jsx";
 import { AppProvider } from "./contexts/AppContext";
 
 const combinedLoader = async () => {
-    const [userProfileImage, getStoriesOfFollowedUsers] = await Promise.all([
+    const [userProfileImage, getStoriesOfFollowedUsers, mostRecentPost] = await Promise.all([
         userProfileImageLoader(),
         getStoriesOfFollowedUsersLoader(),
+        firstPostLoader(),
     ]);
 
     return {
         userProfileImage,
         getStoriesOfFollowedUsers,
+        mostRecentPost,
     };
 };
 
