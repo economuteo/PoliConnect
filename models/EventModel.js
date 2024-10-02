@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Base from './BaseModel.js'
 
 const eventSchema = new mongoose.Schema(
     {
@@ -21,53 +22,15 @@ const eventSchema = new mongoose.Schema(
             trim: true,
             required: true,
         },
-        eventDescription: {
-            type: String,
-            trim: true,
-            required: true,
-        },
         participants: [
             {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "User",
             },
         ],
-        likes: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "User",
-            },
-        ],
-        comments: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Comment",
-            },
-        ],
-        typeOfPost: {
-            type: String,
-            enum: ["PhotoPost", "EventPost"],
-            required: true,
-        },
-        createdBy: {
-            type: "string",
-            required: true,
-        },
-        userProfileImage: {
-            type: "string",
-            required: true,
-        },
-        userUsername: {
-            type: "string",
-            required: true,
-        },
     },
-    {
-        timestamps: true,
-        collection: "posts",
-    }
 );
 
-const Event = mongoose.model("Event", eventSchema, "posts");
+const Event = Base.discriminator("Event", eventSchema);
 
 export default Event;

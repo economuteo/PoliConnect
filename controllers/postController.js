@@ -136,25 +136,16 @@ export const getAllPostsForTheCurrentUser = async (req, res) => {
 
         const usersToLookFor = [...usersFollowed, currentUserObjectId];
 
-        const events = await Event.find({
+        const posts = await Post.find({
             createdBy: { $in: usersToLookFor },
-            typeOfPost: "EventPost",
+            typeOfPost: { $in: ["EventPost", "PhotoPost"] }
         }).exec();
 
-        const photoPosts = await PhotoPost.find({
-            createdBy: { $in: usersToLookFor },
-            typeOfPost: "PhotoPost",
-        }).exec();
-
-        const combinedResults = [...events, ...photoPosts];
-
-        if (combinedResults.length === 0) {
+        if (posts.length === 0) {
             throw new NotFoundError("No posts had been made yet!");
         }
 
-        combinedResults.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
-        res.status(StatusCodes.OK).json(combinedResults);
+        res.status(StatusCodes.OK).json(posts);
     } catch (error) {
         res.status(StatusCodes.NOT_FOUND).json({ error: error.message });
     }

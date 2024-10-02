@@ -11,21 +11,21 @@ const PostsComponent = () => {
     const [errorMessage, setErrorMessage] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const getAllPostsForTheCurrentUser = async () => {
-            try {
-                const response = await customFetch.get("/posts/getAllPostsForTheCurrentUser");
-                const posts = response.data;
-                setPosts(posts);
-            } catch (err) {
-                setErrorMessage(err.response.data.error);
-            } finally {
-                setLoading(false);
-            }
-        };
+    // useEffect(() => {
+    //     const getAllPostsForTheCurrentUser = async () => {
+    //         try {
+    //             const response = await customFetch.get("/posts/getAllPostsForTheCurrentUser");
+    //             const posts = response.data;
+    //             setPosts(posts);
+    //         } catch (err) {
+    //             setErrorMessage(err.response.data.error);
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     };
 
-        getAllPostsForTheCurrentUser();
-    }, []);
+    //     getAllPostsForTheCurrentUser();
+    // }, []);
 
     if (loading) {
         return (

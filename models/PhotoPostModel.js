@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Base from './BaseModel.js'
 
 const photoPostSchema = new mongoose.Schema(
     {
@@ -6,45 +7,9 @@ const photoPostSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        description: {
-            type: String,
-        },
-        likes: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "User",
-            },
-        ],
-        comments: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Comment",
-            },
-        ],
-        typeOfPost: {
-            type: String,
-            enum: ["PhotoPost", "EventPost"],
-            required: true,
-        },
-        createdBy: {
-            type: "string",
-            required: true,
-        },
-        userProfileImage: {
-            type: "string",
-            required: true,
-        },
-        userUsername: {
-            type: "string",
-            required: true,
-        },
     },
-    {
-        timestamps: true,
-        collection: "posts",
-    }
 );
 
-const PhotoPost = mongoose.model("PhotoPost", photoPostSchema, "posts");
+const PhotoPost = Base.discriminator("PhotoPost", photoPostSchema);
 
 export default PhotoPost;
