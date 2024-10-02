@@ -154,7 +154,7 @@ export const getFirstPostForTheCurrentUser = async (req, res) => {
     }
 };
 
-export const getAllPostsForTheCurrentUser = async (req, res) => {
+export const getNoOfPostsForTheCurrentUser = async (req, res) => {
     try {
         const currentUser = await getCurrentUserUsingToken(req);
         const currentUserObjectId = new mongoose.Types.ObjectId(currentUser._id);
@@ -164,16 +164,24 @@ export const getAllPostsForTheCurrentUser = async (req, res) => {
         }
 
         const usersFollowed = currentUser.following;
-
         const usersToLookFor = [...usersFollowed, currentUserObjectId];
 
-        const posts = await Post.find({
+        // Get pagination parameters from query, default to page 1 and limit 5
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 5;
+        const skip = (page - 1) * limit;
+
+        const posts = await Base.find({
             createdBy: { $in: usersToLookFor },
-            typeOfPost: { $in: ["EventPost", "PhotoPost"] },
-        }).exec();
+        })
+            .sort({ createdAt: -1 })
+            .skip(1)
+            .skip(skip)
+            .limit(limit)
+            .exec();
 
         if (posts.length === 0) {
-            throw new NotFoundError("No posts had been made yet!");
+            throw new NotFoundError("No posts were found!");
         }
 
         res.status(StatusCodes.OK).json(posts);

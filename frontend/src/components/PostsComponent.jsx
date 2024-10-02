@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
 import Wrapper from "../assets/wrappers/PostsComponent";
 
@@ -21,21 +21,22 @@ const PostsComponent = () => {
     const [errorMessage, setErrorMessage] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // useEffect(() => {
-    //     const getAllPostsForTheCurrentUser = async () => {
-    //         try {
-    //             const response = await customFetch.get("/posts/getAllPostsForTheCurrentUser");
-    //             const posts = response.data;
-    //             setPosts(posts);
-    //         } catch (err) {
-    //             setErrorMessage(err.response.data.error);
-    //         } finally {
-    //             setLoading(false);
-    //         }
-    //     };
+    useEffect(() => {
+        const getAllPostsForTheCurrentUser = async () => {
+            try {
+                // Modify link here if back-end remains
+                const response = await customFetch.get("/posts/getNoOfPostsForTheCurrentUser");
+                const posts = response.data;
+                setPosts(posts);
+            } catch (err) {
+                setErrorMessage(err.response.data.error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    //     getAllPostsForTheCurrentUser();
-    // }, []);
+        getAllPostsForTheCurrentUser();
+    }, [firstPost]);
 
     // if (loading) {
     //     return (

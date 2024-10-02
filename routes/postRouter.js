@@ -5,7 +5,7 @@ import {
     getFirstPost,
     getSpecificPost,
     getFirstPostForTheCurrentUser,
-    getAllPostsForTheCurrentUser,
+    getNoOfPostForTheCurrentUser,
 } from "../controllers/postController.js";
 
 import upload from "../middleware/multerMiddleware.js";
@@ -16,7 +16,7 @@ const router = Router();
 router.get("/firstPost", getFirstPost);
 router.get("/specificPost", getSpecificPost);
 router.get("/getFirstPostForTheCurrentUser", getFirstPostForTheCurrentUser);
-router.get("/getAllPostsForTheCurrentUser", getAllPostsForTheCurrentUser);
+router.get("/getNoOfPostForTheCurrentUser", getNoOfPostForTheCurrentUser);
 
 // Add posts
 router.post("/addEvent", addEvent);
