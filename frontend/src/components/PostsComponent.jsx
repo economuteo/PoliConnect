@@ -18,25 +18,38 @@ const PostsComponent = () => {
 
     const [posts, setPosts] = useState([]);
     const [firstPost, setFirstPost] = useState(mostRecentPost);
+    const [isAPICalling, setIsAPICalling] = useState(false);
+    const [stopFetchingPosts, setStopFetchingPosts] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
     const limit = 5; // Number of posts per page
 
     const scrollableRef = useRef(null);
 
     const fetchPosts = useCallback(async () => {
-        try {
-            setLoading(true);
-            const response = await customFetch.get(
-                `/posts/getNoOfPostsForTheCurrentUser?page=${page}&limit=${limit}`
-            );
-            const newPosts = response.data;
-            setPosts((prevPosts) => [...prevPosts, ...newPosts]);
-        } catch (err) {
-            setErrorMessage(err.response?.data?.error || "An error occurred");
-        } finally {
-            setLoading(false);
+        if (!isAPICalling && !stopFetchingPosts) {
+            setIsAPICalling(true);
+            setStopFetchingPosts(true);
+            try {
+                setLoading(true);
+
+                const response = await customFetch.get(
+                    `/posts/getNoOfPostsForTheCurrentUser?page=${page}&limit=${limit}`
+                );
+                const newPosts = response.data;
+
+                if (newPosts.length !== 0) {
+                    setStopFetchingPosts(false);
+                }
+
+                setPosts((prevPosts) => [...prevPosts, ...newPosts]);
+            } catch (err) {
+                setErrorMessage(err.response?.data?.error || "An error occurred");
+            } finally {
+                setLoading(false);
+                setIsAPICalling(false);
+            }
         }
     }, [page]);
 
@@ -49,6 +62,7 @@ const PostsComponent = () => {
         const scrollableElement = scrollableRef.current;
         if (!scrollableElement) return;
 
+        // Fetch condition
         if (
             scrollableElement.scrollTop + scrollableElement.clientHeight >=
             scrollableElement.scrollHeight

@@ -169,6 +169,7 @@ export const getNoOfPostsForTheCurrentUser = async (req, res) => {
         // Get pagination parameters from query, default to page 1 and limit 5
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 5;
+
         let skip;
         if (page === 1) {
             skip = (page - 1) * limit + 1;
@@ -180,14 +181,9 @@ export const getNoOfPostsForTheCurrentUser = async (req, res) => {
             createdBy: { $in: usersToLookFor },
         })
             .sort({ createdAt: -1 })
-            .skip(1)
             .skip(skip)
             .limit(limit)
             .exec();
-
-        if (posts.length === 0) {
-            throw new NotFoundError("No posts were found!");
-        }
 
         res.status(StatusCodes.OK).json(posts);
     } catch (error) {
