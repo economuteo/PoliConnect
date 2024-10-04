@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useRef } from "react";
 import { ClipLoader } from "react-spinners";
 import Wrapper from "../assets/wrappers/PostsComponent";
 
@@ -23,6 +23,8 @@ const PostsComponent = () => {
     const [page, setPage] = useState(1);
     const limit = 5; // Number of posts per page
 
+    const scrollableRef = useRef(null);
+
     const fetchPosts = useCallback(async () => {
         try {
             setLoading(true);
@@ -42,24 +44,35 @@ const PostsComponent = () => {
         fetchPosts();
     }, [fetchPosts]);
 
+    // Handle scroll event to detect when the user has scrolled to the bottom
     const handleScroll = useCallback(() => {
-        if (
-            window.innerHeight + document.documentElement.scrollTop !==
-                document.documentElement.offsetHeight ||
-            loading
-        ) {
-            return;
-        }
-        setPage((prevPage) => prevPage + 1);
-    }, [loading]);
+        console.log("here");
+        const scrollableElement = scrollableRef.current;
+        if (!scrollableElement) return;
 
+        if (
+            scrollableElement.scrollTop + scrollableElement.clientHeight >=
+            scrollableElement.scrollHeight
+        ) {
+            setPage((prevPage) => prevPage + 1);
+        }
+    }, []);
+
+    // Add and remove the scroll event listener
     useEffect(() => {
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
+        const scrollableElement = scrollableRef.current;
+        if (scrollableElement) {
+            scrollableElement.addEventListener("scroll", handleScroll);
+        }
+        return () => {
+            if (scrollableElement) {
+                scrollableElement.removeEventListener("scroll", handleScroll);
+            }
+        };
     }, [handleScroll]);
 
     return (
-        <Wrapper>
+        <Wrapper ref={scrollableRef}>
             {errorMessage && <p id="errorMessage">{errorMessage}</p>}
             {firstPost?.typeOfPost === "EventPost" ? (
                 <EventPostComponent key={firstPost._id} eventPost={firstPost} />
