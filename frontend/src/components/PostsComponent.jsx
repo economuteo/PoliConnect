@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
 import Wrapper from "../assets/wrappers/PostsComponent";
 
@@ -16,41 +16,47 @@ export const firstPostLoader = async () => {
 const PostsComponent = () => {
     const { mostRecentPost } = useLoaderData();
 
-    const [posts, setPosts] = useState(null);
+    const [posts, setPosts] = useState([]);
     const [firstPost, setFirstPost] = useState(mostRecentPost);
     const [errorMessage, setErrorMessage] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(1);
+    const limit = 5; // Number of posts per page
+
+    const fetchPosts = useCallback(async () => {
+        try {
+            setLoading(true);
+            const response = await customFetch.get(
+                `/posts/getNoOfPostsForTheCurrentUser?page=${page}&limit=${limit}`
+            );
+            const newPosts = response.data;
+            setPosts((prevPosts) => [...prevPosts, ...newPosts]);
+        } catch (err) {
+            setErrorMessage(err.response?.data?.error || "An error occurred");
+        } finally {
+            setLoading(false);
+        }
+    }, [page]);
 
     useEffect(() => {
-        const getAllPostsForTheCurrentUser = async () => {
-            try {
-                // Modify link here if back-end remains
-                const response = await customFetch.get("/posts/getNoOfPostsForTheCurrentUser");
-                const posts = response.data;
-                setPosts(posts);
-            } catch (err) {
-                setErrorMessage(err.response.data.error);
-            } finally {
-                setLoading(false);
-            }
-        };
+        fetchPosts();
+    }, [fetchPosts]);
 
-        getAllPostsForTheCurrentUser();
-    }, [firstPost]);
+    const handleScroll = useCallback(() => {
+        if (
+            window.innerHeight + document.documentElement.scrollTop !==
+                document.documentElement.offsetHeight ||
+            loading
+        ) {
+            return;
+        }
+        setPage((prevPage) => prevPage + 1);
+    }, [loading]);
 
-    // if (loading) {
-    //     return (
-    //         <div
-    //             style={{
-    //                 display: "flex",
-    //                 justifyContent: "center",
-    //                 alignItems: "center",
-    //                 height: "100vh",
-    //             }}>
-    //             <ClipLoader color="#ffffff" size={150} />
-    //         </div>
-    //     );
-    // }
+    useEffect(() => {
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [handleScroll]);
 
     return (
         <Wrapper>
@@ -59,6 +65,17 @@ const PostsComponent = () => {
                 <EventPostComponent key={firstPost._id} eventPost={firstPost} />
             ) : (
                 <PhotoPostComponent key={firstPost._id} photoPost={firstPost} />
+            )}
+            {loading && (
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginTop: "20px",
+                    }}>
+                    <ClipLoader color="#ffffff" size={50} />
+                </div>
             )}
             {posts?.map((post) =>
                 post.typeOfPost === "EventPost" ? (

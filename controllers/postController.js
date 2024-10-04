@@ -169,7 +169,12 @@ export const getNoOfPostsForTheCurrentUser = async (req, res) => {
         // Get pagination parameters from query, default to page 1 and limit 5
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 5;
-        const skip = (page - 1) * limit;
+        let skip;
+        if (page === 1) {
+            skip = (page - 1) * limit + 1;
+        } else {
+            skip = (page - 1) * limit;
+        }
 
         const posts = await Base.find({
             createdBy: { $in: usersToLookFor },
