@@ -46,7 +46,6 @@ const PostsComponent = () => {
 
     // Handle scroll event to detect when the user has scrolled to the bottom
     const handleScroll = useCallback(() => {
-        console.log("here");
         const scrollableElement = scrollableRef.current;
         if (!scrollableElement) return;
 
