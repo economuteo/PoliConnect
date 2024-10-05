@@ -10,7 +10,7 @@ const IntoAppPage = () => {
     return (
         <Wrapper>
             <Outlet />
-            {isSmallDevice ? <AppFooterComponent /> : <AppSidebarComponent />}
+            <AppFooterComponent />
         </Wrapper>
     );
 };

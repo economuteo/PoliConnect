@@ -20,6 +20,7 @@ const PostsComponent = () => {
     const [firstPost, setFirstPost] = useState(mostRecentPost);
     const [isAPICalling, setIsAPICalling] = useState(false);
     const [stopFetchingPosts, setStopFetchingPosts] = useState(false);
+    const [hasScrolledToBottom, setHasScrolledToBottom] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
@@ -29,7 +30,6 @@ const PostsComponent = () => {
 
     const fetchPosts = useCallback(async () => {
         if (!isAPICalling && !stopFetchingPosts) {
-            setIsAPICalling(true);
             setStopFetchingPosts(true);
             try {
                 setLoading(true);
@@ -57,10 +57,14 @@ const PostsComponent = () => {
         fetchPosts();
     }, [fetchPosts]);
 
+    useEffect(() => {
+        setHasScrolledToBottom(false);
+    }, [posts]);
+
     // Handle scroll event to detect when the user has scrolled to the bottom
     const handleScroll = useCallback(() => {
         const scrollableElement = scrollableRef.current;
-        if (!scrollableElement) return;
+        if (!scrollableElement || hasScrolledToBottom) return;
 
         // Fetch condition
         if (
@@ -68,8 +72,9 @@ const PostsComponent = () => {
             scrollableElement.scrollHeight
         ) {
             setPage((prevPage) => prevPage + 1);
+            setHasScrolledToBottom(true);
         }
-    }, []);
+    }, [hasScrolledToBottom]);
 
     // Add and remove the scroll event listener
     useEffect(() => {
