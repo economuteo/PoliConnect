@@ -12,6 +12,10 @@ const Wrapper = styled.main`
         font-family: "Poppins Regular";
         color: white;
     }
+
+    &::-webkit-scrollbar {
+        display: none; /* Safari, Chrome, and Edge */
+    }
 `;
 
 export default Wrapper;

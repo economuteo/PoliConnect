@@ -18,6 +18,7 @@ const PostsComponent = () => {
 
     const [posts, setPosts] = useState([]);
     const [firstPost, setFirstPost] = useState(mostRecentPost);
+    const [totalPosts, setTotalPosts] = useState(0);
     const [isAPICalling, setIsAPICalling] = useState(false);
     const [stopFetchingPosts, setStopFetchingPosts] = useState(false);
     const [hasScrolledToBottom, setHasScrolledToBottom] = useState(false);
@@ -37,7 +38,8 @@ const PostsComponent = () => {
                 const response = await customFetch.get(
                     `/posts/getNoOfPostsForTheCurrentUser?page=${page}&limit=${limit}`
                 );
-                const newPosts = response.data;
+                const newPosts = response.data.posts;
+                setTotalPosts(response.data.postsLength);
 
                 if (newPosts.length !== 0) {
                     setStopFetchingPosts(false);
@@ -58,10 +60,11 @@ const PostsComponent = () => {
     }, [fetchPosts]);
 
     useEffect(() => {
-        setHasScrolledToBottom(false);
+        if (posts.length !== totalPosts) {
+            setHasScrolledToBottom(false);
+        }
     }, [posts]);
 
-    // Handle scroll event to detect when the user has scrolled to the bottom
     const handleScroll = useCallback(() => {
         const scrollableElement = scrollableRef.current;
         if (!scrollableElement || hasScrolledToBottom) return;

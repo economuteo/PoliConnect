@@ -172,15 +172,20 @@ export const getNoOfPostsForTheCurrentUser = async (req, res) => {
 
         const skip = (page - 1) * limit + 1;
 
-        const posts = await Base.find({
+        let posts = await Base.find({
             createdBy: { $in: usersToLookFor },
         })
             .sort({ createdAt: -1 })
             .skip(skip)
             .limit(limit);
 
-        console.log(posts);
-        res.status(StatusCodes.OK).json(posts);
+        let postsV2 = await Base.find({
+            createdBy: { $in: usersToLookFor },
+        });
+
+        const postsLength = postsV2.length - 1;
+
+        res.status(StatusCodes.OK).json({ posts, postsLength });
     } catch (error) {
         res.status(StatusCodes.NOT_FOUND).json({ error: error.message });
     }
