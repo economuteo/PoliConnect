@@ -30,4 +30,5 @@ export { default as UserProfilePage } from "./UserProfilePage";
 export { default as CreatePhotoPostPage } from "./CreatePhotoPostPage";
 export { default as ParticipantsPage } from "./ParticipantsPage";
 export { default as LikesPage } from "./LikesPage";
+export { default as AddDescriptionPage } from "./AddDescriptionPage";
 export { default as Error } from "./Error";

@@ -25,7 +25,7 @@ const CreatePhotoPostFooterComponent = ({ file }) => {
                 },
             });
 
-            navigate("/feed");
+            navigate("addDescription");
         } catch (error) {
             console.error(
                 "Error adding photo to story: ",

@@ -43,4 +43,5 @@ export { default as LikesNavbarComponent } from "./LikesNavbarComponent";
 export { default as UsersWhoLikedComponent } from "./UsersWhoLikedComponent";
 export { default as UserShortProfileComponent } from "./UserShortProfileComponent";
 export { default as ParticipantsNavbarComponent } from "./ParticipantsNavbarComponent";
+export { default as AddDescriptionComponent } from "./AddDescriptionComponent";
 export { default as ErrorElement } from "./ErrorElement";

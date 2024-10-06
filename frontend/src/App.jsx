@@ -31,6 +31,7 @@ import {
     StoriesPage,
     Error,
     SearchUsersPage,
+    AddDescriptionPage,
     LikesPage,
     ParticipantsPage,
 } from "./pages";
@@ -215,6 +216,12 @@ const router = createBrowserRouter([
                     {
                         path: "createPhotoPost",
                         element: <CreatePhotoPostPage />,
+                        children: [
+                            {
+                                path: "addDescription",
+                                element: <AddDescriptionPage />,
+                            },
+                        ],
                     },
                 ],
             },
