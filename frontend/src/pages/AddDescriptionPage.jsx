@@ -1,10 +1,11 @@
+import Wrapper from "../assets/wrappers/AddDescriptionPage";
 import { AddDescriptionComponent } from "../components";
 
 const AddDescriptionPage = () => {
     return (
-        <main>
+        <Wrapper>
             <AddDescriptionComponent />
-        </main>
+        </Wrapper>
     );
 };
 

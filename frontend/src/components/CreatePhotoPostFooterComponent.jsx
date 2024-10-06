@@ -15,23 +15,9 @@ const CreatePhotoPostFooterComponent = ({ file }) => {
             return;
         }
 
-        try {
-            const formData = new FormData();
-            formData.append("photoPost", file);
+        const fileURL = URL.createObjectURL(file);
 
-            await customFetch.post("/posts/addPhotoPost", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            });
-
-            navigate("addDescription");
-        } catch (error) {
-            console.error(
-                "Error adding photo to story: ",
-                error.response?.data?.msg || error.message
-            );
-        }
+        navigate("/photo/addDescription", { state: { fileURL } });
     };
 
     return (

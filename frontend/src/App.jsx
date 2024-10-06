@@ -43,6 +43,7 @@ import { action as checkEmailAction } from "./components/EmailComponent.jsx";
 import { action as createUsernameAction } from "./components/CreateUsernameComponent.jsx";
 import { action as saveProfilePhotoAction } from "./components/ProfilePictureUpload.jsx";
 import { action as createEventAction } from "./components/CreateEventComponent.jsx";
+import { action as postPhotoAction } from "./components/AddDescriptionComponent.jsx";
 
 import { getStoriesOfFollowedUsersLoader } from "./components/StoriesComponent.jsx";
 import { userProfileImageLoader } from "./components/CurrentUserStoryTemplateComponent.jsx";
@@ -216,12 +217,11 @@ const router = createBrowserRouter([
                     {
                         path: "createPhotoPost",
                         element: <CreatePhotoPostPage />,
-                        children: [
-                            {
-                                path: "addDescription",
-                                element: <AddDescriptionPage />,
-                            },
-                        ],
+                    },
+                    {
+                        path: "addDescription",
+                        element: <AddDescriptionPage />,
+                        action: postPhotoAction,
                     },
                 ],
             },

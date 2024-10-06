@@ -64,12 +64,15 @@ export const addPhotoPost = async (req, res) => {
             const userProfileImage = currentUser.profileImage;
             const userUsername = currentUser.username;
 
+            const description = req.body.description;
+
             const newPhotoPost = new PhotoPost({
                 mediaUrl: photoPostUrl,
                 typeOfPost: "PhotoPost",
                 createdBy: userId,
                 userProfileImage: userProfileImage,
                 userUsername: userUsername,
+                description: description,
             });
 
             await newPhotoPost.save();
