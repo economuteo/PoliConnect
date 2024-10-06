@@ -1,4 +1,4 @@
-import { Form, useNavigation, useLocation } from "react-router-dom";
+import { Form, useNavigation, useLocation, redirect } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import customFetch from "../utils/customFetch";
@@ -9,13 +9,28 @@ export const action = async ({ request }) => {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
 
-    console.log(data);
+    const fileURL = data.formDataPreviousInfo;
 
-    await customFetch.post("/posts/addPhotoPost", data, {
-        headers: {
-            "Content-Type": "multipart/form-data",
-        },
-    });
+    const response = await fetch(fileURL);
+    const fileBlob = await response.blob();
+    const file = new File([fileBlob], "photoPost", { type: fileBlob.type });
+
+    try {
+        const formData = new FormData();
+        formData.append("photoPost", file);
+        formData.append("description", data.description);
+
+        await customFetch.post("/posts/addPhotoPost", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
+
+        toast.success("Post added successfully!");
+        redirect("/feed");
+    } catch (error) {
+        toast.error(error?.response?.data?.message || "An error occurred");
+    }
 };
 
 const AddDescriptionComponent = () => {
@@ -29,11 +44,9 @@ const AddDescriptionComponent = () => {
         <Wrapper className="container">
             <p className="title">Additional Details</p>
             <Form method="post">
-                <label htmlFor="description" className="description">
-                    Description:
-                </label>
+                <p className="description">Description:</p>
                 <div className="parent">
-                    <textarea type="text" name="fullName" />
+                    <textarea type="text" name="description" />
                 </div>
                 <input type="hidden" name="formDataPreviousInfo" value={fileURL} />
                 <button type="submit" disabled={isSubmitting}>
