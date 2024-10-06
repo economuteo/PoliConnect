@@ -28,9 +28,9 @@ export const action = async ({ request }) => {
                 "Content-Type": "multipart/form-data",
             },
         });
-
         toast.success("Post added successfully!");
-        redirect("/feed");
+
+        return redirect("/feed");
     } catch (error) {
         toast.error(error?.response?.data?.message || "An error occurred");
     }
