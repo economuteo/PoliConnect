@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LikeIconComponent } from "../components";
 
@@ -20,12 +20,7 @@ const PhotoPostComponent = ({ photoPost }) => {
 
     const [lastTap, setLastTap] = useState(0);
 
-    const [showReadMore, setShowReadMore] = useState(false);
-    const [isExpanded, setIsExpanded] = useState(false);
-
     const [isLiked, setIsLiked] = useState(false);
-
-    const descriptionRef = useRef(null);
 
     const goToLikesPage = async (post) => {
         const response = await customFetch.post("/likes/getUsersThatLikedThePost", {
@@ -120,10 +115,6 @@ const PhotoPostComponent = ({ photoPost }) => {
         }
     };
 
-    const toggleReadMore = () => {
-        setIsExpanded(!isExpanded);
-    };
-
     if (loading) {
         return (
             <div
@@ -152,18 +143,10 @@ const PhotoPostComponent = ({ photoPost }) => {
             </div>
             <div className="postDescription">
                 {post.description && (
-                    <span
-                        id="descriptionSection"
-                        className={isExpanded ? "expanded" : ""}
-                        ref={descriptionRef}>
+                    <span id="descriptionSection">
                         <span id="descriptionUserUsername">{post.userUsername}</span>
                         {post.description}
                     </span>
-                )}
-                {!isExpanded && showReadMore && (
-                    <button onClick={toggleReadMore} className="readMoreButton">
-                        Read More
-                    </button>
                 )}
             </div>
             <div className="postReactions">

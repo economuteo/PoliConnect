@@ -32,18 +32,12 @@ const Wrapper = styled.div`
     }
 
     #descriptionSection {
+        display: block;
         padding: 0px 10px;
         font-size: 0.85em;
         font-family: "Poppins Light";
         color: white;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
         white-space: normal;
-        max-height: 3em;
-        transition: max-height 0.3s ease;
     }
 
     #descriptionSection.expanded {

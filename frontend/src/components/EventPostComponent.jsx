@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { LikeIconComponent } from "../components";
 
 import DateIcon from "../assets/images/date-icon.png";
@@ -23,13 +23,10 @@ const EventPostComponent = ({ eventPost }) => {
 
     const [lastTap, setLastTap] = useState(0);
 
-    const [isExpanded, setIsExpanded] = useState(false);
     const [showReadMore, setShowReadMore] = useState(false);
 
     const [isLiked, setIsLiked] = useState(false);
     const [hasJoined, setHasJoined] = useState(false);
-
-    const descriptionRef = useRef(null);
 
     // Extract and format the date
     const eventDate = new Date(eventPost.eventDate);
@@ -189,19 +186,6 @@ const EventPostComponent = ({ eventPost }) => {
         navigate("/participants", { state: { participants } });
     };
 
-    const toggleReadMore = () => {
-        setIsExpanded(!isExpanded);
-    };
-
-    useEffect(() => {
-        if (descriptionRef.current) {
-            const { scrollHeight, clientHeight } = descriptionRef.current;
-            if (scrollHeight > clientHeight) {
-                setShowReadMore(true);
-            }
-        }
-    }, []);
-
     if (loading) {
         return (
             <div
@@ -249,18 +233,10 @@ const EventPostComponent = ({ eventPost }) => {
                 </div>
             </div>
             <div className="eventPostDescription">
-                <span
-                    id="descriptionSection"
-                    className={isExpanded ? "expanded" : ""}
-                    ref={descriptionRef}>
+                <span id="descriptionSection">
                     <span id="descriptionUserUsername">{post.userUsername}</span>
                     {post.eventDescription}
                 </span>
-                {!isExpanded && showReadMore && (
-                    <button onClick={toggleReadMore} className="readMoreButton">
-                        Read More
-                    </button>
-                )}
             </div>
             <div className="postReactions">
                 <div className="reaction">
