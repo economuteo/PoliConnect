@@ -18,7 +18,10 @@ export const action = async ({ request }) => {
     try {
         const formData = new FormData();
         formData.append("photoPost", file);
-        formData.append("description", data.description);
+
+        if (data.description.trim().length > 0) {
+            formData.append("description", data.description);
+        }
 
         await customFetch.post("/posts/addPhotoPost", formData, {
             headers: {

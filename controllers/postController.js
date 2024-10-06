@@ -53,8 +53,6 @@ export const addPhotoPost = async (req, res) => {
 
     try {
         if (req.file) {
-            console.log(req.body);
-
             const file = formatImage(req.file);
             const response = await cloudinary.v2.uploader.upload(file, {
                 folder: "photo-posts",
@@ -74,7 +72,7 @@ export const addPhotoPost = async (req, res) => {
                 createdBy: userId,
                 userProfileImage: userProfileImage,
                 userUsername: userUsername,
-                description: description,
+                ...(description && { description: description }),
             });
 
             await newPhotoPost.save();
