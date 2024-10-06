@@ -232,12 +232,14 @@ const EventPostComponent = ({ eventPost }) => {
                     <p>{hasJoined ? "Joined" : "Join Now"}</p>
                 </div>
             </div>
-            <div className="eventPostDescription">
-                <span id="descriptionSection">
-                    <span id="descriptionUserUsername">{post.userUsername}</span>
-                    {post.eventDescription}
-                </span>
-            </div>
+            {post.eventDescription && (
+                <div className="eventPostDescription">
+                    <span id="descriptionSection">
+                        <span id="descriptionUserUsername">{post.userUsername}</span>
+                        {post.eventDescription}
+                    </span>
+                </div>
+            )}
             <div className="postReactions">
                 <div className="reaction">
                     <img src={ParticipantsIcon} alt="" />

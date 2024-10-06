@@ -141,14 +141,14 @@ const PhotoPostComponent = ({ photoPost }) => {
                 onTouchEnd={() => handleTouch(post)}>
                 <img id="photo" src={post.mediaUrl} alt="" />
             </div>
-            <div className="postDescription">
-                {post.description && (
+            {post.description && (
+                <div className="postDescription">
                     <span id="descriptionSection">
                         <span id="descriptionUserUsername">{post.userUsername}</span>
                         {post.description}
                     </span>
-                )}
-            </div>
+                </div>
+            )}
             <div className="postReactions">
                 <div className="reaction">
                     <div onClick={() => handleLikeUnlike(post)}>
