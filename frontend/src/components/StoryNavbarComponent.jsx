@@ -1,12 +1,16 @@
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import Wrapper from "../assets/wrappers/StoryNavbarComponent";
 
 const StoryNavbarComponent = () => {
     const navigate = useNavigate();
+    const [isNavigating, setIsNavigating] = useState(false);
 
     const handleClose = () => {
-        navigate(-1);
+        if (isNavigating) return;
+
+        setIsNavigating(true);
+        navigate("/feed");
     };
 
     return (
