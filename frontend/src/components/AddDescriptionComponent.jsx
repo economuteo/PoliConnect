@@ -47,9 +47,11 @@ const AddDescriptionComponent = () => {
         <Wrapper className="container">
             <p className="title">Additional Details</p>
             <Form method="post">
-                <p className="description">Description:</p>
-                <div className="parent">
-                    <textarea type="text" name="description" />
+                <div className="descriptionBox">
+                    <p className="description">Description:</p>
+                    <div className="parent">
+                        <textarea type="text" name="description" />
+                    </div>
                 </div>
                 <input type="hidden" name="formDataPreviousInfo" value={fileURL} />
                 <button type="submit" disabled={isSubmitting}>
