@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import customFetch from "../utils/customFetch";
 
 import Wrapper from "../assets/wrappers/CreateEventComponent";
+import { useState } from "react";
 
 export const action = async ({ request }) => {
     const formData = await request.formData();
@@ -19,11 +20,22 @@ export const action = async ({ request }) => {
 };
 
 const CreateEventComponent = () => {
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const handleSubmit = async (event) => {
+        if (isSubmitting) {
+            event.preventDefault();
+            return;
+        }
+
+        setIsSubmitting(true);
+    };
+
     return (
         <Wrapper>
             <div className="eventInner">
                 <p className="title">Create Event</p>
-                <Form method="post">
+                <Form method="post" onSubmit={handleSubmit}>
                     <div className="field">
                         <label htmlFor="name">Name</label>
                         <input type="text" id="name" name="eventName" />
@@ -44,7 +56,9 @@ const CreateEventComponent = () => {
                         <label htmlFor="description">Description</label>
                         <textarea id="description" name="eventDescription" />
                     </div>
-                    <button type="submit">Create Event</button>
+                    <button type="submit" disabled={isSubmitting}>
+                        {isSubmitting ? "Submitting..." : "Create Event"}
+                    </button>
                 </Form>
             </div>
         </Wrapper>
