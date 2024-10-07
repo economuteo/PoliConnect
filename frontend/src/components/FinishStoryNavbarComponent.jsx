@@ -26,7 +26,7 @@ const FinishStoryNavbarComponent = () => {
         <Wrapper className="container">
             <div className={`initialNav ${isInitialNavVisible ? "fade-in" : "fade-out"}`}>
                 <span className="closeButton" onClick={handleClose}></span>
-                <img className="addTextButton" src={AddTextIcon} onClick={handleAddText}></img>
+                {/* <img className="addTextButton" src={AddTextIcon} onClick={handleAddText}></img> */}
             </div>
             <div className={`editTextNav ${isInitialNavVisible ? "fade-out" : "fade-in"}`}>
                 <p onClick={handleAddText}>Done</p>
