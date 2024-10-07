@@ -41,8 +41,6 @@ const FinishStoryFooterComponent = () => {
                 "Error adding photo to story: ",
                 error.response?.data?.msg || error.message
             );
-        } finally {
-            setIsSubmitting(false);
         }
     };
 
