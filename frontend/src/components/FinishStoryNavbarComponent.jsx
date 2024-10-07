@@ -1,5 +1,5 @@
 import { useState, useRef, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import Wrapper from "../assets/wrappers/FinishStoryNavbarComponent.js";
 
@@ -9,12 +9,12 @@ import AddTextIcon from "../assets/images/add-text-icon.png";
 
 const FinishStoryNavbarComponent = () => {
     const { setIsTextVisible } = useContext(AppContext);
-
     const navigate = useNavigate();
+    const location = useLocation();
     const [isInitialNavVisible, setIsInitialNavVisible] = useState(true);
 
     const handleClose = () => {
-        navigate("/feed");
+        navigate("/story");
     };
 
     const handleAddText = () => {
