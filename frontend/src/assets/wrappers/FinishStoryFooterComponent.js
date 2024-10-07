@@ -9,6 +9,16 @@ const Wrapper = styled.footer`
         width: 40px;
         height: 40px;
     }
+    .submitModal {
+        padding: 20px;
+        border-radius: 10px;
+        position: absolute;
+        font-family: "Poppins SemiBold";
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: aliceblue;
+    }
 `;
 
 export default Wrapper;

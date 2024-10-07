@@ -53,6 +53,11 @@ const FinishStoryFooterComponent = () => {
                 src={RightArrow}
                 alt="Right Arrow"
             />
+            {isSubmitting && (
+                <div className="submitModal">
+                    <p>Submitting...</p>
+                </div>
+            )}
         </Wrapper>
     );
 };

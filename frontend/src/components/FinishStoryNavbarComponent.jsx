@@ -14,7 +14,7 @@ const FinishStoryNavbarComponent = () => {
     const [isInitialNavVisible, setIsInitialNavVisible] = useState(true);
 
     const handleClose = () => {
-        navigate(-1);
+        navigate("/feed");
     };
 
     const handleAddText = () => {
