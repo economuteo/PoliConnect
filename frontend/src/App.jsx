@@ -36,7 +36,6 @@ import {
     ParticipantsPage,
 } from "./pages";
 
-import { action as registerAction } from "./components/RegisterFormComponent.jsx";
 import { action as resetPasswordAction } from "./components/ResetPasswordComponent.jsx";
 import { action as checkEmailAction } from "./components/EmailComponent.jsx";
 import { action as createUsernameAction } from "./components/CreateUsernameComponent.jsx";
@@ -87,7 +86,6 @@ const router = createBrowserRouter([
                     {
                         index: true,
                         element: <RegisterPage />,
-                        action: registerAction,
                     },
                     {
                         path: "login",
