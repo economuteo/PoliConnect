@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { HouseIcon, MessagesIcon, NotificationsIcon, ProfileIcon } from "../components";
 import { ReactComponent as PlusIcon } from "../assets/images/plus-icon.svg";
 import Wrapper from "../assets/wrappers/AppFooterComponent";
@@ -11,7 +11,7 @@ const AppFooterComponent = () => {
     const location = useLocation();
 
     const handleClick = (path) => {
-        if (!loading) {
+        if (!loading && location.pathname !== path) {
             setLoading(true);
             navigate(path);
         }
@@ -23,20 +23,20 @@ const AppFooterComponent = () => {
 
     return (
         <Wrapper>
-            <div onClick={() => handleClick("/feed")} disabled={loading}>
+            <div onClick={() => handleClick("/feed")}>
                 <HouseIcon isActive={isActive} />
             </div>
-            <div onClick={() => handleClick("/messages")} disabled={loading}>
+            <div onClick={() => handleClick("/messages")}>
                 <MessagesIcon isActive={isActive} />
             </div>
-            <div onClick={() => handleClick("/addPost")} disabled={loading}>
+            <div onClick={() => handleClick("/addPost")}>
                 <PlusIcon />
             </div>
-            <div onClick={() => handleClick("/notifications")} disabled={loading}>
-                {({ isActive }) => <NotificationsIcon isActive={isActive} />}
+            <div onClick={() => handleClick("/notifications")}>
+                <NotificationsIcon isActive={isActive} />
             </div>
-            <div onClick={() => handleClick("/profile")} disabled={loading}>
-                {({ isActive }) => <ProfileIcon isActive={isActive} />}
+            <div onClick={() => handleClick("/profile")}>
+                <ProfileIcon isActive={isActive} />
             </div>
         </Wrapper>
     );
