@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import customFetch from "../utils/customFetch";
 
 import Wrapper from "../assets/wrappers/AddDescriptionComponent";
+import { useState } from "react";
 
 export const action = async ({ request }) => {
     const formData = await request.formData();
@@ -37,16 +38,24 @@ export const action = async ({ request }) => {
 };
 
 const AddDescriptionComponent = () => {
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const handleSubmit = async (event) => {
+        if (isSubmitting) {
+            event.preventDefault();
+            return;
+        }
+
+        setIsSubmitting(true);
+    };
+
     const location = useLocation();
     const { fileURL } = location.state || {};
-
-    const navigation = useNavigation();
-    const isSubmitting = navigation.state === "submitting";
 
     return (
         <Wrapper className="container">
             <p className="title">Additional Details</p>
-            <Form method="post">
+            <Form method="post" onSubmit={handleSubmit}>
                 <div className="descriptionBox">
                     <p className="description">Description:</p>
                     <div className="parent">
