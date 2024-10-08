@@ -19,7 +19,17 @@ const Wrapper = styled.main`
     }
 
     .didntHave {
-        margin-top: 10px;
+        position: relative;
+        margin-top: 24px;
+        &::before {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 1px;
+            position: absolute;
+            top: -8px;
+            background-color: #acadb9;
+        }
     }
 
     .otherMethodsSection {
@@ -30,16 +40,6 @@ const Wrapper = styled.main`
         flex-direction: column;
         align-items: center;
         gap: 10px;
-        &::before {
-            position: absolute;
-            top: -20px;
-            content: "";
-            display: block;
-            width: 100vw;
-            max-width: 500px;
-            height: 1px;
-            background-color: #acadb9;
-        }
     }
 `;
 

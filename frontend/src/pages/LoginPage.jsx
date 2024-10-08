@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
 import Wrapper from "../assets/wrappers/LoginPage";
 import LoginFormComponent from "../components/LoginFormComponent";
-import GoogleLoginButton from "../components/GoogleLoginButton";
-import { AuthNavbar } from "../components";
+// import GoogleLoginButton from "../components/GoogleLoginButton";
 
 const LoginPage = () => {
     return (
@@ -11,10 +10,10 @@ const LoginPage = () => {
             <p className="didntHave">
                 Create New Account? <Link to="/authentification">Sign up</Link>
             </p>
-            <div className="otherMethodsSection">
+            {/* <div className="otherMethodsSection">
                 <p>Continue With Google</p>
                 <GoogleLoginButton />
-            </div>
+            </div> */}
         </Wrapper>
     );
 };
