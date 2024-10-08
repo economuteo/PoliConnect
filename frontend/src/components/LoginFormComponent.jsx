@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Form, Link, redirect, useNavigation } from "react-router-dom";
+import { Form, Link, redirect, useNavigate, useNavigation } from "react-router-dom";
 import { ReactComponent as Email } from "../assets/images/RegisterForm/email.svg";
 import { ReactComponent as PasswordHidden } from "../assets/images/RegisterForm/passwordHidden.svg";
 import { ReactComponent as PasswordLock } from "../assets/images/RegisterForm/passwordLock.svg";
@@ -10,40 +10,63 @@ import Wrapper from "../assets/wrappers/LoginFormComponent";
 import IOSSwitch from "./IOSSwitch";
 import customFetch from "../utils/customFetch";
 
-export const action = async ({ request }) => {
-    const formData = await request.formData();
-    const data = Object.fromEntries(formData);
+// export const action = async ({ request }) => {
+//     const formData = await request.formData();
+//     const data = Object.fromEntries(formData);
 
-    if (!data.email.endsWith("@stud.fils.upb.ro")) {
-        toast.error("Please use your UPB university email address");
-        return null;
-    }
+//     if (!data.email.endsWith("@stud.fils.upb.ro")) {
+//         toast.error("Please use your UPB university email address");
+//         return null;
+//     }
 
-    try {
-        await customFetch.post("/auth/login", data);
-        toast.success("Login successful!");
-        return redirect("/feed");
-    } catch (error) {
-        toast.error(error?.response?.data?.message || "An error occurred");
-        return error;
-    }
-};
+//     try {
+//         await customFetch.post("/auth/login", data);
+//         toast.success("Login successful!");
+//         return redirect("/feed");
+//     } catch (error) {
+//         toast.error(error?.response?.data?.message || "An error occurred");
+//         return error;
+//     }
+// };
 
 const LoginFormComponent = () => {
     const [showPassword, setShowPassword] = useState(false);
+    const [isLoginSuccessful, setIsLoginSuccessful] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const navigate = useNavigate();
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
 
-    const navigation = useNavigation();
-    const isSubmitting = navigation.state === "submitting";
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        setIsSubmitting(true);
+        const formData = new FormData(event.target);
+        const data = Object.fromEntries(formData);
+
+        if (!data.email.endsWith("@stud.fils.upb.ro")) {
+            toast.error("Please use your UPB university email address");
+            setIsSubmitting(false);
+            return;
+        }
+
+        try {
+            await customFetch.post("/auth/login", data);
+            toast.success("Login successful!");
+            setIsLoginSuccessful(true);
+            navigate("/feed");
+        } catch (error) {
+            toast.error(error?.response?.data?.message || "An error occurred");
+            setIsSubmitting(false);
+        }
+    };
 
     return (
         <>
             <Wrapper>
                 <p className="title">Login Your Account</p>
-                <Form method="post" className="loginForm">
+                <Form method="post" className="loginForm" onSubmit={handleSubmit}>
                     <div className="parent">
                         <input type="email" name="email" placeholder="Enter your email" required />
                         <Email className="childImage" />
@@ -79,7 +102,7 @@ const LoginFormComponent = () => {
                             </span>
                         </div>
                     </div>
-                    <button type="submit" disabled={isSubmitting}>
+                    <button type="submit" disabled={isSubmitting || isLoginSuccessful}>
                         {isSubmitting ? "Submitting..." : "Login"}
                     </button>
                 </Form>
