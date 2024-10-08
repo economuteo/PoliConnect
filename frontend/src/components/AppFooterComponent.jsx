@@ -5,7 +5,6 @@ import { ReactComponent as PlusIcon } from "../assets/images/plus-icon.svg";
 import Wrapper from "../assets/wrappers/AppFooterComponent";
 
 const AppFooterComponent = () => {
-    const [isActive, setIsActive] = useState(false);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
@@ -24,19 +23,19 @@ const AppFooterComponent = () => {
     return (
         <Wrapper>
             <div onClick={() => handleClick("/feed")}>
-                <HouseIcon isActive={isActive} />
+                <HouseIcon isActive={location.pathname === "/feed"} />
             </div>
             <div onClick={() => handleClick("/messages")}>
-                <MessagesIcon isActive={isActive} />
+                <MessagesIcon isActive={location.pathname === "/messages"} />
             </div>
             <div onClick={() => handleClick("/addPost")}>
                 <PlusIcon />
             </div>
             <div onClick={() => handleClick("/notifications")}>
-                <NotificationsIcon isActive={isActive} />
+                <NotificationsIcon isActive={location.pathname === "/notifications"} />
             </div>
             <div onClick={() => handleClick("/profile")}>
-                <ProfileIcon isActive={isActive} />
+                <ProfileIcon isActive={location.pathname === "/profile"} />
             </div>
         </Wrapper>
     );
