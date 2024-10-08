@@ -95,11 +95,13 @@ const PostsComponent = () => {
     return (
         <Wrapper ref={scrollableRef}>
             {errorMessage && <p id="errorMessage">{errorMessage}</p>}
-            {firstPost?.typeOfPost === "EventPost" ? (
-                <EventPostComponent key={firstPost._id} eventPost={firstPost} />
-            ) : (
-                <PhotoPostComponent key={firstPost._id} photoPost={firstPost} />
-            )}
+            {firstPost.typeOfPost ? (
+                firstPost.typeOfPost === "EventPost" ? (
+                    <EventPostComponent key={firstPost._id} eventPost={firstPost} />
+                ) : (
+                    <PhotoPostComponent key={firstPost._id} photoPost={firstPost} />
+                )
+            ) : null}
             {loading && (
                 <div
                     style={{
@@ -111,12 +113,16 @@ const PostsComponent = () => {
                     <ClipLoader color="#ffffff" size={50} />
                 </div>
             )}
-            {posts?.map((post) =>
-                post.typeOfPost === "EventPost" ? (
-                    <EventPostComponent key={post._id} eventPost={post} />
-                ) : (
-                    <PhotoPostComponent key={post._id} photoPost={post} />
+            {posts.length > 0 ? (
+                posts.map((post) =>
+                    post.typeOfPost === "EventPost" ? (
+                        <EventPostComponent key={post._id} eventPost={post} />
+                    ) : (
+                        <PhotoPostComponent key={post._id} photoPost={post} />
+                    )
                 )
+            ) : (
+                <p id="noPostsMessage">No posts were made yet!</p>
             )}
         </Wrapper>
     );

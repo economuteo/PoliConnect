@@ -16,6 +16,12 @@ const Wrapper = styled.main`
     &::-webkit-scrollbar {
         display: none; /* Safari, Chrome, and Edge */
     }
+
+    #noPostsMessage {
+        font-family: "Poppins Regular";
+        color: white;
+        text-align: center;
+    }
 `;
 
 export default Wrapper;

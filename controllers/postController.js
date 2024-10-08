@@ -147,11 +147,11 @@ export const getFirstPostForTheCurrentUser = async (req, res) => {
             .sort({ createdAt: -1 })
             .exec();
 
-        if (!firstPost) {
-            throw new NotFoundError("No posts had been made yet!");
+        if (firstPost) {
+            res.status(StatusCodes.OK).json(firstPost);
+        } else {
+            res.status(StatusCodes.OK).json({});
         }
-
-        res.status(StatusCodes.OK).json(firstPost);
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
     }
@@ -186,7 +186,12 @@ export const getNoOfPostsForTheCurrentUser = async (req, res) => {
             createdBy: { $in: usersToLookFor },
         });
 
-        const postsLength = postsV2.length - 1;
+        let postsLength;
+        if (postsV2.length === 0) {
+            postsLength = postsV2.length;
+        } else {
+            postsLength = postsV2.length - 1;
+        }
 
         res.status(StatusCodes.OK).json({ posts, postsLength });
     } catch (error) {
