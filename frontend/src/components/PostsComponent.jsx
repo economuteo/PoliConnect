@@ -69,7 +69,7 @@ const PostsComponent = () => {
         const scrollableElement = scrollableRef.current;
         if (!scrollableElement || hasScrolledToBottom) return;
 
-        // Fetch condition
+        // New page condition
         if (
             scrollableElement.scrollTop + scrollableElement.clientHeight >=
             scrollableElement.scrollHeight
