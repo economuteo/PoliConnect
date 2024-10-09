@@ -11,6 +11,8 @@ import Wrapper from "../assets/wrappers/PhotoPostComponent";
 import { ClipLoader } from "react-spinners";
 
 const PhotoPostComponent = ({ photoPost }) => {
+    const [navigatedOk, setNavigatedOk] = useState(false);
+
     const navigate = useNavigate();
 
     const [post, setPost] = useState(photoPost);
@@ -21,6 +23,22 @@ const PhotoPostComponent = ({ photoPost }) => {
     const [lastTap, setLastTap] = useState(0);
 
     const [isLiked, setIsLiked] = useState(false);
+
+    const handleNavigateToUserProfile = async () => {
+        if (navigatedOk) return;
+
+        try {
+            setNavigatedOk(true);
+            const response = await customFetch.post(`/users/getSpecificUserByUsername`, {
+                username: post.userUsername,
+            });
+            const specificUser = response.data.user;
+
+            navigate(`userProfile/${post.userUsername}`, { state: { user: specificUser } });
+        } catch (error) {
+            setNavigatedOk(false);
+        }
+    };
 
     const goToLikesPage = async (post) => {
         const response = await customFetch.post("/likes/getUsersThatLikedThePost", {
@@ -131,7 +149,9 @@ const PhotoPostComponent = ({ photoPost }) => {
 
     return (
         <Wrapper>
-            <div className="postCreatorBasicInformation">
+            <div
+                className="postCreatorBasicInformation"
+                onClick={() => handleNavigateToUserProfile()}>
                 <img id="userProfileImage" src={post.userProfileImage} alt="" />
                 <p id="userUsername">{post.userUsername}</p>
             </div>

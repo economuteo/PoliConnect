@@ -24,6 +24,12 @@ export const getSpecificUser = async (req, res) => {
     return userWithoutPassword;
 };
 
+export const getSpecificUserByUsername = async (req, res) => {
+    const user = await User.findOne({ username: req.body.username });
+    const userWithoutPassword = user.toJSON();
+    res.status(StatusCodes.OK).json({ user: userWithoutPassword });
+};
+
 export const checkIsCurrentUser = async (req, res) => {
     try {
         console.log("here");

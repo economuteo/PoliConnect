@@ -3,6 +3,7 @@ import {
     getApplicationStats,
     getCurrentUserUsingToken,
     getSpecificUser,
+    getSpecificUserByUsername,
     checkIsCurrentUser,
     updateUser,
     searchUsers,
@@ -14,6 +15,7 @@ const router = Router();
 
 router.get("/currentUser", getCurrentUserUsingToken);
 router.get("/specificUser", getSpecificUser);
+router.post("/getSpecificUserByUsername", getSpecificUserByUsername);
 router.get("/searchUsers", searchUsers);
 router.get("/admin/appStats", authorizePermissions("admin"), getApplicationStats);
 

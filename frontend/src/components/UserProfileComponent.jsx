@@ -35,7 +35,9 @@ const UserProfilePage = () => {
     };
 
     const location = useLocation();
+
     const { user } = location.state;
+    console.log(user);
 
     const getYearSuffix = (year) => {
         switch (year) {
