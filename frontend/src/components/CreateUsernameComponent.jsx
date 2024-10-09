@@ -1,29 +1,36 @@
-import { Form, redirect } from "react-router-dom";
+import { useState } from "react";
+import { Form, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
 import customFetch from "../utils/customFetch";
-
 import Wrapper from "../assets/wrappers/CreateUsernameComponent";
 
-export const action = async ({ request }) => {
-    const formData = await request.formData();
-    const data = Object.fromEntries(formData);
-
-    try {
-        await customFetch.post("/auth/saveAdditionalInfo", data);
-        return redirect("/authentification/addProfilePicture");
-    } catch (error) {
-        toast.error(error?.response?.data?.message || "An error occurred");
-        return error;
-    }
-};
-
 const CreateUsernameComponent = () => {
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isSaveSuccessful, setIsSaveSuccessful] = useState(false);
+    const navigate = useNavigate();
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        setIsSubmitting(true);
+        const formData = new FormData(event.target);
+        const data = Object.fromEntries(formData);
+
+        try {
+            await customFetch.post("/auth/saveAdditionalInfo", data);
+            toast.success("Information saved successfully!");
+            setIsSaveSuccessful(true);
+            navigate("/authentification/addProfilePicture");
+        } catch (error) {
+            toast.error(error?.response?.data?.message || "An error occurred");
+            setIsSubmitting(false);
+        }
+    };
+
     return (
         <Wrapper>
             <p className="title">Additional Information</p>
             <p className="shortDescription">You can always change it later if you need.</p>
-            <Form method="post">
+            <Form method="post" onSubmit={handleSubmit}>
                 <div className="parent">
                     <input
                         type="text"
@@ -55,8 +62,11 @@ const CreateUsernameComponent = () => {
                     <option value="4">IV</option>
                 </select>
                 <div className="buttons">
-                    <button type="submit" className="emailNextButton">
-                        Next
+                    <button
+                        type="submit"
+                        className="emailNextButton"
+                        disabled={isSubmitting || isSaveSuccessful}>
+                        {isSubmitting ? "Submitting..." : "Next"}
                     </button>
                 </div>
             </Form>

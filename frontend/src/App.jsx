@@ -36,7 +36,6 @@ import {
     ParticipantsPage,
 } from "./pages";
 
-import { action as createUsernameAction } from "./components/CreateUsernameComponent.jsx";
 import { action as saveProfilePhotoAction } from "./components/ProfilePictureUpload.jsx";
 import { action as createEventAction } from "./components/CreateEventComponent.jsx";
 import { action as postPhotoAction } from "./components/AddDescriptionComponent.jsx";
@@ -128,7 +127,6 @@ const router = createBrowserRouter([
                     {
                         path: "saveAdditionalInfo",
                         element: <CreateUsernamePage />,
-                        action: createUsernameAction,
                         errorElement: <Error />,
                     },
                     {
