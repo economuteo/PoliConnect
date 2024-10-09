@@ -14,6 +14,8 @@ import customFetch from "../utils/customFetch";
 import Wrapper from "../assets/wrappers/VerPhoneNumComponent";
 
 const VerEmailComponent = () => {
+    const [isVeryfing, setIsVeryfing] = useState(false);
+    const [wasVerified, setWasVerified] = useState(false);
     const [myCode, setMyCode] = useState("");
 
     const { timeLeft, formatTime, expired, resetTimer } = useCountdownTimer(300);
@@ -24,8 +26,11 @@ const VerEmailComponent = () => {
 
     const handleVerify = async () => {
         try {
+            setIsVeryfing(true);
+
             // Verify the email code
             await customFetch.post("/auth/verifyEmailCode", { myCode: myCode });
+            setWasVerified(true);
 
             // Navigate based on what is needed
             switch (comingFrom) {
@@ -42,6 +47,7 @@ const VerEmailComponent = () => {
             }
         } catch (error) {
             toast.error(error?.response?.data?.message || "An error occurred");
+            setIsVeryfing(false);
         }
     };
 
@@ -70,8 +76,11 @@ const VerEmailComponent = () => {
                 {expired ? "The time has expired!" : `(${formatTime(timeLeft)})`}
             </p>
             <div className="buttonsPart">
-                <button className="buttons verify" onClick={handleVerify}>
-                    Verify
+                <button
+                    className="buttons verify"
+                    onClick={handleVerify}
+                    disabled={isVeryfing || wasVerified}>
+                    {!isVeryfing ? "Verify" : "Verifying..."}
                 </button>
                 <button className="buttons send" onClick={handleSendAgain}>
                     Send Again
