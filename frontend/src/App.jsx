@@ -36,8 +36,6 @@ import {
     ParticipantsPage,
 } from "./pages";
 
-import { action as resetPasswordAction } from "./components/ResetPasswordComponent.jsx";
-import { action as checkEmailAction } from "./components/EmailComponent.jsx";
 import { action as createUsernameAction } from "./components/CreateUsernameComponent.jsx";
 import { action as saveProfilePhotoAction } from "./components/ProfilePictureUpload.jsx";
 import { action as createEventAction } from "./components/CreateEventComponent.jsx";
@@ -101,7 +99,6 @@ const router = createBrowserRouter([
                         path: "resetPassword",
                         element: <ResetPasswordPage />,
                         errorElement: <Error />,
-                        action: resetPasswordAction,
                     },
                     {
                         path: "phoneNumber",
@@ -112,7 +109,6 @@ const router = createBrowserRouter([
                         path: "email",
                         element: <EmailPage />,
                         errorElement: <Error />,
-                        action: checkEmailAction,
                     },
                     {
                         path: "verifyPhoneNumber",
