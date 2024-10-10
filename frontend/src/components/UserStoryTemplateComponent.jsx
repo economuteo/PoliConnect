@@ -7,7 +7,7 @@ const UserStoryTemplateComponent = ({ user }) => {
 
     const handleSeeStory = async () => {
         if (user.storiesMediaURLs && user.storiesMediaURLs.length > 0) {
-            navigate("/stories", { state: { stories: user.storiesMediaURLs } });
+            navigate("/stories", { state: { stories: user.storiesMediaURLs, user: user } });
         }
     };
 

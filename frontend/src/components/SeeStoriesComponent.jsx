@@ -43,8 +43,8 @@ const SeeStoriesComponent = () => {
     return (
         <Wrapper>
             <div className="userInformation">
-                <img src={user.profileImage}></img>
-                <span>{user.username}</span>
+                <img className="userProfileImage" src={user.profileImage}></img>
+                <span className="userName">{user.username}</span>
             </div>
             {stories.length > 0 ? (
                 <Stories

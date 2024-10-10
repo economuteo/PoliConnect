@@ -9,9 +9,24 @@ const Wrapper = styled.main`
     align-items: center;
     background-color: black;
 
+    .userProfileImage {
+        width: 24px;
+        height: 24px;
+    }
+
+    .userName {
+        color: white;
+        font-family: "Poppins Regular";
+    }
+
     .userInformation {
+        z-index: 1;
+        position: absolute;
+        top: 25px;
         width: 100%;
+        padding: 0px 14px;
         display: flex;
+        align-items: center;
         gap: 10px;
     }
 

@@ -90,16 +90,22 @@ export const getStoriesOfFollowingUsers = async (req, res) => {
     for (let i = 0; i < followedUsersIds.length; i++) {
         const followedUserId = followedUsersIds[i];
 
-        const followedUserStories = await Story.find({ user: followedUserId });
+        const followedUserStories = await Story.find({ user: followedUserId }).sort({
+            createdAt: -1,
+        });
 
         if (followedUserStories.length !== 0) {
             let followedUser = await User.findById(followedUserId);
             followedUser = followedUser.toObject();
             const followedUserStoriesMediaURLs = followedUserStories.map((story) => story.mediaUrl);
             followedUser.storiesMediaURLs = followedUserStoriesMediaURLs;
+            followedUser.mostRecentStoryDate = followedUserStories[0].createdAt; // Store the date of the most recent story
             followedUsers.push(followedUser);
         }
     }
+
+    // Sort followed users by the date of their most recent story in descending order
+    followedUsers.sort((a, b) => b.mostRecentStoryDate - a.mostRecentStoryDate);
 
     res.status(StatusCodes.OK).json({ currentUser, followedUsers });
 };

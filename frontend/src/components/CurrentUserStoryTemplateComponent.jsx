@@ -19,7 +19,7 @@ const CurrentUserStoryTemplateComponent = ({ user }) => {
     const handleSeeStory = async () => {
         if (user.storiesMediaURLs && user.storiesMediaURLs.length > 0) {
             navigate("/stories", {
-                state: { isCurrentUser: true, stories: user.storiesMediaURLs },
+                state: { isCurrentUser: true, stories: user.storiesMediaURLs, user: user },
             });
         }
     };

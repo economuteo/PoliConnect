@@ -113,17 +113,20 @@ const PostsComponent = () => {
                     <ClipLoader color="#ffffff" size={50} />
                 </div>
             )}
-            {posts.length > 0 ? (
-                posts.map((post) =>
-                    post.typeOfPost === "EventPost" ? (
-                        <EventPostComponent key={post._id} eventPost={post} />
-                    ) : (
-                        <PhotoPostComponent key={post._id} photoPost={post} />
-                    )
-                )
-            ) : (
+            {posts.length > 0
+                ? posts.map((post) =>
+                      post.typeOfPost === "EventPost" ? (
+                          <EventPostComponent key={post._id} eventPost={post} />
+                      ) : (
+                          <PhotoPostComponent key={post._id} photoPost={post} />
+                      )
+                  )
+                : null}
+            {console.log(firstPost)}
+
+            {posts.length === 0 && !firstPost.typeOfPost ? (
                 <p id="noPostsMessage">No posts were made yet!</p>
-            )}
+            ) : null}
         </Wrapper>
     );
 };
