@@ -4,7 +4,7 @@ import PhotoPost from "./models/PhotoPostModel.js";
 import Story from "./models/StoryModel.js";
 
 import users from "./data/users.js";
-import {stories} from "./data/stories.js";
+import { stories } from "./data/stories.js";
 import { events, photoPosts } from "./data/posts.js";
 
 import mongoose from "mongoose";
@@ -20,8 +20,8 @@ connectDB();
 const importData = async () => {
     try {
         // await User.insertMany(users);
-        await PhotoPost.insertMany(photoPosts);
-        await Event.insertMany(events);
+        // await PhotoPost.insertMany(photoPosts);
+        // await Event.insertMany(events);
         await Story.insertMany(stories);
 
         console.log("Data Imported!".green.inverse);
@@ -35,8 +35,8 @@ const importData = async () => {
 const destroyData = async () => {
     try {
         // await User.deleteMany();
-        await PhotoPost.deleteMany();
-        await Event.deleteMany();
+        // await PhotoPost.deleteMany();
+        // await Event.deleteMany();
         await Story.deleteMany();
 
         console.log("Data Destroyed!".red.inverse);
