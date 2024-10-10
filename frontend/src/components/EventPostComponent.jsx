@@ -13,6 +13,8 @@ import { useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 
 const EventPostComponent = ({ eventPost }) => {
+    const [navigatedOk, setNavigatedOk] = useState(false);
+
     const navigate = useNavigate();
 
     const [post, setPost] = useState(eventPost);
@@ -36,6 +38,22 @@ const EventPostComponent = ({ eventPost }) => {
         month: "long",
         year: "numeric",
     });
+
+    const handleNavigateToUserProfile = async () => {
+        if (navigatedOk) return;
+
+        try {
+            setNavigatedOk(true);
+            const response = await customFetch.post(`/users/getSpecificUserByUsername`, {
+                username: post.userUsername,
+            });
+            const specificUser = response.data.user;
+
+            navigate(`userProfile/${post.userUsername}`, { state: { user: specificUser } });
+        } catch (error) {
+            setNavigatedOk(false);
+        }
+    };
 
     useEffect(() => {
         const getLikeStatus = async () => {
@@ -202,7 +220,9 @@ const EventPostComponent = ({ eventPost }) => {
 
     return (
         <Wrapper>
-            <div className="postCreatorBasicInformation">
+            <div
+                className="postCreatorBasicInformation"
+                onClick={() => handleNavigateToUserProfile()}>
                 <img id="userProfileImage" src={post.userProfileImage} alt="" />
                 <p id="userUsername">{post.userUsername}</p>
             </div>

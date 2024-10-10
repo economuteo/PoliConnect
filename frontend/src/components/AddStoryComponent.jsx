@@ -24,9 +24,7 @@ const AddStoryComponent = () => {
     };
 
     const handleGalleryClick = () => {
-        if (supportsTouch) {
-            galleryInputRef.current.click();
-        }
+        galleryInputRef.current.click();
     };
 
     const handleFileChange = (event) => {

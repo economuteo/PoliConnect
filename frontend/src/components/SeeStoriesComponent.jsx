@@ -11,14 +11,11 @@ const SeeStoriesComponent = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [isCurrentUser, setIsCurrentUser] = useState(location.state?.isCurrentUser || false);
+    const [user, setUser] = useState(location.state?.user);
     const [stories, setStories] = useState(location.state?.stories);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isPaused, setIsPaused] = useState(false);
     const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
-
-    useEffect(() => {
-        console.log("Updated stories:", stories);
-    }, [stories]);
 
     const handleDeleteStory = async () => {
         const specificStoryUrl = stories[currentStoryIndex];
@@ -45,6 +42,10 @@ const SeeStoriesComponent = () => {
 
     return (
         <Wrapper>
+            <div className="userInformation">
+                <img src={user.profileImage}></img>
+                <span>{user.username}</span>
+            </div>
             {stories.length > 0 ? (
                 <Stories
                     width={"100vw"}

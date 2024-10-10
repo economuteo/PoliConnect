@@ -9,6 +9,12 @@ const Wrapper = styled.main`
     align-items: center;
     background-color: black;
 
+    .userInformation {
+        width: 100%;
+        display: flex;
+        gap: 10px;
+    }
+
     .option {
         padding: 0px 10px;
     }
