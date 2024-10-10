@@ -10,12 +10,23 @@ import customFetch from "../utils/customFetch";
 const SeeStoriesComponent = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    const [isNavigating, setIsNavigating] = useState(false);
     const [isCurrentUser, setIsCurrentUser] = useState(location.state?.isCurrentUser || false);
     const [user, setUser] = useState(location.state?.user);
     const [stories, setStories] = useState(location.state?.stories);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isPaused, setIsPaused] = useState(false);
     const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
+
+    const handleClose = () => {
+        if (isNavigating) return;
+        setIsNavigating(true);
+        navigate("/feed");
+    };
+
+    const navigateToUserProfilePage = (userName) => {
+        navigate(`/feed/userProfile/${userName}`, { state: { user } });
+    };
 
     const handleDeleteStory = async () => {
         const specificStoryUrl = stories[currentStoryIndex];
@@ -42,9 +53,14 @@ const SeeStoriesComponent = () => {
 
     return (
         <Wrapper>
-            <div className="userInformation">
-                <img className="userProfileImage" src={user.profileImage}></img>
-                <span className="userName">{user.username}</span>
+            <div className="extraDetails">
+                <div
+                    className="userInformation"
+                    onClick={() => navigateToUserProfilePage(user.username)}>
+                    <img className="userProfileImage" src={user.profileImage}></img>
+                    <span className="userName">{user.username}</span>
+                </div>
+                <div className="closeButton" onClick={() => handleClose()}></div>
             </div>
             {stories.length > 0 ? (
                 <Stories

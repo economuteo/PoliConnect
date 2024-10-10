@@ -9,25 +9,57 @@ const Wrapper = styled.main`
     align-items: center;
     background-color: black;
 
+    .extraDetails {
+        width: 100vw;
+        display: flex;
+        justify-content: space-between;
+        z-index: 2000;
+        position: fixed;
+        top: 25px;
+        padding: 0px 14px;
+    }
+
+    .userInformation {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .closeButton {
+        position: relative;
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 1.75em;
+            height: 2.5px;
+            background-color: white;
+        }
+
+        &::before {
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+
+        &::after {
+            transform: translate(-50%, -50%) rotate(-45deg);
+        }
+    }
+
     .userProfileImage {
         width: 24px;
         height: 24px;
+        border-radius: 50%;
     }
 
     .userName {
         color: white;
         font-family: "Poppins Regular";
-    }
-
-    .userInformation {
-        z-index: 1;
-        position: absolute;
-        top: 25px;
-        width: 100%;
-        padding: 0px 14px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
     }
 
     .option {
