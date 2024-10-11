@@ -24,7 +24,7 @@ const RegisterFormComponent = () => {
         };
         try {
             await customFetch.post("/auth/login", data);
-            toast.success("Take a test drive");
+            toast.success("Take a test!");
             navigate("/feed");
         } catch (error) {
             toast.error(error?.response?.data?.msg);
