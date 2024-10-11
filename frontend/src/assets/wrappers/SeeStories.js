@@ -20,7 +20,7 @@ const Wrapper = styled.main`
         z-index: 2000;
         position: fixed;
         top: 25px;
-        padding: 0px 14px;
+        padding: 0px 16px;
     }
 
     .userInformation {
