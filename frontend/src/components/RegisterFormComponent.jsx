@@ -17,17 +17,35 @@ const RegisterFormComponent = () => {
     const [isRegisterSuccessful, setIsRegisterSuccessful] = useState(false);
     const navigate = useNavigate();
 
-    const loginDemoUser = async () => {
+    const registerDemoUser = async () => {
+        const timestamp = new Date().getTime();
+        const demoEmail = `demo${timestamp}@test.com`;
         const data = {
-            email: "test@test.com",
-            password: "secret123",
+            email: demoEmail,
+            password: "DemoPassword1234",
+            fullName: `Demo User`,
+            username: `demo${timestamp}`,
+            university: "Politehnica University of Bucharest",
+            profile: "Electronics, Telecommunications and Information Technology",
+            year: "4",
+            profileImage:
+                "https://res.cloudinary.com/diydmnphf/image/upload/v1728469939/users-profile-photos/kyttld9zwp8aepuwgr4z.png",
+            bannerImage:
+                "https://res.cloudinary.com/diydmnphf/image/upload/v1726415614/default-banner.png",
         };
+
         try {
-            await customFetch.post("/auth/login", data);
-            toast.success("Take a test!");
-            navigate("/feed");
+            // Create the demo user
+            await customFetch.post("/auth/registerDemoUser", data);
+
+            // // Log in the demo user
+            // await customFetch.post("/auth/login", { email: demoEmail, password: data.password });
+
+            // toast.success("Enjoy the demo!");
+            // sessionStorage.setItem("isDemoUser", "true");
+            // navigate("/feed");
         } catch (error) {
-            toast.error(error?.response?.data?.msg);
+            toast.error(error?.response?.data?.message || "An error occurred");
         }
     };
 
@@ -78,7 +96,7 @@ const RegisterFormComponent = () => {
                         <button type="submit" disabled={isSubmitting || isRegisterSuccessful}>
                             {isSubmitting ? "Submitting..." : "Register"}
                         </button>
-                        <button id="exploreButton" onClick={() => loginDemoUser()}>
+                        <button id="exploreButton" onClick={() => registerDemoUser()}>
                             Explore the app
                         </button>
                     </div>

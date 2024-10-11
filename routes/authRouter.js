@@ -13,6 +13,7 @@ import {
     saveUserPhoto,
     registerRequest,
     registerFinal,
+    registerDemoUser,
 } from "../controllers/authController.js";
 
 import {
@@ -28,6 +29,8 @@ import upload from "../middleware/multerMiddleware.js";
 // Initial auth functionality
 router.post("/registerRequest", validateRegisterInput, registerRequest, sendEmail);
 router.get("/registerFinal", registerFinal);
+router.post("/registerDemoUser", registerDemoUser);
+
 router.post("/login", validateLoginInput, login);
 router.get("/logout", logout);
 router.post("/resetPassword", validateResetPasswordInput, resetPassword);

@@ -63,6 +63,47 @@ export const registerFinal = async (req, res) => {
     res.status(StatusCodes.CREATED).json({ msg: "User created successfully" });
 };
 
+export const registerDemoUser = async (req, res) => {
+    const {
+        email,
+        password,
+        fullName,
+        username,
+        university,
+        profile,
+        year,
+        profileImage,
+        bannerImage,
+    } = req.body;
+
+    try {
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Create the user
+        const newUser = new User({
+            email,
+            password: hashedPassword,
+            fullName,
+            username,
+            university,
+            profile,
+            year,
+            profileImage,
+            bannerImage,
+        });
+
+        // Save the user to the database
+        await newUser.save();
+
+        // Send a success response
+        res.status(201).json({ message: "Demo user created successfully" });
+    } catch (error) {
+        // Send an error response
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
 export const login = async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
 

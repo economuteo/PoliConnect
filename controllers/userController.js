@@ -32,8 +32,6 @@ export const getSpecificUserByUsername = async (req, res) => {
 
 export const checkIsCurrentUser = async (req, res) => {
     try {
-        console.log("here");
-
         const currentUser = await getCurrentUserUsingToken(req);
 
         // 2 options here to find the specific user (by ID or by username)
