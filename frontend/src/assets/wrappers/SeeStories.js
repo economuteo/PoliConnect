@@ -9,6 +9,10 @@ const Wrapper = styled.main`
     align-items: center;
     background-color: black;
 
+    div[style*="display: flex; position: relative; overflow: hidden; align-items: center; width: 100vw; height: 90vh;"] {
+        justify-content: center;
+    }
+
     .extraDetails {
         width: 100vw;
         display: flex;
