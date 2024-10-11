@@ -17,6 +17,20 @@ const RegisterFormComponent = () => {
     const [isRegisterSuccessful, setIsRegisterSuccessful] = useState(false);
     const navigate = useNavigate();
 
+    const loginDemoUser = async () => {
+        const data = {
+            email: "test@test.com",
+            password: "secret123",
+        };
+        try {
+            await customFetch.post("/auth/login", data);
+            toast.success("Take a test drive");
+            navigate("/feed");
+        } catch (error) {
+            toast.error(error?.response?.data?.msg);
+        }
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         setIsSubmitting(true);
@@ -60,9 +74,14 @@ const RegisterFormComponent = () => {
                         <Email className="childImage" />
                     </div>
                     <PasswordComponent />
-                    <button type="submit" disabled={isSubmitting || isRegisterSuccessful}>
-                        {isSubmitting ? "Submitting..." : "Register"}
-                    </button>
+                    <div className="buttons">
+                        <button type="submit" disabled={isSubmitting || isRegisterSuccessful}>
+                            {isSubmitting ? "Submitting..." : "Register"}
+                        </button>
+                        <button id="exploreButton" onClick={() => loginDemoUser()}>
+                            Explore the app
+                        </button>
+                    </div>
                 </Form>
             </Wrapper>
         </>

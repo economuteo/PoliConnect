@@ -26,6 +26,12 @@ const Wrapper = styled.section`
         }
     }
 
+    .buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
     button {
         max-width: 400px;
         border: none;
@@ -42,11 +48,8 @@ const Wrapper = styled.section`
         }
     }
 
-    form {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        margin-top: 2rem;
+    #exploreButton {
+        background-color: green;
     }
 
     .parent {
@@ -68,6 +71,7 @@ const Wrapper = styled.section`
     }
 
     .registrationForm {
+        margin-top: 2rem;
         display: grid;
         gap: 20px;
     }
@@ -87,7 +91,6 @@ const Wrapper = styled.section`
         }
 
         button {
-            margin-top: 20px;
             transform: translateX(50%);
         }
     }
