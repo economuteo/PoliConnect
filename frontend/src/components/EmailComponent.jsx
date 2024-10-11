@@ -16,11 +16,11 @@ const EmailComponent = () => {
         const formData = new FormData(event.target);
         const data = Object.fromEntries(formData);
 
-        if (!data.email.endsWith("@stud.fils.upb.ro")) {
-            toast.error("Please use your UPB university email address");
-            setIsSubmitting(false);
-            return;
-        }
+        // if (!data.email.endsWith("@stud.fils.upb.ro")) {
+        //     toast.error("Please use your UPB university email address");
+        //     setIsSubmitting(false);
+        //     return;
+        // }
 
         try {
             await customFetch.post("/auth/checkEmail", data);

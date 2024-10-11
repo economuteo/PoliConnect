@@ -54,12 +54,12 @@ export const validateRegisterInput = withValidationErrors([
             const user = await User.findOne({ email });
             if (user) throw new BadRequestError("Email already exists");
         })
-        .custom((email) => {
-            if (!email.endsWith("@stud.fils.upb.ro")) {
-                throw new BadRequestError("Email must end with @stud.fils.upb.ro");
-            }
-            return true;
-        })
+        // .custom((email) => {
+        //     if (!email.endsWith("@stud.fils.upb.ro")) {
+        //         throw new BadRequestError("Email must end with @stud.fils.upb.ro");
+        //     }
+        //     return true;
+        // })
         .trim(),
     body("password")
         .notEmpty()
@@ -101,12 +101,12 @@ export const validateUpdateUserInput = withValidationErrors([
                 throw new BadRequestError("Email already exists");
             }
         })
-        .custom((email) => {
-            if (!email.endsWith("@stud.fils.upb.ro")) {
-                throw new BadRequestError("Email must end with @stud.fils.upb.ro");
-            }
-            return true;
-        })
+        // .custom((email) => {
+        //     if (!email.endsWith("@stud.fils.upb.ro")) {
+        //         throw new BadRequestError("Email must end with @stud.fils.upb.ro");
+        //     }
+        //     return true;
+        // })
         .trim(),
 ]);
 
@@ -120,12 +120,12 @@ export const validateEmailInput = withValidationErrors([
             const user = await User.findOne({ email });
             if (!user) throw new NotFoundError("This email is not registered");
         })
-        .custom((email) => {
-            if (!email.endsWith("@stud.fils.upb.ro")) {
-                throw new BadRequestError("Email must end with @stud.fils.upb.ro");
-            }
-            return true;
-        })
+        // .custom((email) => {
+        //     if (!email.endsWith("@stud.fils.upb.ro")) {
+        //         throw new BadRequestError("Email must end with @stud.fils.upb.ro");
+        //     }
+        //     return true;
+        // })
         .trim(),
 ]);
 

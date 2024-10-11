@@ -38,11 +38,11 @@ const RegisterFormComponent = () => {
         const data = Object.fromEntries(formData);
 
         // Validations
-        if (!data.email.endsWith("@stud.fils.upb.ro")) {
-            toast.error("Please use your UPB university email address");
-            setIsSubmitting(false);
-            return;
-        }
+        // if (!data.email.endsWith("@stud.fils.upb.ro")) {
+        //     toast.error("Please use your UPB university email address");
+        //     setIsSubmitting(false);
+        //     return;
+        // }
         if (data.password !== data.confirmPassword) {
             toast.error("Passwords do not match");
             setIsSubmitting(false);
