@@ -29,7 +29,7 @@ const RegisterFormComponent = () => {
             profile: "Electronics, Telecommunications and Information Technology",
             year: "4",
             profileImage:
-                "https://res.cloudinary.com/diydmnphf/image/upload/v1728469939/users-profile-photos/kyttld9zwp8aepuwgr4z.png",
+                "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
             bannerImage:
                 "https://res.cloudinary.com/diydmnphf/image/upload/v1726415614/default-banner.png",
         };
@@ -38,12 +38,9 @@ const RegisterFormComponent = () => {
             // Create the demo user
             await customFetch.post("/auth/registerDemoUser", data);
 
-            // // Log in the demo user
-            // await customFetch.post("/auth/login", { email: demoEmail, password: data.password });
+            navigate("/feed");
 
-            // toast.success("Enjoy the demo!");
-            // sessionStorage.setItem("isDemoUser", "true");
-            // navigate("/feed");
+            toast.success("Enjoy the demo!");
         } catch (error) {
             toast.error(error?.response?.data?.message || "An error occurred");
         }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Form, Link, redirect, useNavigate, useNavigation } from "react-router-dom";
+import { Form, Link, useNavigate } from "react-router-dom";
 import { ReactComponent as Email } from "../assets/images/RegisterForm/email.svg";
 import { ReactComponent as PasswordHidden } from "../assets/images/RegisterForm/passwordHidden.svg";
 import { ReactComponent as PasswordLock } from "../assets/images/RegisterForm/passwordLock.svg";
@@ -9,25 +9,6 @@ import "react-toastify/dist/ReactToastify.css";
 import Wrapper from "../assets/wrappers/LoginFormComponent";
 import IOSSwitch from "./IOSSwitch";
 import customFetch from "../utils/customFetch";
-
-// export const action = async ({ request }) => {
-//     const formData = await request.formData();
-//     const data = Object.fromEntries(formData);
-
-//     if (!data.email.endsWith("@stud.fils.upb.ro")) {
-//         toast.error("Please use your UPB university email address");
-//         return null;
-//     }
-
-//     try {
-//         await customFetch.post("/auth/login", data);
-//         toast.success("Login successful!");
-//         return redirect("/feed");
-//     } catch (error) {
-//         toast.error(error?.response?.data?.message || "An error occurred");
-//         return error;
-//     }
-// };
 
 const LoginFormComponent = () => {
     const [showPassword, setShowPassword] = useState(false);

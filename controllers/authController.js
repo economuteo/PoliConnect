@@ -78,7 +78,7 @@ export const registerDemoUser = async (req, res) => {
 
     try {
         // Hash the password
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await hashPassword(password);
 
         // Create the user
         const newUser = new User({
@@ -96,10 +96,19 @@ export const registerDemoUser = async (req, res) => {
         // Save the user to the database
         await newUser.save();
 
-        // Send a success response
+        const token = createJWT({ userId: newUser._id, role: newUser.role });
+
+        const oneDay = 1000 * 60 * 60 * 24;
+
+        // Cookie
+        res.cookie("token", token, {
+            httpOnly: true,
+            expires: new Date(Date.now() + oneDay),
+            secure: process.env.NODE_ENV === "production",
+        });
+
         res.status(201).json({ message: "Demo user created successfully" });
     } catch (error) {
-        // Send an error response
         res.status(500).json({ message: "Server error", error: error.message });
     }
 };
