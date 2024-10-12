@@ -261,9 +261,9 @@ const EventPostComponent = ({ eventPost }) => {
                 </div>
             )}
             <div className="postReactions">
-                <div className="reaction">
+                <div className="reaction" onClick={() => goToParticipantsPage(post)}>
                     <img src={ParticipantsIcon} alt="" />
-                    <p onClick={() => goToParticipantsPage(post)}>{post.participants.length}</p>
+                    <p>{post.participants.length}</p>
                 </div>
                 <div className="reaction">
                     <div onClick={() => handleLikeUnlike(post)}>
