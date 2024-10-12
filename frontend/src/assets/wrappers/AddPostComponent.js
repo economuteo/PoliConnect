@@ -36,6 +36,15 @@ const Wrapper = styled.section`
         width: 50px;
         height: 50px;
     }
+
+    .fileInputLabel {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+    }
 `;
 
 export default Wrapper;

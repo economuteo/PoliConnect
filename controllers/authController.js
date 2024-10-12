@@ -93,7 +93,10 @@ export const registerDemoUser = async (req, res) => {
             bannerImage,
         });
 
-        // Save the user to the database
+        // Follow the users to meet the demo requirements
+        const usersToFollow = await User.find({}).limit(31);
+        newUser.following = usersToFollow.map((user) => user._id);
+
         await newUser.save();
 
         const token = createJWT({ userId: newUser._id, role: newUser.role });
