@@ -54,6 +54,7 @@ const Wrapper = styled.div`
     }
 
     textarea {
+        font-size: 1em;
         border: none;
         padding: 10px;
         height: 80px;

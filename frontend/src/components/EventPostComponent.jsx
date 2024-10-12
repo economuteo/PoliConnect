@@ -261,7 +261,7 @@ const EventPostComponent = ({ eventPost }) => {
                 </div>
             )}
             <div className="postReactions">
-                <div className="reaction" onClick={() => goToParticipantsPage(post)}>
+                <div className="reaction">
                     <img src={ParticipantsIcon} alt="" />
                     <p>{post.participants.length}</p>
                 </div>
