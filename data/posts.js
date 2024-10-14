@@ -2,11 +2,12 @@ import mongoose from "mongoose";
 
 export const events = [
     {
-        eventName: "Poli AutoFest 2024",
+        eventName: "Poli AutoFEST",
         eventDate: "2024-09-03T00:00:00.000+00:00",
         eventTime: "16:21",
         eventLocation: "UPB Campus",
-        description: "The biggest automotive event in Romania!",
+        description:
+            "A festival dedicated to automobiles, transport and logistics, AutoFEST transforms the POLITEHNICA Bucharest campus into the most spectacular automobile exhibition!",
         typeOfPost: "EventPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
         userUsername: "andreipopescu",
@@ -14,11 +15,12 @@ export const events = [
             "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
-        eventName: "Tech Innovators Conference",
+        eventName: "Poli E-FEST",
         eventDate: "2024-10-15T00:00:00.000+00:00",
         eventTime: "09:00",
         eventLocation: "UPB AN024",
-        description: "A conference showcasing the latest in tech innovations.",
+        description:
+            "Poli E-FEST is the largest event dedicated to the video game industry. The popularity of video games has opened new avenues for innovation and technological advancement in a deeply interdisciplinary field where engineering plays the leading role!",
         typeOfPost: "EventPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
         userUsername: "andreipopescu",
@@ -26,11 +28,12 @@ export const events = [
             "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
-        eventName: "UPB Career Fair",
+        eventName: "SpaceFEST",
         eventDate: "2024-11-20T00:00:00.000+00:00",
         eventTime: "10:00",
         eventLocation: "UPB AN024",
-        description: "Meet top employers and explore career opportunities.",
+        description:
+            "Far from being the last frontier, space currently represents humanity's greatest opportunity. SpaceFEST is the event that allows attendees to learn all about space exploration, how we rely on space in our everyday lives, and how a career in space is accessible to anyone who wants it!",
         typeOfPost: "EventPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
         userUsername: "andreipopescu",
@@ -38,11 +41,12 @@ export const events = [
             "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
-        eventName: "Winter Gaming Contest 2024",
+        eventName: "RoboFEST",
         eventDate: "2024-12-05T00:00:00.000+00:00",
         eventTime: "18:00",
         eventLocation: "UPB Hall",
-        description: "An elegant evening to celebrate the end of the year.",
+        description:
+            "RoboFEST is the festival that promotes technology, education and innovation, with robots as the main protagonists. Every year, the largest university campus in the country becomes the place to play and exhibit for hundreds of robots and technologies.",
         typeOfPost: "EventPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
         userUsername: "andreipopescu",
@@ -50,11 +54,12 @@ export const events = [
             "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
-        eventName: "Spring Hackathon 2025",
+        eventName: "MedFEST",
         eventDate: "2025-03-10T00:00:00.000+00:00",
         eventTime: "08:00",
         eventLocation: "UPB Automatics Faculty",
-        description: "A 24-hour hackathon to solve real-world problems.",
+        description:
+            "We are waiting for you at the POLITEHNICA Bucharest campus to learn everything about medical engineering – the science that promises to revolutionize the health field by developing innovative technologies and expanding access to advanced medical care..",
         typeOfPost: "EventPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
         userUsername: "andreipopescu",
