@@ -44,7 +44,12 @@ const UserSchema = new mongoose.Schema({
             ref: "User",
         },
     ],
+    demoExpiresAt: {
+        type: Date,
+    },
 });
+
+UserSchema.index({ demoExpiresAt: 1 }, { expireAfterSeconds: 0 });
 
 UserSchema.methods.toJSON = function () {
     let obj = this.toObject();

@@ -80,8 +80,11 @@ export const registerDemoUser = async (req, res) => {
         // Hash the password
         const hashedPassword = await hashPassword(password);
 
-        // Create the user
-        const newUser = new User({
+        // One day in ms
+        const oneDay = 1000 * 60 * 60 * 24;
+
+        // Create the demo user
+        const newDemoUser = new User({
             email,
             password: hashedPassword,
             fullName,
@@ -91,17 +94,16 @@ export const registerDemoUser = async (req, res) => {
             year,
             profileImage,
             bannerImage,
+            demoExpiresAt: new Date(Date.now() + oneDay),
         });
 
         // Follow the users to meet the demo requirements
         const usersToFollow = await User.find({}).limit(31);
-        newUser.following = usersToFollow.map((user) => user._id);
+        newDemoUser.following = usersToFollow.map((user) => user._id);
 
-        await newUser.save();
+        await newDemoUser.save();
 
-        const token = createJWT({ userId: newUser._id, role: newUser.role });
-
-        const oneDay = 1000 * 60 * 60 * 24;
+        const token = createJWT({ userId: newDemoUser._id, role: newDemoUser.role });
 
         // Cookie
         res.cookie("token", token, {
