@@ -17,12 +17,29 @@ dotenv.config();
 
 connectDB();
 
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 const importData = async () => {
     try {
         // await User.insertMany(users);
-        // await PhotoPost.insertMany(photoPosts);
-        // await Event.insertMany(events);
-        await Story.insertMany(stories);
+
+        // Insert PhotoPosts with delay
+        for (const photoPost of photoPosts) {
+            await PhotoPost.create(photoPost);
+            await delay(500);
+        }
+
+        // Insert Events with delay
+        for (const event of events) {
+            await Event.create(event);
+            await delay(500);
+        }
+
+        // Insert Stories with delay
+        for (const story of stories) {
+            await Story.create(story);
+            await delay(500);
+        }
 
         console.log("Data Imported!".green.inverse);
         process.exit();
@@ -35,8 +52,8 @@ const importData = async () => {
 const destroyData = async () => {
     try {
         // await User.deleteMany();
-        // await PhotoPost.deleteMany();
-        // await Event.deleteMany();
+        await PhotoPost.deleteMany();
+        await Event.deleteMany();
         await Story.deleteMany();
 
         console.log("Data Destroyed!".red.inverse);
