@@ -32,14 +32,6 @@ const BaseSchema = new mongoose.Schema(
             type: "string",
             required: true,
         },
-        userProfileImage: {
-            type: "string",
-            required: true,
-        },
-        userUsername: {
-            type: "string",
-            required: true,
-        },
     },
     baseOptions
 );

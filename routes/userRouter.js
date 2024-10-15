@@ -3,6 +3,7 @@ import {
     getApplicationStats,
     getCurrentUserUsingToken,
     getSpecificUser,
+    getSpecificUserByID,
     getSpecificUserByUsername,
     checkIsCurrentUser,
     updateUser,
@@ -14,8 +15,11 @@ import { authorizePermissions } from "../middleware/authMiddleware.js";
 const router = Router();
 
 router.get("/currentUser", getCurrentUserUsingToken);
+
 router.get("/specificUser", getSpecificUser);
+router.post("/specificUserByID", getSpecificUserByID);
 router.post("/getSpecificUserByUsername", getSpecificUserByUsername);
+
 router.get("/searchUsers", searchUsers);
 router.get("/admin/appStats", authorizePermissions("admin"), getApplicationStats);
 

@@ -24,6 +24,12 @@ export const getSpecificUser = async (req, res) => {
     return userWithoutPassword;
 };
 
+export const getSpecificUserByID = async (req, res) => {
+    const user = await User.findOne({ _id: req.body.userId });
+    const userWithoutPassword = user.toJSON();
+    res.status(StatusCodes.OK).json({ user: userWithoutPassword });
+};
+
 export const getSpecificUserByUsername = async (req, res) => {
     const user = await User.findOne({ username: req.body.username });
     const userWithoutPassword = user.toJSON();

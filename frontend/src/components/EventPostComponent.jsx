@@ -19,7 +19,10 @@ const EventPostComponent = ({ eventPost }) => {
 
     const [post, setPost] = useState(eventPost);
 
-    const [loading, setLoading] = useState(true);
+    const [userInfoLoading, setUserInfoLoading] = useState(false);
+    const [likesLoading, setLikesLoading] = useState(true);
+    const [participantsLoading, setParticipantsLoading] = useState(true);
+
     const [isApiCallInProgress, setIsApiCallInProgress] = useState(false);
     const [isApiCallInProgress2, setIsApiCallInProgress2] = useState(false);
 
@@ -39,21 +42,27 @@ const EventPostComponent = ({ eventPost }) => {
         year: "numeric",
     });
 
-    const handleNavigateToUserProfile = async () => {
-        if (navigatedOk) return;
+    useEffect(() => {
+        const getPostUser = async () => {
+            try {
+                const response = await customFetch.post("/users/specificUserByID", {
+                    userId: post.createdBy,
+                });
 
-        try {
-            setNavigatedOk(true);
-            const response = await customFetch.post(`/users/getSpecificUserByUsername`, {
-                username: post.userUsername,
-            });
-            const specificUser = response.data.user;
+                const specificUser = response.data.user;
 
-            navigate(`userProfile/${post.userUsername}`, { state: { user: specificUser } });
-        } catch (error) {
-            setNavigatedOk(false);
-        }
-    };
+                setPost({
+                    ...post,
+                    specificUsername: specificUser.username,
+                    specificProfileImage: specificUser.profileImage,
+                });
+            } catch (err) {
+                console.error("Error fetching specific user:", err.message);
+            }
+        };
+
+        getPostUser();
+    }, []);
 
     useEffect(() => {
         const getLikeStatus = async () => {
@@ -68,6 +77,8 @@ const EventPostComponent = ({ eventPost }) => {
                 setIsLiked(isLiked);
             } catch (err) {
                 console.error("Error fetching like status:", err.message);
+            } finally {
+                setLikesLoading(false);
             }
         };
 
@@ -87,7 +98,7 @@ const EventPostComponent = ({ eventPost }) => {
             } catch (err) {
                 console.error("Error fetching join status:", err.message);
             } finally {
-                setLoading(false);
+                setParticipantsLoading(false);
             }
         };
 
@@ -111,6 +122,22 @@ const EventPostComponent = ({ eventPost }) => {
             console.error("Error fetching specific post:", err.message);
         } finally {
             setIsApiCallInProgress(false);
+        }
+    };
+
+    const handleNavigateToUserProfile = async () => {
+        if (navigatedOk) return;
+
+        try {
+            setNavigatedOk(true);
+            const response = await customFetch.post(`/users/getSpecificUserByUsername`, {
+                username: post.userUsername,
+            });
+            const specificUser = response.data.user;
+
+            navigate(`userProfile/${post.userUsername}`, { state: { user: specificUser } });
+        } catch (error) {
+            setNavigatedOk(false);
         }
     };
 
@@ -183,6 +210,16 @@ const EventPostComponent = ({ eventPost }) => {
         }
     };
 
+    const goToParticipantsPage = async (post) => {
+        const response = await customFetch.post("/participants/getUsersWhoJoined", {
+            post,
+        });
+
+        const participants = response.data;
+
+        navigate("/participants", { state: { participants } });
+    };
+
     const goToLikesPage = async (post) => {
         const response = await customFetch.post("/likes/getUsersThatLikedThePost", {
             postId: post._id,
@@ -194,38 +231,19 @@ const EventPostComponent = ({ eventPost }) => {
         navigate("/likes", { state: { users } });
     };
 
-    const goToParticipantsPage = async (post) => {
-        const response = await customFetch.post("/participants/getUsersWhoJoined", {
-            post,
-        });
-
-        const participants = response.data;
-
-        navigate("/participants", { state: { participants } });
-    };
-
-    if (loading) {
-        return (
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: "100vh",
-                }}>
-                <ClipLoader color="#ffffff" size={150} />
-            </div>
-        );
-    }
-
     return (
         <Wrapper>
-            <div
-                className="postCreatorBasicInformation"
-                onClick={() => handleNavigateToUserProfile()}>
-                <img id="userProfileImage" src={post.userProfileImage} alt="" />
-                <p id="userUsername">{post.userUsername}</p>
-            </div>
+            {userInfoLoading ? (
+                <ClipLoader color="#0677E8" loading={userInfoLoading} size={35} />
+            ) : (
+                <div
+                    className="postCreatorBasicInformation"
+                    onClick={() => handleNavigateToUserProfile()}>
+                    <img id="userProfileImage" src={post.specificProfileImage} alt="" />
+                    <p id="userUsername">{post.specificUsername}</p>
+                </div>
+            )}
+
             <div className="eventPostContent">
                 <div
                     onDoubleClick={() => handleDoubleClick(post)}
@@ -261,16 +279,24 @@ const EventPostComponent = ({ eventPost }) => {
                 </div>
             )}
             <div className="postReactions">
-                <div className="reaction">
-                    <img src={ParticipantsIcon} alt="" />
-                    <p>{post.participants.length}</p>
-                </div>
-                <div className="reaction">
-                    <div onClick={() => handleLikeUnlike(post)}>
-                        <LikeIconComponent fill={isLiked ? "#0677E8" : ""} />
+                {participantsLoading ? (
+                    <ClipLoader color="#0677E8" loading={userInfoLoading} size={35} />
+                ) : (
+                    <div className="reaction">
+                        <img src={ParticipantsIcon} alt="" />
+                        <p>{post.participants.length}</p>
                     </div>
-                    <p onClick={() => goToLikesPage(post)}>{post.likes.length}</p>
-                </div>
+                )}
+                {likesLoading ? (
+                    <ClipLoader color="#0677E8" loading={userInfoLoading} size={35} />
+                ) : (
+                    <div className="reaction">
+                        <div onClick={() => handleLikeUnlike(post)}>
+                            <LikeIconComponent fill={isLiked ? "#0677E8" : ""} />
+                        </div>
+                        <p onClick={() => goToLikesPage(post)}>{post.likes.length}</p>
+                    </div>
+                )}
                 <div className="reaction">
                     <img src={CommentsIcon} alt="" />
                     <p>{post.comments.length}</p>

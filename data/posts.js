@@ -10,9 +10,6 @@ export const events = [
             "A festival dedicated to automobiles, transport and logistics, AutoFEST transforms the POLITEHNICA Bucharest campus into the most spectacular automobile exhibition!",
         typeOfPost: "EventPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
-        userUsername: "andreipopescu",
-        userProfileImage:
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
         eventName: "Poli E-FEST",
@@ -23,9 +20,6 @@ export const events = [
             "Poli E-FEST is the largest event dedicated to the video game industry. The popularity of video games has opened new avenues for innovation and technological advancement in a deeply interdisciplinary field where engineering plays the leading role!",
         typeOfPost: "EventPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
-        userUsername: "andreipopescu",
-        userProfileImage:
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
         eventName: "SpaceFEST",
@@ -36,9 +30,6 @@ export const events = [
             "Far from being the last frontier, space currently represents humanity's greatest opportunity. SpaceFEST is the event that allows attendees to learn all about space exploration, how we rely on space in our everyday lives, and how a career in space is accessible to anyone who wants it!",
         typeOfPost: "EventPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
-        userUsername: "andreipopescu",
-        userProfileImage:
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
         eventName: "RoboFEST",
@@ -49,9 +40,6 @@ export const events = [
             "RoboFEST is the festival that promotes technology, education and innovation, with robots as the main protagonists. Every year, the largest university campus in the country becomes the place to play and exhibit for hundreds of robots and technologies.",
         typeOfPost: "EventPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
-        userUsername: "andreipopescu",
-        userProfileImage:
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
         eventName: "MedFEST",
@@ -62,9 +50,6 @@ export const events = [
             "We are waiting for you at the POLITEHNICA Bucharest campus to learn everything about medical engineering – the science that promises to revolutionize the health field by developing innovative technologies and expanding access to advanced medical care..",
         typeOfPost: "EventPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
-        userUsername: "andreipopescu",
-        userProfileImage:
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
 ];
 
@@ -75,9 +60,6 @@ export const photoPosts = [
         description: "Amazing experience at Poli AutoFest!",
         typeOfPost: "PhotoPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
-        userUsername: "andreipopescu",
-        userProfileImage:
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
         mediaUrl:
@@ -85,9 +67,6 @@ export const photoPosts = [
         description: "Incredible turnout for the Tech Expo! Proud of our university’s innovations.",
         typeOfPost: "PhotoPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
-        userUsername: "andreipopescu",
-        userProfileImage:
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
         mediaUrl:
@@ -95,9 +74,6 @@ export const photoPosts = [
         description: "Enjoying a peaceful evening at the campus library. Study vibes! 📚",
         typeOfPost: "PhotoPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
-        userUsername: "andreipopescu",
-        userProfileImage:
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
         mediaUrl:
@@ -105,9 +81,6 @@ export const photoPosts = [
         description: "Big thanks to our guest speakers at the Leadership Summit! 👏",
         typeOfPost: "PhotoPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
-        userUsername: "andreipopescu",
-        userProfileImage:
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
         mediaUrl:
@@ -115,9 +88,6 @@ export const photoPosts = [
         description: "The campus looks so beautiful during sunset 🌅 #CampusLife",
         typeOfPost: "PhotoPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
-        userUsername: "andreipopescu",
-        userProfileImage:
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
         mediaUrl:
@@ -125,9 +95,6 @@ export const photoPosts = [
         description: "Another successful blood drive event! Thanks to all the donors. 💉",
         typeOfPost: "PhotoPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
-        userUsername: "andreipopescu",
-        userProfileImage:
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
         mediaUrl:
@@ -135,9 +102,6 @@ export const photoPosts = [
         description: "Had an amazing time at the annual Science Fair! 👨‍🔬 #STEM",
         typeOfPost: "PhotoPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
-        userUsername: "andreipopescu",
-        userProfileImage:
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
         mediaUrl:
@@ -145,9 +109,6 @@ export const photoPosts = [
         description: "Can't wait for the football match this weekend! 🏈 #GoTeam",
         typeOfPost: "PhotoPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
-        userUsername: "andreipopescu",
-        userProfileImage:
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
         mediaUrl:
@@ -155,9 +116,6 @@ export const photoPosts = [
         description: "Yoga at the quad today was so refreshing! 🧘‍♀️ #CampusWellness",
         typeOfPost: "PhotoPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
-        userUsername: "andreipopescu",
-        userProfileImage:
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
         mediaUrl:
@@ -165,9 +123,6 @@ export const photoPosts = [
         description: "Proud to be part of the environmental cleanup initiative 🌱 #GreenCampus",
         typeOfPost: "PhotoPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
-        userUsername: "andreipopescu",
-        userProfileImage:
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
         mediaUrl:
@@ -175,9 +130,6 @@ export const photoPosts = [
         description: "Prepping for finals at the library, who’s with me? 😅📚 #StudyGrind",
         typeOfPost: "PhotoPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
-        userUsername: "andreipopescu",
-        userProfileImage:
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
         mediaUrl:
@@ -185,9 +137,6 @@ export const photoPosts = [
         description: "Cheers to an unforgettable night at the Homecoming Dance! 💃🕺",
         typeOfPost: "PhotoPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
-        userUsername: "andreipopescu",
-        userProfileImage:
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
         mediaUrl:
@@ -195,9 +144,6 @@ export const photoPosts = [
         description: "The Robotics Club nailed their competition today! 🤖 #EngineeringExcellence",
         typeOfPost: "PhotoPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
-        userUsername: "andreipopescu",
-        userProfileImage:
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
         mediaUrl:
@@ -205,9 +151,6 @@ export const photoPosts = [
         description: "Thanks to the alumni network for hosting such a valuable career workshop!",
         typeOfPost: "PhotoPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
-        userUsername: "andreipopescu",
-        userProfileImage:
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
         mediaUrl:
@@ -215,9 +158,6 @@ export const photoPosts = [
         description: "Had an amazing experience volunteering at the local food bank! 🍲",
         typeOfPost: "PhotoPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
-        userUsername: "andreipopescu",
-        userProfileImage:
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
         mediaUrl:
@@ -225,9 +165,6 @@ export const photoPosts = [
         description: "Check out the art gallery on campus, it’s stunning! 🎨 #ArtAndCulture",
         typeOfPost: "PhotoPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
-        userUsername: "andreipopescu",
-        userProfileImage:
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
         mediaUrl:
@@ -235,9 +172,6 @@ export const photoPosts = [
         description: "Networking at the Business Innovation Conference is a game changer!",
         typeOfPost: "PhotoPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
-        userUsername: "andreipopescu",
-        userProfileImage:
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
         mediaUrl:
@@ -245,9 +179,6 @@ export const photoPosts = [
         description: "The Engineering Expo was mind-blowing! So much talent. 🚀",
         typeOfPost: "PhotoPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
-        userUsername: "andreipopescu",
-        userProfileImage:
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
         mediaUrl:
@@ -256,9 +187,6 @@ export const photoPosts = [
             "The multicultural fair brought so many cultures together! 🌍 #UnityInDiversity",
         typeOfPost: "PhotoPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
-        userUsername: "andreipopescu",
-        userProfileImage:
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
         mediaUrl:
@@ -266,9 +194,6 @@ export const photoPosts = [
         description: "Feeling proud after presenting at the Undergraduate Research Symposium!",
         typeOfPost: "PhotoPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
-        userUsername: "andreipopescu",
-        userProfileImage:
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
         mediaUrl:
@@ -276,9 +201,6 @@ export const photoPosts = [
         description: "Exploring our new campus innovation hub! So futuristic. 💡",
         typeOfPost: "PhotoPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
-        userUsername: "andreipopescu",
-        userProfileImage:
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
         mediaUrl:
@@ -286,9 +208,6 @@ export const photoPosts = [
         description: "The Health Fair this year was full of insightful tips and free check-ups! 🩺",
         typeOfPost: "PhotoPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
-        userUsername: "andreipopescu",
-        userProfileImage:
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
         mediaUrl:
@@ -296,9 +215,6 @@ export const photoPosts = [
         description: "Campus Carnival vibes were 🔥! Can’t wait till next year.",
         typeOfPost: "PhotoPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
-        userUsername: "andreipopescu",
-        userProfileImage:
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
         mediaUrl:
@@ -306,9 +222,6 @@ export const photoPosts = [
         description: "Late-night dorm study sessions are the best! #TeamNoSleep 💤",
         typeOfPost: "PhotoPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
-        userUsername: "andreipopescu",
-        userProfileImage:
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
     {
         mediaUrl:
@@ -316,8 +229,5 @@ export const photoPosts = [
         description: "So excited to finally join the university’s student council! 🙌 #NewChapter",
         typeOfPost: "PhotoPost",
         createdBy: new mongoose.Types.ObjectId("66ec5821956cb15742d551e4"),
-        userUsername: "andreipopescu",
-        userProfileImage:
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
     },
 ];
