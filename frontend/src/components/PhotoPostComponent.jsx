@@ -165,8 +165,8 @@ const PhotoPostComponent = ({ photoPost }) => {
                 <div
                     className="postCreatorBasicInformation"
                     onClick={() => handleNavigateToUserProfile()}>
-                    <img id="userProfileImage" src={post.userProfileImage} alt="" />
-                    <p id="userUsername">{post.userUsername}</p>
+                    <img id="userProfileImage" src={post.specificProfileImage} alt="" />
+                    <p id="userUsername">{post.specificUsername}</p>
                 </div>
             )}
 
@@ -183,7 +183,7 @@ const PhotoPostComponent = ({ photoPost }) => {
             {post.description && (
                 <div className="postDescription">
                     <span id="descriptionSection">
-                        <span id="descriptionUserUsername">{post.userUsername}</span>
+                        <span id="descriptionUserUsername">{post.specificUsername}</span>
                         {post.description}
                     </span>
                 </div>
