@@ -17,12 +17,118 @@ const PhotoPostComponent = ({ photoPost }) => {
 
     const [post, setPost] = useState(photoPost);
 
-    const [loading, setLoading] = useState(true);
-    const [isApiCallInProgress, setIsApiCallInProgress] = useState(false);
+    const [userInfoLoading, setUserInfoLoading] = useState(true);
+    const [likesLoading, setLikesLoading] = useState(true);
 
     const [lastTap, setLastTap] = useState(0);
 
     const [isLiked, setIsLiked] = useState(false);
+
+    const [postLikes, setPostLikes] = useState(photoPost.likes.length);
+
+    useEffect(() => {
+        const getPostUser = async () => {
+            try {
+                const response = await customFetch.post("/users/specificUserByID", {
+                    userId: post.createdBy,
+                });
+
+                const specificUser = response.data.user;
+
+                setPost({
+                    ...post,
+                    specificUsername: specificUser.username,
+                    specificProfileImage: specificUser.profileImage,
+                });
+            } catch (err) {
+                console.error("Error fetching specific user:", err.message);
+            } finally {
+                setUserInfoLoading(false);
+            }
+        };
+
+        getPostUser();
+    }, []);
+
+    useEffect(() => {
+        const getLikeStatus = async () => {
+            try {
+                const response = await customFetch.post("/likes/checkLikeStatus", {
+                    postId: post._id,
+                    typeOfPost: post.typeOfPost,
+                });
+
+                const isLiked = response.data;
+
+                setIsLiked(isLiked);
+            } catch (err) {
+                console.error("Error fetching like status:", err.message);
+            } finally {
+                setLikesLoading(false);
+            }
+        };
+
+        getLikeStatus();
+    }, []);
+
+    const handleLike = async (post) => {
+        try {
+            setIsLiked(true);
+            setPostLikes(postLikes + 1);
+
+            await customFetch.post("/likes/likePost", {
+                postId: post._id,
+                typeOfPost: post.typeOfPost,
+            });
+        } catch (err) {
+            setIsLiked(false);
+            setPostLikes(postLikes - 1);
+        }
+    };
+
+    const handleLikeUnlike = async (post) => {
+        if (isLiked) {
+            try {
+                setIsLiked(false);
+                setPostLikes(postLikes - 1);
+
+                await customFetch.post("/likes/unlikePost", {
+                    postId: post._id,
+                    typeOfPost: post.typeOfPost,
+                });
+            } catch (err) {
+                setIsLiked(true);
+                setPostLikes(postLikes + 1);
+            }
+        } else {
+            try {
+                setIsLiked(true);
+                setPostLikes(postLikes + 1);
+
+                await customFetch.post("/likes/likePost", {
+                    postId: post._id,
+                    typeOfPost: post.typeOfPost,
+                });
+            } catch (err) {
+                setIsLiked(false);
+                setPostLikes(postLikes - 1);
+            }
+        }
+    };
+
+    // Mobile logic
+    const handleTouch = (post) => {
+        const currentTime = new Date().getTime();
+        const tapLength = currentTime - lastTap;
+
+        if (tapLength < 500 && tapLength > 0) {
+            if (!isLiked) {
+                handleLike(post);
+            }
+        }
+
+        setLastTap(currentTime);
+    };
 
     const handleNavigateToUserProfile = async () => {
         if (navigatedOk) return;
@@ -51,113 +157,26 @@ const PhotoPostComponent = ({ photoPost }) => {
         navigate("/likes", { state: { users } });
     };
 
-    useEffect(() => {
-        const getLikeStatus = async () => {
-            try {
-                const response = await customFetch.post("/likes/checkLikeStatus", {
-                    postId: post._id,
-                    typeOfPost: post.typeOfPost,
-                });
-
-                const isLiked = response.data;
-
-                setIsLiked(isLiked);
-            } catch (err) {
-                console.error("Error fetching like status:", err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        getLikeStatus();
-    }, [post.likes]);
-
-    const handleDoubleClick = async (post) => {
-        if (isApiCallInProgress) return;
-
-        setIsApiCallInProgress(true);
-
-        try {
-            const response = await customFetch.post("/likes/likePost", {
-                postId: post._id,
-                typeOfPost: post.typeOfPost,
-            });
-
-            const likedPost = response.data.post;
-            setPost(likedPost);
-        } catch (err) {
-            console.error("Error fetching specific post:", err.message);
-        } finally {
-            setIsApiCallInProgress(false);
-        }
-    };
-
-    const handleTouch = (post) => {
-        const currentTime = new Date().getTime();
-        const tapLength = currentTime - lastTap;
-
-        if (tapLength < 500 && tapLength > 0) {
-            handleDoubleClick(post);
-        }
-
-        setLastTap(currentTime);
-    };
-
-    const handleLikeUnlike = async (post) => {
-        if (isApiCallInProgress) return;
-
-        setIsApiCallInProgress(true);
-
-        try {
-            if (isLiked) {
-                const response = await customFetch.post("/likes/unlikePost", {
-                    postId: post._id,
-                    typeOfPost: post.typeOfPost,
-                });
-
-                const unlikedPost = response.data.post;
-                setPost(unlikedPost);
-            } else {
-                const response = await customFetch.post("/likes/likePost", {
-                    postId: post._id,
-                    typeOfPost: post.typeOfPost,
-                });
-
-                const likedPost = response.data.post;
-                setPost(likedPost);
-            }
-        } catch (err) {
-            console.error("Error fetching specific post:", err.message);
-        } finally {
-            setIsApiCallInProgress(false);
-        }
-    };
-
-    if (loading) {
-        return (
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: "100vh",
-                }}>
-                <ClipLoader color="#ffffff" size={150} />
-            </div>
-        );
-    }
-
     return (
         <Wrapper>
-            <div
-                className="postCreatorBasicInformation"
-                onClick={() => handleNavigateToUserProfile()}>
-                <img id="userProfileImage" src={post.userProfileImage} alt="" />
-                <p id="userUsername">{post.userUsername}</p>
-            </div>
+            {userInfoLoading ? (
+                <ClipLoader color="#0677E8" loading={userInfoLoading} size={35} />
+            ) : (
+                <div
+                    className="postCreatorBasicInformation"
+                    onClick={() => handleNavigateToUserProfile()}>
+                    <img id="userProfileImage" src={post.userProfileImage} alt="" />
+                    <p id="userUsername">{post.userUsername}</p>
+                </div>
+            )}
+
             <div
                 className="postContent"
-                onDoubleClick={() => handleDoubleClick(post)}
+                onDoubleClick={() => {
+                    if (!isLiked) {
+                        handleLike(post);
+                    }
+                }}
                 onTouchEnd={() => handleTouch(post)}>
                 <img id="photo" src={post.mediaUrl} alt="" />
             </div>
@@ -170,12 +189,16 @@ const PhotoPostComponent = ({ photoPost }) => {
                 </div>
             )}
             <div className="postReactions">
-                <div className="reaction">
-                    <div onClick={() => handleLikeUnlike(post)}>
-                        <LikeIconComponent fill={isLiked ? "#0677E8" : ""} />
+                {likesLoading ? (
+                    <ClipLoader color="#0677E8" loading={userInfoLoading} size={35} />
+                ) : (
+                    <div className="reaction">
+                        <div onClick={() => handleLikeUnlike(post)}>
+                            <LikeIconComponent fill={isLiked ? "#0677E8" : ""} />
+                        </div>
+                        <p onClick={() => goToLikesPage(post)}>{postLikes}</p>
                     </div>
-                    <p onClick={() => goToLikesPage(post)}>{post.likes.length}</p>
-                </div>
+                )}
                 <div className="reaction">
                     <img src={CommentsIcon} alt="" />
                     <p>{post.comments.length}</p>

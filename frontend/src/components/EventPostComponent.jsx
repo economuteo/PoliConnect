@@ -23,15 +23,13 @@ const EventPostComponent = ({ eventPost }) => {
     const [likesLoading, setLikesLoading] = useState(true);
     const [participantsLoading, setParticipantsLoading] = useState(true);
 
-    const [isApiCallInProgress, setIsApiCallInProgress] = useState(false);
-    const [isApiCallInProgress2, setIsApiCallInProgress2] = useState(false);
-
     const [lastTap, setLastTap] = useState(0);
 
     const [isLiked, setIsLiked] = useState(false);
+    const [hasJoined, setHasJoined] = useState(false);
+
     const [postLikes, setPostLikes] = useState(eventPost.likes.length);
     const [postParticipants, setPostParticipants] = useState(eventPost.participants.length);
-    const [hasJoined, setHasJoined] = useState(false);
 
     // Extract and format the date
     const eventDate = new Date(eventPost.eventDate);
