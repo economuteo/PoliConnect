@@ -19,7 +19,7 @@ const EventPostComponent = ({ eventPost }) => {
 
     const [post, setPost] = useState(eventPost);
 
-    const [userInfoLoading, setUserInfoLoading] = useState(false);
+    const [userInfoLoading, setUserInfoLoading] = useState(true);
     const [likesLoading, setLikesLoading] = useState(true);
     const [participantsLoading, setParticipantsLoading] = useState(true);
 
@@ -28,9 +28,8 @@ const EventPostComponent = ({ eventPost }) => {
 
     const [lastTap, setLastTap] = useState(0);
 
-    const [showReadMore, setShowReadMore] = useState(false);
-
     const [isLiked, setIsLiked] = useState(false);
+    const [postLikes, setPostLikes] = useState(eventPost.likes.length);
     const [hasJoined, setHasJoined] = useState(false);
 
     // Extract and format the date
@@ -58,6 +57,8 @@ const EventPostComponent = ({ eventPost }) => {
                 });
             } catch (err) {
                 console.error("Error fetching specific user:", err.message);
+            } finally {
+                setUserInfoLoading(false);
             }
         };
 
@@ -83,7 +84,7 @@ const EventPostComponent = ({ eventPost }) => {
         };
 
         getLikeStatus();
-    }, [post.likes]);
+    }, []);
 
     useEffect(() => {
         const getJoinStatus = async () => {
@@ -103,28 +104,84 @@ const EventPostComponent = ({ eventPost }) => {
         };
 
         getJoinStatus();
-    }, [post.participants]);
+    }, []);
 
-    const handleDoubleClick = async (post) => {
-        if (isApiCallInProgress) return;
-
-        setIsApiCallInProgress(true);
-
+    const handleJoinUnjoin = async (post) => {
         try {
-            const response = await customFetch.post("/likes/likePost", {
-                postId: post._id,
-                typeOfPost: post.typeOfPost,
-            });
-
-            const likedPost = response.data.post;
-            setPost(likedPost);
+            if (hasJoined) {
+                const response = await customFetch.post("/participants/leaveEvent", {
+                    eventId: post._id,
+                });
+            } else {
+                const response = await customFetch.post("/participants/joinEvent", {
+                    eventId: post._id,
+                });
+            }
         } catch (err) {
             console.error("Error fetching specific post:", err.message);
-        } finally {
-            setIsApiCallInProgress(false);
         }
     };
 
+    const handleLike = async (post) => {
+        try {
+            setIsLiked(true);
+            setPostLikes(postLikes + 1);
+
+            await customFetch.post("/likes/likePost", {
+                postId: post._id,
+                typeOfPost: post.typeOfPost,
+            });
+        } catch (err) {
+            setIsLiked(false);
+            setPostLikes(postLikes - 1);
+        }
+    };
+
+    const handleLikeUnlike = async (post) => {
+        if (isLiked) {
+            try {
+                setIsLiked(false);
+                setPostLikes(postLikes - 1);
+
+                await customFetch.post("/likes/unlikePost", {
+                    postId: post._id,
+                    typeOfPost: post.typeOfPost,
+                });
+            } catch (err) {
+                setIsLiked(true);
+                setPostLikes(postLikes + 1);
+            }
+        } else {
+            try {
+                setIsLiked(true);
+                setPostLikes(postLikes + 1);
+
+                await customFetch.post("/likes/likePost", {
+                    postId: post._id,
+                    typeOfPost: post.typeOfPost,
+                });
+            } catch (err) {
+                setIsLiked(false);
+                setPostLikes(postLikes - 1);
+            }
+        }
+    };
+
+    // Mobile logic
+    const handleTouch = (post) => {
+        const currentTime = new Date().getTime();
+        const tapLength = currentTime - lastTap;
+
+        if (tapLength < 500 && tapLength > 0) {
+            if (!isLiked) {
+                handleLike(post);
+            }
+        }
+
+        setLastTap(currentTime);
+    };
+
+    // Navigation logic
     const handleNavigateToUserProfile = async () => {
         if (navigatedOk) return;
 
@@ -138,75 +195,6 @@ const EventPostComponent = ({ eventPost }) => {
             navigate(`userProfile/${post.userUsername}`, { state: { user: specificUser } });
         } catch (error) {
             setNavigatedOk(false);
-        }
-    };
-
-    const handleTouch = (post) => {
-        const currentTime = new Date().getTime();
-        const tapLength = currentTime - lastTap;
-
-        if (tapLength < 500 && tapLength > 0) {
-            handleDoubleClick(post);
-        }
-
-        setLastTap(currentTime);
-    };
-
-    const handleJoinUnjoin = async (post) => {
-        if (isApiCallInProgress2) return;
-
-        setIsApiCallInProgress2(true);
-
-        try {
-            if (hasJoined) {
-                const response = await customFetch.post("/participants/leaveEvent", {
-                    eventId: post._id,
-                });
-
-                const leftEvent = response.data.event;
-                setPost(leftEvent);
-            } else {
-                const response = await customFetch.post("/participants/joinEvent", {
-                    eventId: post._id,
-                });
-
-                const joinedEvent = response.data.event;
-                setPost(joinedEvent);
-            }
-        } catch (err) {
-            console.error("Error fetching specific post:", err.message);
-        } finally {
-            setIsApiCallInProgress2(false);
-        }
-    };
-
-    const handleLikeUnlike = async (post) => {
-        if (isApiCallInProgress) return;
-
-        setIsApiCallInProgress(true);
-
-        try {
-            if (isLiked) {
-                const response = await customFetch.post("/likes/unlikePost", {
-                    postId: post._id,
-                    typeOfPost: post.typeOfPost,
-                });
-
-                const unlikedPost = response.data.post;
-                setPost(unlikedPost);
-            } else {
-                const response = await customFetch.post("/likes/likePost", {
-                    postId: post._id,
-                    typeOfPost: post.typeOfPost,
-                });
-
-                const likedPost = response.data.post;
-                setPost(likedPost);
-            }
-        } catch (err) {
-            console.error("Error fetching specific post:", err.message);
-        } finally {
-            setIsApiCallInProgress(false);
         }
     };
 
@@ -246,7 +234,11 @@ const EventPostComponent = ({ eventPost }) => {
 
             <div className="eventPostContent">
                 <div
-                    onDoubleClick={() => handleDoubleClick(post)}
+                    onDoubleClick={() => {
+                        if (!isLiked) {
+                            handleLike(post);
+                        }
+                    }}
                     onTouchEnd={() => handleTouch(post)}>
                     <p id="eventName">{post.eventName}</p>
                     <div className="eventDetails">
@@ -284,7 +276,7 @@ const EventPostComponent = ({ eventPost }) => {
                 ) : (
                     <div className="reaction">
                         <img src={ParticipantsIcon} alt="" />
-                        <p>{post.participants.length}</p>
+                        <p>{hasJoined ? post.participants.length + 1 : post.participants.length}</p>
                     </div>
                 )}
                 {likesLoading ? (
@@ -294,7 +286,7 @@ const EventPostComponent = ({ eventPost }) => {
                         <div onClick={() => handleLikeUnlike(post)}>
                             <LikeIconComponent fill={isLiked ? "#0677E8" : ""} />
                         </div>
-                        <p onClick={() => goToLikesPage(post)}>{post.likes.length}</p>
+                        <p onClick={() => goToLikesPage(post)}>{postLikes}</p>
                     </div>
                 )}
                 <div className="reaction">
