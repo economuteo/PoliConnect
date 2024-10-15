@@ -30,6 +30,7 @@ const EventPostComponent = ({ eventPost }) => {
 
     const [isLiked, setIsLiked] = useState(false);
     const [postLikes, setPostLikes] = useState(eventPost.likes.length);
+    const [postParticipants, setPostParticipants] = useState(eventPost.participants.length);
     const [hasJoined, setHasJoined] = useState(false);
 
     // Extract and format the date
@@ -97,7 +98,6 @@ const EventPostComponent = ({ eventPost }) => {
 
                 setHasJoined(hasJoined);
             } catch (err) {
-                console.error("Error fetching join status:", err.message);
             } finally {
                 setParticipantsLoading(false);
             }
@@ -107,18 +107,30 @@ const EventPostComponent = ({ eventPost }) => {
     }, []);
 
     const handleJoinUnjoin = async (post) => {
-        try {
-            if (hasJoined) {
-                const response = await customFetch.post("/participants/leaveEvent", {
+        if (hasJoined) {
+            try {
+                setHasJoined(false);
+                setPostParticipants(postParticipants - 1);
+
+                await customFetch.post("/participants/leaveEvent", {
                     eventId: post._id,
                 });
-            } else {
-                const response = await customFetch.post("/participants/joinEvent", {
-                    eventId: post._id,
-                });
+            } catch (err) {
+                setHasJoined(true);
+                setPostParticipants(postParticipants + 1);
             }
-        } catch (err) {
-            console.error("Error fetching specific post:", err.message);
+        } else {
+            try {
+                setHasJoined(true);
+                setPostParticipants(postParticipants + 1);
+
+                await customFetch.post("/participants/joinEvent", {
+                    eventId: post._id,
+                });
+            } catch (err) {
+                setHasJoined(false);
+                setPostParticipants(postParticipants - 1);
+            }
         }
     };
 
@@ -256,11 +268,15 @@ const EventPostComponent = ({ eventPost }) => {
                         </div>
                     </div>
                 </div>
-                <div
-                    className={`joinNowButton ${hasJoined ? "joined" : ""}`}
-                    onClick={() => handleJoinUnjoin(post)}>
-                    <p>{hasJoined ? "Joined" : "Join Now"}</p>
-                </div>
+                {participantsLoading ? (
+                    <ClipLoader color="#0677E8" loading={userInfoLoading} size={35} />
+                ) : (
+                    <div
+                        className={`joinNowButton ${hasJoined ? "joined" : ""}`}
+                        onClick={() => handleJoinUnjoin(post)}>
+                        <p>{hasJoined ? "Joined" : "Join Now"}</p>
+                    </div>
+                )}
             </div>
             {post.eventDescription && (
                 <div className="eventPostDescription">
@@ -274,9 +290,9 @@ const EventPostComponent = ({ eventPost }) => {
                 {participantsLoading ? (
                     <ClipLoader color="#0677E8" loading={userInfoLoading} size={35} />
                 ) : (
-                    <div className="reaction">
+                    <div className="reaction" onClick={() => goToParticipantsPage(eventPost)}>
                         <img src={ParticipantsIcon} alt="" />
-                        <p>{hasJoined ? post.participants.length + 1 : post.participants.length}</p>
+                        <p>{[postParticipants]}</p>
                     </div>
                 )}
                 {likesLoading ? (
