@@ -130,17 +130,17 @@ const PhotoPostComponent = ({ photoPost }) => {
         setLastTap(currentTime);
     };
 
-    const handleNavigateToUserProfile = async () => {
+    const handleNavigateToUserProfile = async (post) => {
         if (navigatedOk) return;
 
         try {
             setNavigatedOk(true);
             const response = await customFetch.post(`/users/getSpecificUserByUsername`, {
-                username: post.userUsername,
+                username: post.specificUsername,
             });
             const specificUser = response.data.user;
 
-            navigate(`userProfile/${post.userUsername}`, { state: { user: specificUser } });
+            navigate(`userProfile/${post.specificUsername}`, { state: { user: specificUser } });
         } catch (error) {
             setNavigatedOk(false);
         }
@@ -164,7 +164,7 @@ const PhotoPostComponent = ({ photoPost }) => {
             ) : (
                 <div
                     className="postCreatorBasicInformation"
-                    onClick={() => handleNavigateToUserProfile()}>
+                    onClick={() => handleNavigateToUserProfile(post)}>
                     <img id="userProfileImage" src={post.specificProfileImage} alt="" />
                     <p id="userUsername">{post.specificUsername}</p>
                 </div>
