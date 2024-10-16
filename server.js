@@ -6,6 +6,7 @@ dotenv.config();
 import express from "express";
 const app = express();
 
+import path from "path";
 import morgan from "morgan";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
@@ -29,6 +30,21 @@ import { authenticateUser } from "./middleware/authMiddleware.js";
 import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware.js";
 
 import cloudinary from "cloudinary";
+
+if (process.env.NODE_ENV === "production") {
+    const __dirname = path.resolve();
+
+    // Set static folder
+    app.use(express.static(path.join(__dirname, "/frontend/build")));
+
+    app.get("*", (req, res) =>
+        res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"))
+    );
+} else {
+    app.get("/", (req, res) => {
+        res.send("API is running...");
+    });
+}
 
 // Function to start the change stream for watching deletions
 async function startChangeStream(db) {
