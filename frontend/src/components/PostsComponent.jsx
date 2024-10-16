@@ -122,7 +122,6 @@ const PostsComponent = () => {
                       )
                   )
                 : null}
-            {console.log(firstPost)}
 
             {posts.length === 0 && !firstPost.typeOfPost ? (
                 <p id="noPostsMessage">No posts were made yet!</p>

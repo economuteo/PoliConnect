@@ -193,8 +193,6 @@ const EventPostComponent = ({ eventPost }) => {
 
     // Navigation logic
     const handleNavigateToUserProfile = async (post) => {
-        console.log(post);
-
         if (navigatedOk) return;
 
         try {
