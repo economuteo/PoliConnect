@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import Story from "./StoryModel.js";
 
 const UserSchema = new mongoose.Schema({
     fullName: String,

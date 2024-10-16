@@ -10,6 +10,10 @@ import morgan from "morgan";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 
+import Events from "./models/EventModel.js";
+import PhotoPosts from "./models/PhotoPostModel.js";
+import Stories from "./models/StoryModel.js";
+
 // routers
 import userRouter from "./routes/userRouter.js";
 import storiesRouter from "./routes/storiesRouter.js";
@@ -21,11 +25,32 @@ import commentsRouter from "./routes/commentsRouter.js";
 import likesRouter from "./routes/likesRouter.js";
 import participantsRouter from "./routes/participantsRouter.js";
 
-// middleware
 import { authenticateUser } from "./middleware/authMiddleware.js";
 import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware.js";
 
 import cloudinary from "cloudinary";
+
+// Function to start the change stream for watching deletions
+async function startChangeStream(db) {
+    const userCollection = db.collection("users");
+
+    const changeStream = userCollection.watch([{ $match: { operationType: "delete" } }]);
+
+    changeStream.on("change", async (change) => {
+        const deletedUserId = change.documentKey._id;
+        console.log(`User ${deletedUserId} deleted. Cleaning up related data...`);
+
+        try {
+            await PhotoPosts.deleteMany({ createdBy: deletedUserId });
+            await Events.deleteMany({ createdBy: deletedUserId });
+            await Stories.deleteMany({ user: deletedUserId });
+
+            console.log(`Successfully deleted all related data for user ${deletedUserId}.`);
+        } catch (error) {
+            console.error(`Error cleaning up data for user ${deletedUserId}: `, error);
+        }
+    });
+}
 
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
@@ -37,6 +62,10 @@ const port = process.env.PORT || 8080;
 
 try {
     await mongoose.connect(process.env.MONGO_URL);
+    const db = mongoose.connection.db;
+
+    startChangeStream(db);
+
     app.listen(port, () => {
         console.log(`Server is running on port ${port}`);
     });
@@ -48,6 +77,7 @@ try {
 if (process.env.NODE_ENV === "development") {
     app.use(morgan("dev"));
 }
+
 app.use(cookieParser());
 app.use(express.json());
 
