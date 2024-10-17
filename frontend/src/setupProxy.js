@@ -6,14 +6,16 @@ module.exports = function (app) {
             ? "https://policonnect.onrender.com/api"
             : "http://localhost:8080/api";
 
-    app.use(
-        "/api",
-        createProxyMiddleware({
-            target: target,
-            changeOrigin: true,
-            pathRewrite: {
-                "^/api": "",
-            },
-        })
-    );
+    if (process.env.NODE_ENV !== "production") {
+        app.use(
+            "/api",
+            createProxyMiddleware({
+                target: target,
+                changeOrigin: true,
+                pathRewrite: {
+                    "^/api": "",
+                },
+            })
+        );
+    }
 };
