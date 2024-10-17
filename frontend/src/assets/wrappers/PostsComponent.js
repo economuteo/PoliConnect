@@ -6,6 +6,7 @@ const Wrapper = styled.main`
     align-self: center;
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 30px;
     overflow-y: auto;
 
