@@ -43,6 +43,7 @@ const Wrapper = styled.section`
         border-radius: 12px;
         background-color: #292c35;
         color: #c2c3cb;
+        font-size: 1em;
         &::placeholder {
             color: #c2c3cb;
         }
