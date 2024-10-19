@@ -105,6 +105,7 @@ async function startChangeStream(db) {
             await Events.updateMany({}, { $pull: { likes: deletedUserId } });
             await Events.updateMany({}, { $pull: { participants: deletedUserId } });
 
+            // To be verified
             await Users.updateMany(
                 { following: deletedUserId },
                 { $pull: { following: deletedUserId } }

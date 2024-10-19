@@ -74,9 +74,9 @@ const UserProfilePage = () => {
                             id="followButton">
                             {followed ? "Unfollow" : "Follow"}
                         </div>
-                        <div className="button" id="messageButton">
+                        {/* <div className="button" id="messageButton">
                             Message
-                        </div>
+                        </div> */}
                     </>
                 )}
                 {currentUserProfile && (

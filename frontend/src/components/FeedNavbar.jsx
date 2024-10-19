@@ -19,7 +19,7 @@ const FeedNavbar = () => {
         <Wrapper>
             {isSmallDevice ? <span className="special">CONNECT</span> : <span></span>}
             <div className="images">
-                <img src={settings} className="settingsImage" alt="settings" />
+                {/* <img src={settings} className="settingsImage" alt="settings" /> */}
                 <img
                     onClick={handleSearchIconClick}
                     src={searchIcon}
