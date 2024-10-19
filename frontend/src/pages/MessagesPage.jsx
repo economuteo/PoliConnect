@@ -1,5 +1,7 @@
+import Wrapper from "../assets/wrappers/MessagesPage";
+
 const MessagesPage = () => {
-    return <main></main>;
+    return <Wrapper></Wrapper>;
 };
 
 export default MessagesPage;

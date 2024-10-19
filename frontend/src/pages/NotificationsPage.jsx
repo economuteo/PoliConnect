@@ -1,5 +1,7 @@
+import Wrapper from "../assets/wrappers/NotificationsPage";
+
 const NotificationsPage = () => {
-    return <main></main>;
+    return <Wrapper></Wrapper>;
 };
 
 export default NotificationsPage;

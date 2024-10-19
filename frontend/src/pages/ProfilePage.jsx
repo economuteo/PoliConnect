@@ -1,5 +1,7 @@
+import Wrapper from "../assets/wrappers/ProfilePage";
+
 const ProfilePage = () => {
-    return <main></main>;
+    return <Wrapper></Wrapper>;
 };
 
 export default ProfilePage;
