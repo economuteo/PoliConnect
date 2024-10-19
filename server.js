@@ -10,6 +10,7 @@ import morgan from "morgan";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 
+import Users from "./models/UserModel.js";
 import Events from "./models/EventModel.js";
 import PhotoPosts from "./models/PhotoPostModel.js";
 import Stories from "./models/StoryModel.js";
@@ -99,6 +100,20 @@ async function startChangeStream(db) {
             await PhotoPosts.deleteMany({ createdBy: deletedUserId });
             await Events.deleteMany({ createdBy: deletedUserId });
             await Stories.deleteMany({ user: deletedUserId });
+
+            await PhotoPosts.updateMany({}, { $pull: { likes: deletedUserId } });
+            await Events.updateMany({}, { $pull: { likes: deletedUserId } });
+            await Events.updateMany({}, { $pull: { participants: deletedUserId } });
+
+            await Users.updateMany(
+                { following: deletedUserId },
+                { $pull: { following: deletedUserId } }
+            );
+
+            await Users.updateMany(
+                { followers: deletedUserId },
+                { $pull: { followers: deletedUserId } }
+            );
 
             console.log(`Successfully deleted all related data for user ${deletedUserId}.`);
         } catch (error) {
