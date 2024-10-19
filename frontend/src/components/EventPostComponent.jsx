@@ -276,11 +276,11 @@ const EventPostComponent = ({ eventPost }) => {
                     </div>
                 )}
             </div>
-            {post.eventDescription && (
+            {eventPost.description && (
                 <div className="eventPostDescription">
                     <span id="descriptionSection">
                         <span id="descriptionUserUsername">{post.specificUsername}</span>
-                        {post.eventDescription}
+                        {eventPost.description}
                     </span>
                 </div>
             )}
