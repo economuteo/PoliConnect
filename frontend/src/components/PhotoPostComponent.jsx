@@ -199,11 +199,11 @@ const PhotoPostComponent = ({ photoPost }) => {
                         <p onClick={() => goToLikesPage(post)}>{postLikes}</p>
                     </div>
                 )}
-                <div className="reaction">
+                {/* <div className="reaction">
                     <img src={CommentsIcon} alt="" />
                     <p>{post.comments.length}</p>
                 </div>
-                <img src={ShareIcon} alt="" />
+                <img src={ShareIcon} alt="" /> */}
             </div>
         </Wrapper>
     );
