@@ -65,6 +65,7 @@ export const getUsersThatLikedThePost = async (req, res) => {
         const currentUser = await getCurrentUserUsingToken(req);
 
         const post = req.post;
+
         const postLikes = post.likes.slice(0, 100);
 
         const users = await Promise.all(

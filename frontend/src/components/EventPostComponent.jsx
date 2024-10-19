@@ -218,10 +218,10 @@ const EventPostComponent = ({ eventPost }) => {
         navigate("/participants", { state: { participants } });
     };
 
-    const goToLikesPage = async (post) => {
+    const goToLikesPage = async (eventPost) => {
         const response = await customFetch.post("/likes/getUsersThatLikedThePost", {
-            postId: post._id,
-            typeOfPost: post.typeOfPost,
+            postId: eventPost._id,
+            typeOfPost: eventPost.typeOfPost,
         });
 
         const users = response.data;
@@ -300,7 +300,7 @@ const EventPostComponent = ({ eventPost }) => {
                         <div onClick={() => handleLikeUnlike(post)}>
                             <LikeIconComponent fill={isLiked ? "#0677E8" : ""} />
                         </div>
-                        <p onClick={() => goToLikesPage(post)}>{postLikes}</p>
+                        <p onClick={() => goToLikesPage(eventPost)}>{postLikes}</p>
                     </div>
                 )}
                 <div className="reaction">
