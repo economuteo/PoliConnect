@@ -1,18 +1,18 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import SearchUsersBackIcon from "../assets/images/search-users-back-icon.png";
 
-import Wrapper from "../assets/wrappers/UserProfileNavbarComponent";
+import Wrapper from "../assets/wrappers/SearchUsersNavbarComponent";
+import { useState } from "react";
 
-const UserProfileNavbarComponent = () => {
-    const [isNavigating, setIsNavigating] = useState(false);
+const MessagesNavbarComponent = () => {
     const navigate = useNavigate();
+    const [isNavigating, setIsNavigating] = useState(false);
 
     const handleBackClick = () => {
         if (isNavigating) return;
-        setIsNavigating(true);
 
+        setIsNavigating(true);
         navigate(-1);
     };
 
@@ -24,8 +24,9 @@ const UserProfileNavbarComponent = () => {
                 className="searchUsersBackIcon"
                 alt=""
             />
+            <p>Messages</p>
         </Wrapper>
     );
 };
 
-export default UserProfileNavbarComponent;
+export default MessagesNavbarComponent;

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLoaderData, useLocation } from "react-router-dom";
+import { Navigate, useLoaderData, useLocation, useNavigate } from "react-router-dom";
 
 import Wrapper from "../assets/wrappers/UserProfileComponent";
 
@@ -19,6 +19,8 @@ export const isUserFollowedLoader = async ({ params }) => {
 };
 
 const UserProfilePage = () => {
+    const navigate = useNavigate();
+
     const loaderData = useLoaderData();
     const { isFollowed, isCurrentUserProfile } = loaderData;
 
@@ -53,6 +55,10 @@ const UserProfilePage = () => {
         }
     };
 
+    const handleMessageUser = () => {
+        navigate(`/messages/${user.username}`, { state: { user } });
+    };
+
     return (
         <Wrapper>
             <img src={user.bannerImage} className="userBannerImage" alt="userBanner" />
@@ -74,9 +80,9 @@ const UserProfilePage = () => {
                             id="followButton">
                             {followed ? "Unfollow" : "Follow"}
                         </div>
-                        {/* <div className="button" id="messageButton">
+                        <div className="button" id="messageButton" onClick={handleMessageUser}>
                             Message
-                        </div> */}
+                        </div>
                     </>
                 )}
                 {currentUserProfile && (

@@ -25,6 +25,7 @@ import {
     ProfilePage,
     UserProfilePage,
     MessagesPage,
+    UserMessagePage,
     NotificationsPage,
     CreatePhotoPostPage,
     IntoAppPage,
@@ -155,6 +156,12 @@ const router = createBrowserRouter([
                     {
                         path: "messages",
                         element: <MessagesPage />,
+                        children: [
+                            {
+                                path: ":username",
+                                element: <UserMessagePage />,
+                            },
+                        ],
                     },
                     {
                         path: "notifications",

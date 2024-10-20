@@ -17,6 +17,10 @@ const Wrapper = styled.nav`
         font-family: "Poppins SemiBold";
         color: white;
     }
+
+    @media only screen and (min-width: 1024px) {
+        padding: 0px 24px;
+    }
 `;
 
 export default Wrapper;
