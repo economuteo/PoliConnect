@@ -156,12 +156,10 @@ const router = createBrowserRouter([
                     {
                         path: "messages",
                         element: <MessagesPage />,
-                        children: [
-                            {
-                                path: ":username",
-                                element: <UserMessagePage />,
-                            },
-                        ],
+                    },
+                    {
+                        path: "messages/:username",
+                        element: <UserMessagePage />,
                     },
                     {
                         path: "notifications",
