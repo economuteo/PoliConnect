@@ -1,10 +1,11 @@
 import Wrapper from "../assets/wrappers/UserMessagePage";
-import UserMessageNavbarComponent from "../components/UserMessageNavbarComponent";
+import { ChatBoxComponent, UserMessageNavbarComponent } from "../components";
 
 const UserMessagePage = () => {
     return (
         <Wrapper>
             <UserMessageNavbarComponent />
+            <ChatBoxComponent />
         </Wrapper>
     );
 };

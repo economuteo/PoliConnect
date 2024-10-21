@@ -36,6 +36,10 @@ const Wrapper = styled.nav`
         display: flex;
         flex-direction: column;
     }
+
+    #userUsername {
+        font-size: 0.85em;
+    }
 `;
 
 export default Wrapper;
