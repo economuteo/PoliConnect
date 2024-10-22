@@ -12,6 +12,7 @@ import cookieParser from "cookie-parser";
 
 import Users from "./models/UserModel.js";
 import Events from "./models/EventModel.js";
+import Message from "./models/MessageModel.js";
 import PhotoPosts from "./models/PhotoPostModel.js";
 import Stories from "./models/StoryModel.js";
 
@@ -30,6 +31,19 @@ import { authenticateUser } from "./middleware/authMiddleware.js";
 import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware.js";
 
 import cloudinary from "cloudinary";
+import http from "http";
+import { Server as SocketIOServer } from "socket.io";
+
+import redis from "redis";
+import redisAdapter from "socket.io-redis";
+
+// Create Redis client
+const redisClient = redis.createClient({ host: "localhost", port: 6379 });
+
+// Handle Redis connection errors
+redisClient.on("error", (err) => {
+    console.error("Redis error:", err);
+});
 
 // Middleware
 if (process.env.NODE_ENV === "development") {
@@ -86,6 +100,96 @@ cloudinary.config({
     api_secret: process.env.CLOUD_API_SECRET,
 });
 
+const server = http.createServer(app);
+
+const io = new SocketIOServer(server, {
+    cors: {
+        origin: "*", // Set to your frontend's origin in production
+        methods: ["GET", "POST"],
+    },
+});
+
+// Attach Redis adapter to Socket.IO
+io.adapter(redisAdapter({ host: "localhost", port: 6379 }));
+
+io.on("connection", (socket) => {
+    console.log(`User connected: ${socket.id}`);
+
+    // When a user registers, store the mapping in Redis
+    socket.on("register", (userId) => {
+        redisClient.set(userId, socket.id, (err) => {
+            if (err) {
+                console.error("Error saving socket ID in Redis:", err);
+            } else {
+                console.log(`User ${userId} registered with socket ID: ${socket.id}`);
+            }
+        });
+    });
+
+    // Handle private messages
+    socket.on("sendMessage", async (data) => {
+        const { senderId, receiverId, content } = data;
+
+        // Save the message to MongoDB
+        const newMessage = new Message({ senderId, receiverId, content });
+        await newMessage.save();
+
+        // Retrieve the receiver's socket ID from Redis
+        redisClient.get(receiverId, (err, receiverSocketId) => {
+            if (err) {
+                console.error("Error retrieving socket ID from Redis:", err);
+            } else if (receiverSocketId) {
+                // Emit the message to the receiver
+                io.to(receiverSocketId).emit("receiveMessage", { senderId, content });
+            } else {
+                console.log("Receiver is not online");
+            }
+        });
+    });
+
+    // // Handle message sending in a specific room
+    // socket.on("sendMessage", (messageData) => {
+    //     const { room, content, sender } = messageData;
+    //     console.log(`Message from ${sender}: ${content} to room: ${room}`);
+    //     io.to(room).emit("receiveMessage", messageData); // Broadcast to the room
+    // });
+
+    // Handle user joining a room (for group chat or personal chat)
+    socket.on("joinRoom", (room) => {
+        socket.join(room);
+        console.log(`User ${socket.id} joined room ${room}`);
+    });
+
+    // Handle user disconnect
+    socket.on("disconnect", () => {
+        // Find the user and remove their mapping from Redis
+        redisClient.keys("*", (err, keys) => {
+            if (err) {
+                console.error("Error retrieving keys from Redis:", err);
+            } else {
+                keys.forEach((userId) => {
+                    redisClient.get(userId, (err, socketId) => {
+                        if (err) {
+                            console.error("Error getting socketId from Redis:", err);
+                        } else if (socketId === socket.id) {
+                            redisClient.del(userId, (err) => {
+                                if (err) {
+                                    console.error("Error deleting user from Redis:", err);
+                                } else {
+                                    console.log(
+                                        `User ${userId} disconnected and removed from Redis`
+                                    );
+                                }
+                            });
+                        }
+                    });
+                });
+            }
+        });
+        console.log(`User disconnected: ${socket.id}`);
+    });
+});
+
 // Function to start the change stream for watching deletions
 async function startChangeStream(db) {
     const userCollection = db.collection("users");
@@ -105,7 +209,6 @@ async function startChangeStream(db) {
             await Events.updateMany({}, { $pull: { likes: deletedUserId } });
             await Events.updateMany({}, { $pull: { participants: deletedUserId } });
 
-            // To be verified
             await Users.updateMany(
                 { following: deletedUserId },
                 { $pull: { following: deletedUserId } }
@@ -133,7 +236,7 @@ try {
     // Start change stream monitoring for user deletions
     startChangeStream(db);
 
-    app.listen(port, () => {
+    server.listen(port, () => {
         console.log(`Server is running on port ${port}`);
     });
 } catch (error) {

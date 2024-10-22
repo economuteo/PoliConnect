@@ -1,6 +1,5 @@
 import Wrapper from "../assets/wrappers/ChatBoxComponent.js";
 import React, { useState, useEffect } from "react";
-import ChatInput from "./ChatInput.jsx";
 import io from "socket.io-client";
 
 // Connect to Socket.IO server
@@ -10,9 +9,9 @@ const ChatBoxComponent = () => {
     const [messages, setMessages] = useState([]);
 
     useEffect(() => {
-        // Listen for incoming messages
-        socket.on("receiveMessage", (message) => {
-            setMessages((prevMessages) => [...prevMessages, message]);
+        // To check this
+        socket.on("receiveMessage", (messageData) => {
+            setMessages((prevMessages) => [...prevMessages, messageData]);
         });
 
         return () => {
@@ -31,7 +30,6 @@ const ChatBoxComponent = () => {
                         </div>
                     ))}
                 </div>
-                <ChatInput />
             </div>
         </Wrapper>
     );

@@ -45,5 +45,6 @@ export { default as UserShortProfileComponent } from "./UserShortProfileComponen
 export { default as ParticipantsNavbarComponent } from "./ParticipantsNavbarComponent";
 export { default as AddDescriptionComponent } from "./AddDescriptionComponent";
 export { default as ChatBoxComponent } from "./ChatBoxComponent";
+export { default as ChatInputComponent } from "./ChatInputComponent";
 export { default as UserMessageNavbarComponent } from "./UserMessageNavbarComponent";
 export { default as ErrorElement } from "./ErrorElement";

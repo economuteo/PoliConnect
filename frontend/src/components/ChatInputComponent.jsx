@@ -5,7 +5,7 @@ import Wrapper from "../assets/wrappers/ChatInputWrapper.js";
 // Connect to Socket.IO server
 const socket = io("http://localhost:3000");
 
-const ChatInput = () => {
+const ChatInputComponent = ({ currentUserId, receiverUserId }) => {
     const [message, setMessage] = useState("");
     const textareaRef = useRef(null);
 
@@ -18,14 +18,26 @@ const ChatInput = () => {
         textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     };
 
-    const handleSend = () => {};
+    const sendMessage = () => {
+        if (!message.trim() === "") return;
 
-    // const sendMessage = () => {
-    //     // Send the message via Socket.IO
-    //     socket.emit("sendMessage", { username, content: message });
-    //     setMessages((prevMessages) => [...prevMessages, { username, content: message }]);
-    //     setMessage("");
-    // };
+        // Emit the message to the backend
+        socket.emit("sendMessage", {
+            senderId: currentUserId,
+            receiverId: receiverUserId,
+            content: message,
+        });
+
+        // Clear the input field
+        setMessage("");
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
+    };
 
     return (
         <Wrapper className="chat-input">
@@ -34,11 +46,13 @@ const ChatInput = () => {
                     ref={textareaRef}
                     value={message}
                     onChange={handleInput}
+                    onKeyDown={handleKeyDown}
                     rows="1"
                     className="chat-textarea"
                     placeholder="Write now..."
                 />
                 <svg
+                    onClick={sendMessage}
                     className="sendButton"
                     width="20"
                     height="20"
@@ -55,4 +69,4 @@ const ChatInput = () => {
     );
 };
 
-export default ChatInput;
+export default ChatInputComponent;

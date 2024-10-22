@@ -18,4 +18,19 @@ router
     .patch(validateMessageInput, validateIdParam, editMessage)
     .delete(validateIdParam, deleteMessage);
 
+router.post("/sendMessage", async (req, res) => {
+    const { senderId, receiverId, content } = req.body;
+
+    const encryptedMessage = encrypt(content);
+    const message = new Message({
+        sender: senderId,
+        receiver: receiverId,
+        content: JSON.stringify(encryptedMessage),
+    });
+
+    await message.save();
+
+    res.status(201).json({ message: "Message sent" });
+});
+
 export default router;
