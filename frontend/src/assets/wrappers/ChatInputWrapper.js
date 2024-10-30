@@ -1,6 +1,9 @@
 import styled from "styled-components";
 
 const Wrapper = styled.div`
+    margin-top: 15px;
+    margin-bottom: 10px;
+
     .chatBox {
         padding-right: 10px;
         display: flex;

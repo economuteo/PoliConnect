@@ -1,32 +1,39 @@
 import Wrapper from "../assets/wrappers/ChatBoxComponent.js";
 import React, { useState, useEffect } from "react";
-import io from "socket.io-client";
+import socket from "../socket.io/socket.js"; // Assuming this is where you configure the socket
 
-// Connect to Socket.IO server
-const socket = io("http://localhost:3000");
-
-const ChatBoxComponent = () => {
+const ChatBoxComponent = ({ currentUserId, receiverUserId, currentRoomId }) => {
     const [messages, setMessages] = useState([]);
 
     useEffect(() => {
-        // To check this
-        socket.on("receiveMessage", (messageData) => {
-            setMessages((prevMessages) => [...prevMessages, messageData]);
-        });
+        // Listen for incoming messages
+        const handleReceiveMessage = (messageData) => {
+            if (messageData.roomId === currentRoomId) {
+                setMessages((prevMessages) => [...prevMessages, messageData]);
+            }
+        };
+
+        socket.on("receiveMessage", handleReceiveMessage);
 
         return () => {
-            socket.off("receiveMessage");
+            socket.off("receiveMessage", handleReceiveMessage);
         };
-    }, []);
+    }, [currentRoomId]);
 
     return (
         <Wrapper className="secondContainer">
             <div className="chat-container">
-                <div className="chat-messages">
+                <div className="chatMessages">
                     {messages.map((msg, index) => (
-                        <div key={index} className={`message `}>
-                            {/* Message Component here */}
-                            <span>{msg.content}</span>
+                        <div className="messageContainer" key={index}>
+                            <span
+                                className={`message ${
+                                    msg.senderId === currentUserId
+                                        ? "currentUserMsg"
+                                        : "otherUserMsg"
+                                }`}>
+                                <span>{msg.content}</span>
+                            </span>
                         </div>
                     ))}
                 </div>

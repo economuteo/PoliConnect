@@ -1,11 +1,10 @@
 import { useRef, useState } from "react";
 import io from "socket.io-client";
 import Wrapper from "../assets/wrappers/ChatInputWrapper.js";
+import socket from "../socket.io/socket.js";
+import customFetch from "../utils/customFetch.js";
 
-// Connect to Socket.IO server
-const socket = io("http://localhost:3000");
-
-const ChatInputComponent = ({ currentUserId, receiverUserId }) => {
+const ChatInputComponent = ({ currentUserId, receiverUserId, currentRoomId }) => {
     const [message, setMessage] = useState("");
     const textareaRef = useRef(null);
 
@@ -18,17 +17,17 @@ const ChatInputComponent = ({ currentUserId, receiverUserId }) => {
         textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     };
 
-    const sendMessage = () => {
-        if (!message.trim() === "") return;
+    const sendMessage = async () => {
+        if (!message.trim() || !currentRoomId) return;
 
-        // Emit the message to the backend
-        socket.emit("sendMessage", {
+        // Emit the message to the backend and handle acknowledgment
+        socket.emit("chat message", {
+            roomId: currentRoomId,
             senderId: currentUserId,
             receiverId: receiverUserId,
             content: message,
         });
 
-        // Clear the input field
         setMessage("");
     };
 
@@ -40,7 +39,7 @@ const ChatInputComponent = ({ currentUserId, receiverUserId }) => {
     };
 
     return (
-        <Wrapper className="chat-input">
+        <Wrapper className="chat-input secondContainer">
             <div className="chatBox">
                 <textarea
                     ref={textareaRef}

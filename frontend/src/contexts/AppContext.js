@@ -18,6 +18,9 @@ export const AppProvider = ({ children }) => {
     // Photo post file
     const [photoPostFile, setPhotoPostFile] = useState("");
 
+    // Room ID
+    const [roomId, setRoomId] = useState("");
+
     // Story logic
     // Finish story component
     const [isTextVisible, setIsTextVisible] = useState(false);
@@ -35,6 +38,8 @@ export const AppProvider = ({ children }) => {
                 setFile,
                 isTextVisible,
                 setIsTextVisible,
+                roomId,
+                setRoomId,
             }}>
             {children}
         </AppContext.Provider>

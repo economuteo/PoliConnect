@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { Navigate, useLoaderData, useLocation, useNavigate } from "react-router-dom";
-
 import Wrapper from "../assets/wrappers/UserProfileComponent";
-
 import customFetch from "../utils/customFetch";
+import { startChat } from "../socket.io/chatHandler";
 
 export const isUserFollowedLoader = async ({ params }) => {
     const { username } = params;
@@ -55,7 +54,11 @@ const UserProfilePage = () => {
         }
     };
 
-    const handleMessageUser = () => {
+    const handleMessageUser = async () => {
+        const response = await customFetch.get("/users/currentUserResponse");
+        const currentUserId = response.data._id;
+        const otherUserId = user._id;
+        startChat(currentUserId, otherUserId);
         navigate(`/messages/${user.username}`, { state: { user } });
     };
 

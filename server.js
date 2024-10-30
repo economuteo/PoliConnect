@@ -15,6 +15,7 @@ import Events from "./models/EventModel.js";
 import Message from "./models/MessageModel.js";
 import PhotoPosts from "./models/PhotoPostModel.js";
 import Stories from "./models/StoryModel.js";
+import Room from "./models/RoomModel.js";
 
 // routers
 import userRouter from "./routes/userRouter.js";
@@ -26,6 +27,7 @@ import postRouter from "./routes/postRouter.js";
 import commentsRouter from "./routes/commentsRouter.js";
 import likesRouter from "./routes/likesRouter.js";
 import participantsRouter from "./routes/participantsRouter.js";
+import roomsRouter from "./routes/roomsRouter.js";
 
 import { authenticateUser } from "./middleware/authMiddleware.js";
 import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware.js";
@@ -44,6 +46,16 @@ const redisClient = redis.createClient({ host: "localhost", port: 6379 });
 redisClient.on("error", (err) => {
     console.error("Redis error:", err);
 });
+
+// Connect Redis client
+(async () => {
+    try {
+        await redisClient.connect();
+        console.log("Redis client connected");
+    } catch (error) {
+        console.error("Error connecting to Redis:", error);
+    }
+})();
 
 // Middleware
 if (process.env.NODE_ENV === "development") {
@@ -66,6 +78,7 @@ app.use("/api/v1/posts", authenticateUser, postRouter);
 app.use("/api/v1/participants", authenticateUser, participantsRouter);
 app.use("/api/v1/comments", authenticateUser, commentsRouter);
 app.use("/api/v1/likes", authenticateUser, likesRouter);
+app.use("/api/v1/rooms", authenticateUser, roomsRouter);
 
 // Static file serving and catch-all for production (for React front-end)
 if (process.env.NODE_ENV === "production") {
@@ -113,81 +126,70 @@ const io = new SocketIOServer(server, {
 io.adapter(redisAdapter({ host: "localhost", port: 6379 }));
 
 io.on("connection", (socket) => {
-    console.log(`User connected: ${socket.id}`);
-
-    // When a user registers, store the mapping in Redis
-    socket.on("register", (userId) => {
-        redisClient.set(userId, socket.id, (err) => {
-            if (err) {
-                console.error("Error saving socket ID in Redis:", err);
-            } else {
-                console.log(`User ${userId} registered with socket ID: ${socket.id}`);
-            }
-        });
-    });
-
-    // Handle private messages
-    socket.on("sendMessage", async (data) => {
-        const { senderId, receiverId, content } = data;
-
-        // Save the message to MongoDB
-        const newMessage = new Message({ senderId, receiverId, content });
-        await newMessage.save();
-
-        // Retrieve the receiver's socket ID from Redis
-        redisClient.get(receiverId, (err, receiverSocketId) => {
-            if (err) {
-                console.error("Error retrieving socket ID from Redis:", err);
-            } else if (receiverSocketId) {
-                // Emit the message to the receiver
-                io.to(receiverSocketId).emit("receiveMessage", { senderId, content });
-            } else {
-                console.log("Receiver is not online");
-            }
-        });
-    });
-
-    // // Handle message sending in a specific room
-    // socket.on("sendMessage", (messageData) => {
-    //     const { room, content, sender } = messageData;
-    //     console.log(`Message from ${sender}: ${content} to room: ${room}`);
-    //     io.to(room).emit("receiveMessage", messageData); // Broadcast to the room
-    // });
-
-    // Handle user joining a room (for group chat or personal chat)
-    socket.on("joinRoom", (room) => {
-        socket.join(room);
-        console.log(`User ${socket.id} joined room ${room}`);
-    });
+    console.log("a user connected", socket.id);
 
     // Handle user disconnect
     socket.on("disconnect", () => {
-        // Find the user and remove their mapping from Redis
-        redisClient.keys("*", (err, keys) => {
-            if (err) {
-                console.error("Error retrieving keys from Redis:", err);
-            } else {
-                keys.forEach((userId) => {
-                    redisClient.get(userId, (err, socketId) => {
-                        if (err) {
-                            console.error("Error getting socketId from Redis:", err);
-                        } else if (socketId === socket.id) {
-                            redisClient.del(userId, (err) => {
-                                if (err) {
-                                    console.error("Error deleting user from Redis:", err);
-                                } else {
-                                    console.log(
-                                        `User ${userId} disconnected and removed from Redis`
-                                    );
-                                }
-                            });
-                        }
-                    });
-                });
-            }
-        });
-        console.log(`User disconnected: ${socket.id}`);
+        console.log("user disconnected");
     });
+
+    // Start a new chat
+    socket.on("startChat", async (userId1, userId2) => {
+        const users = [userId1, userId2].sort();
+        const roomId = `room_${users.join("_")}`;
+
+        try {
+            let room = await Room.findOne({ userIds: users });
+
+            if (!room) {
+                room = new Room({ userIds: users, roomId });
+                await room.save();
+                console.log(`Created new room: ${roomId}`);
+            } else {
+                console.log(`Room already exists: ${room.roomId}`);
+            }
+
+            socket.join(roomId);
+            console.log(`User ${userId1} joined room ${roomId}`);
+        } catch (err) {
+            console.error("Error while creating or retrieving room:", err);
+        }
+    });
+
+    // Server-side: In your socket.io logic
+    socket.on("chat message", async (data) => {
+        const { roomId, senderId, receiverId, content } = data;
+
+        io.to(roomId).emit("receiveMessage", { senderId, content, roomId });
+
+        try {
+            const senderIdFormatted = new mongoose.Types.ObjectId(senderId);
+            const receiverIdFormatted = new mongoose.Types.ObjectId(receiverId);
+
+            const newMessage = new Message({
+                senderId: senderIdFormatted,
+                receiverId: receiverIdFormatted,
+                content: content,
+                roomId: roomId,
+                delivered: false,
+            });
+            await newMessage.save();
+        } catch (error) {
+            console.error("Error saving message:", error);
+        }
+    });
+
+    // const undeliveredMessages = await Message.find({ receiverId: userId, delivered: false });
+    // undeliveredMessages.forEach((message) => {
+    //     socket.emit("receiveMessage", {
+    //         senderId: message.senderId,
+    //         content: message.content,
+    //     });
+
+    //     // Mark the message as delivered after sending
+    //     message.delivered = true;
+    //     message.save();
+    // });
 });
 
 // Function to start the change stream for watching deletions

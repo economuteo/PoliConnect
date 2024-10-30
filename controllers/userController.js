@@ -17,6 +17,18 @@ export const getCurrentUserUsingToken = async (req) => {
     return userWithoutPassword;
 };
 
+export const getCurrentUserUsingTokenWithResponse = async (req, res) => {
+    const { token } = req.cookies;
+    const tokenDecoded = verifyJWT(token);
+    const { userId } = tokenDecoded;
+    const user = await User.findOne({ _id: userId });
+    if (!user) {
+        throw new BadRequestError("User not found");
+    }
+    const userWithoutPassword = user.toJSON();
+    res.status(StatusCodes.OK).json(userWithoutPassword);
+};
+
 export const getSpecificUser = async (req, res) => {
     const user = await User.findOne({ _id: req.user.userId });
     const userWithoutPassword = user.toJSON();

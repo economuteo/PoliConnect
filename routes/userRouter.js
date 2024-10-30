@@ -8,6 +8,7 @@ import {
     checkIsCurrentUser,
     updateUser,
     searchUsers,
+    getCurrentUserUsingTokenWithResponse,
 } from "../controllers/userController.js";
 import { validateUpdateUserInput } from "../middleware/validationMiddleware.js";
 import { authorizePermissions } from "../middleware/authMiddleware.js";
@@ -15,6 +16,7 @@ import { authorizePermissions } from "../middleware/authMiddleware.js";
 const router = Router();
 
 router.get("/currentUser", getCurrentUserUsingToken);
+router.get("/currentUserResponse", getCurrentUserUsingTokenWithResponse);
 
 router.get("/specificUser", getSpecificUser);
 router.post("/specificUserByID", getSpecificUserByID);
