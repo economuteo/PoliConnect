@@ -18,6 +18,16 @@ const Wrapper = styled.div`
         max-height: calc(100vh - 250px);
     }
 
+    /* WebKit browsers (Chrome, Safari) */
+    .chatMessages::-webkit-scrollbar {
+        display: none; /* Hide the scrollbar */
+    }
+
+    /* Firefox */
+    .chatMessages {
+        scrollbar-width: none; /* Hide the scrollbar */
+    }
+
     .message {
         padding: 10px;
         border-radius: 10px;
