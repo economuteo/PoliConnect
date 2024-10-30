@@ -1,9 +1,16 @@
 import Wrapper from "../assets/wrappers/ChatBoxComponent.js";
 import React, { useState, useEffect } from "react";
+import { startChat } from "../socket.io/chatHandler.js";
 import socket from "../socket.io/socket.js"; // Assuming this is where you configure the socket
 
 const ChatBoxComponent = ({ currentUserId, receiverUserId, currentRoomId }) => {
     const [messages, setMessages] = useState([]);
+
+    useEffect(() => {
+        if (currentUserId && receiverUserId) {
+            startChat(currentUserId, receiverUserId);
+        }
+    }, [currentUserId, receiverUserId]);
 
     useEffect(() => {
         // Listen for incoming messages

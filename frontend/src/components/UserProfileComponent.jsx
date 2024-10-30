@@ -55,10 +55,6 @@ const UserProfilePage = () => {
     };
 
     const handleMessageUser = async () => {
-        const response = await customFetch.get("/users/currentUserResponse");
-        const currentUserId = response.data._id;
-        const otherUserId = user._id;
-        startChat(currentUserId, otherUserId);
         navigate(`/messages/${user.username}`, { state: { user } });
     };
 
