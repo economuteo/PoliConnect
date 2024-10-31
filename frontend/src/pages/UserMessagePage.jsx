@@ -3,6 +3,7 @@ import { ChatBoxComponent, UserMessageNavbarComponent, ChatInputComponent } from
 import Wrapper from "../assets/wrappers/UserMessagePage";
 import customFetch from "../utils/customFetch";
 import { useLocation } from "react-router-dom";
+import { startChat } from "../socket.io/chatHandler";
 
 const UserMessagePage = () => {
     const location = useLocation();
@@ -10,6 +11,7 @@ const UserMessagePage = () => {
     const [currentUserId, setCurrentUserId] = useState("");
     const [receiverUserId, setReceiverUserId] = useState(location.state?.user._id);
     const [currentRoomId, setCurrentRoomId] = useState("");
+    const [chatStarted, setChatStarted] = useState(false);
 
     useEffect(() => {
         const fetchCurrentUserAndRoomId = async () => {
@@ -29,19 +31,32 @@ const UserMessagePage = () => {
         fetchCurrentUserAndRoomId();
     }, [receiverUserId]);
 
+    useEffect(() => {
+        if (currentUserId && receiverUserId) {
+            startChat(currentUserId, receiverUserId);
+            setChatStarted(true);
+        }
+    }, [currentUserId, receiverUserId]);
+
     return (
         <Wrapper>
             <UserMessageNavbarComponent />
-            <ChatBoxComponent
-                currentRoomId={currentRoomId}
-                currentUserId={currentUserId}
-                receiverUserId={receiverUserId}
-            />
-            <ChatInputComponent
-                currentUserId={currentUserId}
-                receiverUserId={receiverUserId}
-                currentRoomId={currentRoomId}
-            />
+            {chatStarted ? (
+                <>
+                    <ChatBoxComponent
+                        currentRoomId={currentRoomId}
+                        currentUserId={currentUserId}
+                        receiverUserId={receiverUserId}
+                    />
+                    <ChatInputComponent
+                        currentUserId={currentUserId}
+                        receiverUserId={receiverUserId}
+                        currentRoomId={currentRoomId}
+                    />
+                </>
+            ) : (
+                <div className="connectingMessage">Connecting to the chat...</div>
+            )}
         </Wrapper>
     );
 };

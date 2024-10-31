@@ -36,26 +36,7 @@ import cloudinary from "cloudinary";
 import http from "http";
 import { Server as SocketIOServer } from "socket.io";
 
-import redis from "redis";
-import redisAdapter from "socket.io-redis";
-
-// Create Redis client
-const redisClient = redis.createClient({ host: "localhost", port: 6379 });
-
-// Handle Redis connection errors
-redisClient.on("error", (err) => {
-    console.error("Redis error:", err);
-});
-
-// Connect Redis client
-(async () => {
-    try {
-        await redisClient.connect();
-        console.log("Redis client connected");
-    } catch (error) {
-        console.error("Error connecting to Redis:", error);
-    }
-})();
+import { encrypt, decrypt } from "./utils/encryptionCrypto.js";
 
 // Middleware
 if (process.env.NODE_ENV === "development") {
@@ -122,9 +103,6 @@ const io = new SocketIOServer(server, {
     },
 });
 
-// Attach Redis adapter to Socket.IO
-io.adapter(redisAdapter({ host: "localhost", port: 6379 }));
-
 io.on("connection", (socket) => {
     console.log("a user connected", socket.id);
 
@@ -156,11 +134,16 @@ io.on("connection", (socket) => {
         }
     });
 
-    // Server-side: In your socket.io logic
     socket.on("chat message", async (data) => {
         const { roomId, senderId, receiverId, content } = data;
 
-        io.to(roomId).emit("receiveMessage", { senderId, content, roomId });
+        const encryptedMessage = encrypt(content);
+
+        io.to(roomId).emit("receiveMessage", {
+            senderId,
+            content: encryptedMessage.content,
+            roomId,
+        });
 
         try {
             const senderIdFormatted = new mongoose.Types.ObjectId(senderId);
@@ -169,7 +152,8 @@ io.on("connection", (socket) => {
             const newMessage = new Message({
                 senderId: senderIdFormatted,
                 receiverId: receiverIdFormatted,
-                content: content,
+                content: encryptedMessage.content,
+                iv: encryptedMessage.iv,
                 roomId: roomId,
                 delivered: false,
             });

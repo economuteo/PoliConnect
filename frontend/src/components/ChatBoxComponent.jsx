@@ -5,12 +5,7 @@ import socket from "../socket.io/socket.js"; // Assuming this is where you confi
 
 const ChatBoxComponent = ({ currentUserId, receiverUserId, currentRoomId }) => {
     const [messages, setMessages] = useState([]);
-
-    useEffect(() => {
-        if (currentUserId && receiverUserId) {
-            startChat(currentUserId, receiverUserId);
-        }
-    }, [currentUserId, receiverUserId]);
+    const [connectionStatus, setConnectionStatus] = useState("connecting"); // Start with "connecting"
 
     useEffect(() => {
         // Listen for incoming messages
@@ -20,10 +15,19 @@ const ChatBoxComponent = ({ currentUserId, receiverUserId, currentRoomId }) => {
             }
         };
 
+        socket.on("connect", () => setConnectionStatus("connected"));
+        socket.on("disconnect", () => setConnectionStatus("disconnected"));
+        socket.on("reconnect_attempt", () => setConnectionStatus("reconnecting"));
+        socket.on("reconnect_failed", () => setConnectionStatus("offline")); // When reconnection fails
+
         socket.on("receiveMessage", handleReceiveMessage);
 
         return () => {
             socket.off("receiveMessage", handleReceiveMessage);
+            socket.off("connect");
+            socket.off("disconnect");
+            socket.off("reconnect_attempt");
+            socket.off("reconnect_failed");
         };
     }, [currentRoomId]);
 
