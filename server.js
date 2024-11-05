@@ -38,6 +38,12 @@ import { Server as SocketIOServer } from "socket.io";
 
 import { encrypt, decrypt } from "./utils/encryptionCrypto.js";
 
+import Redis from "ioredis";
+const redis = new Redis({
+    host: "127.0.0.1",
+    port: 6379,
+});
+
 // Middleware
 if (process.env.NODE_ENV === "development") {
     app.use(morgan("dev")); // Logging in development
@@ -60,6 +66,13 @@ app.use("/api/v1/participants", authenticateUser, participantsRouter);
 app.use("/api/v1/comments", authenticateUser, commentsRouter);
 app.use("/api/v1/likes", authenticateUser, likesRouter);
 app.use("/api/v1/rooms", authenticateUser, roomsRouter);
+
+// Cloudinary Configuration
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.CLOUD_API_KEY,
+    api_secret: process.env.CLOUD_API_SECRET,
+});
 
 // Static file serving and catch-all for production (for React front-end)
 if (process.env.NODE_ENV === "production") {
@@ -87,13 +100,6 @@ app.use("*", (req, res) => {
 // Error Handling Middleware
 app.use(errorHandlerMiddleware);
 
-// Cloudinary Configuration
-cloudinary.config({
-    cloud_name: process.env.CLOUD_NAME,
-    api_key: process.env.CLOUD_API_KEY,
-    api_secret: process.env.CLOUD_API_SECRET,
-});
-
 const server = http.createServer(app);
 
 const io = new SocketIOServer(server, {
@@ -104,7 +110,7 @@ const io = new SocketIOServer(server, {
 });
 
 io.on("connection", (socket) => {
-    console.log("a user connected", socket.id);
+    console.log("User connected with the following socket id:", socket.id);
 
     // Handle user disconnect
     socket.on("disconnect", () => {
@@ -113,6 +119,7 @@ io.on("connection", (socket) => {
 
     // Start a new chat
     socket.on("startChat", async (userId1, userId2) => {
+        // Getting the needed room
         const users = [userId1, userId2].sort();
         const roomId = `room_${users.join("_")}`;
 
@@ -129,21 +136,70 @@ io.on("connection", (socket) => {
 
             socket.join(roomId);
             console.log(`User ${userId1} joined room ${roomId}`);
+
+            // Try to load messages from Redis cache first
+            const cachedMessages = await redis.lrange(`chat:${roomId}`, 0, -1);
+            let initialMessages;
+
+            if (cachedMessages.length > 0) {
+                // Decrypt each cached message
+                initialMessages = cachedMessages.map((message) => {
+                    const parsedMessage = JSON.parse(message);
+
+                    const decryptedContent = decrypt(parsedMessage.content, parsedMessage.iv);
+
+                    return {
+                        ...parsedMessage,
+                        content: decryptedContent,
+                    };
+                });
+            } else {
+                // Fetch from MongoDB if Redis cache is empty
+                initialMessages = await Message.find({ roomId })
+                    .sort({ createdAt: -1 })
+                    .limit(20)
+                    .lean();
+
+                // Cache the result in Redis
+                initialMessages.reverse().forEach((msg) => {
+                    redis.rpush(
+                        `chat:${roomId}`,
+                        JSON.stringify({
+                            content: msg.content,
+                            iv: msg.iv,
+                            senderId: msg.senderId,
+                            receiverId: msg.receiverId,
+                        })
+                    );
+                });
+                redis.ltrim(`chat:${roomId}`, -20, -1); // Keep only the latest 20
+            }
+
+            socket.emit("preloadMessages", initialMessages); // Send messages to the client
         } catch (err) {
             console.error("Error while creating or retrieving room:", err);
+            socket.emit("preloadMessages", []);
         }
+    });
+
+    // Background loading of older messages
+    socket.on("loadMoreMessages", async ({ roomId, lastMessageId }) => {
+        const olderMessages = await Message.find({
+            roomId,
+            _id: { $lt: lastMessageId },
+        })
+            .sort({ createdAt: -1 })
+            .limit(20)
+            .lean();
+
+        socket.emit("backgroundMessages", olderMessages.reverse()); // Send in chronological order
     });
 
     socket.on("chat message", async (data) => {
         const { roomId, senderId, receiverId, content } = data;
 
+        // Encrypt the content
         const encryptedMessage = encrypt(content);
-
-        io.to(roomId).emit("receiveMessage", {
-            senderId,
-            content: encryptedMessage.content,
-            roomId,
-        });
 
         try {
             const senderIdFormatted = new mongoose.Types.ObjectId(senderId);
@@ -157,23 +213,37 @@ io.on("connection", (socket) => {
                 roomId: roomId,
                 delivered: false,
             });
+
+            // Save to MongoDB
             await newMessage.save();
+
+            // Maintain only the latest 20 messages in Redis
+            const messageCount = await redis.llen(`chat:${roomId}`);
+            if (messageCount >= 20) {
+                await redis.lpop(`chat:${roomId}`); // Remove the oldest message
+            }
+
+            // Add the new message to the end of the list in Redis
+            await redis.rpush(
+                `chat:${roomId}`,
+                JSON.stringify({
+                    content: encryptedMessage.content,
+                    iv: encryptedMessage.iv,
+                    senderId,
+                    receiverId,
+                })
+            );
+
+            // Broadcast the new message to all clients in the room
+            io.to(roomId).emit("receiveMessage", {
+                senderId,
+                content: content,
+                roomId,
+            });
         } catch (error) {
             console.error("Error saving message:", error);
         }
     });
-
-    // const undeliveredMessages = await Message.find({ receiverId: userId, delivered: false });
-    // undeliveredMessages.forEach((message) => {
-    //     socket.emit("receiveMessage", {
-    //         senderId: message.senderId,
-    //         content: message.content,
-    //     });
-
-    //     // Mark the message as delivered after sending
-    //     message.delivered = true;
-    //     message.save();
-    // });
 });
 
 // Function to start the change stream for watching deletions

@@ -4,10 +4,10 @@ import Wrapper from "../assets/wrappers/UserMessagePage";
 import customFetch from "../utils/customFetch";
 import { useLocation } from "react-router-dom";
 import { startChat } from "../socket.io/chatHandler";
+import socket from "../socket.io/socket";
 
 const UserMessagePage = () => {
     const location = useLocation();
-
     const [currentUserId, setCurrentUserId] = useState("");
     const [receiverUserId, setReceiverUserId] = useState(location.state?.user._id);
     const [currentRoomId, setCurrentRoomId] = useState("");

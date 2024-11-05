@@ -20,7 +20,6 @@ const ChatInputComponent = ({ currentUserId, receiverUserId, currentRoomId }) =>
     const sendMessage = async () => {
         if (!message.trim() || !currentRoomId) return;
 
-        // Emit the message to the backend and handle acknowledgment
         socket.emit("chat message", {
             roomId: currentRoomId,
             senderId: currentUserId,

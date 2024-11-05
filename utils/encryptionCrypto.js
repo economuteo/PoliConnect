@@ -1,11 +1,14 @@
 import crypto from "crypto";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const algorithm = "aes-256-cbc";
-const encryptionKey = crypto.randomBytes(32); // 32 bytes key for AES-256
-const iv = crypto.randomBytes(16); // Initialization vector
+const encryptionKey = Buffer.from(process.env.ENCRYPTION_KEY, "hex");
 
-// Encrypt function
+// Encrypt function with a unique IV for each message
 export function encrypt(text) {
+    const iv = crypto.randomBytes(16); // Generate a unique IV each time
     const cipher = crypto.createCipheriv(algorithm, encryptionKey, iv);
     let encrypted = cipher.update(text, "utf8", "hex");
     encrypted += cipher.final("hex");
