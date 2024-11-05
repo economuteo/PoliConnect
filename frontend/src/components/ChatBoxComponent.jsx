@@ -15,6 +15,10 @@ const ChatBoxComponent = ({ currentUserId, receiverUserId, currentRoomId }) => {
     };
 
     useEffect(() => {
+        scrollToBottom("smooth");
+    }, [messages]);
+
+    useEffect(() => {
         // Receive the preloaded messages and set them in state
         socket.on("preloadMessages", (fetchedMessages) => {
             setMessages(fetchedMessages);
