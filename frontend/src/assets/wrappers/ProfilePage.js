@@ -4,6 +4,7 @@ const Wrapper = styled.main`
     flex: 1;
     display: flex;
     flex-direction: column;
+    align-items: center;
     overflow: scroll;
 
     /* Hide scrollbars for WebKit browsers (Chrome, Safari) */
@@ -22,6 +23,31 @@ const Wrapper = styled.main`
     & {
         -ms-overflow-style: none; /* IE and Edge */
         scrollbar-width: none; /* Firefox */
+    }
+
+    .special {
+        margin-top: 15px;
+        font-family: "Poppins Medium";
+        color: white;
+        font-size: 1.6875rem;
+    }
+
+    .menuOptions {
+        margin-top: 60px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 26px;
+    }
+
+    .option {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        gap: 26px;
+        color: white;
+        font-family: "Poppins Regular";
     }
 `;
 

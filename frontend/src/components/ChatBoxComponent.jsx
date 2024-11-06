@@ -15,10 +15,6 @@ const ChatBoxComponent = ({ currentUserId, receiverUserId, currentRoomId }) => {
     };
 
     useEffect(() => {
-        scrollToBottom("smooth");
-    }, [messages]);
-
-    useEffect(() => {
         // Receive the preloaded messages and set them in state
         socket.on("preloadMessages", (fetchedMessages) => {
             setMessages(fetchedMessages);
@@ -84,9 +80,13 @@ const ChatBoxComponent = ({ currentUserId, receiverUserId, currentRoomId }) => {
     // Start initial background fetch of older messages
     useEffect(() => {
         if (lastMessageId) {
-            fetchOlderMessages(); // Load the first background batch immediately after the initial load
+            fetchOlderMessages();
         }
     }, [lastMessageId, fetchOlderMessages]);
+
+    useEffect(() => {
+        scrollToBottom("smooth");
+    }, [messages]);
 
     return (
         <Wrapper className="secondContainer">
