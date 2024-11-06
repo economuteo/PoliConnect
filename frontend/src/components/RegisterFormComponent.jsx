@@ -14,7 +14,11 @@ const RegisterFormComponent = () => {
     setComingFrom("register");
 
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isSubmittingDemo, setIsSubmittingDemo] = useState(false);
+
     const [isRegisterSuccessful, setIsRegisterSuccessful] = useState(false);
+    const [demoSubmittedSuccessfully, setDemoSubmittedSuccessfully] = useState(false);
+
     const navigate = useNavigate();
 
     const registerDemoUser = async () => {
@@ -35,14 +39,18 @@ const RegisterFormComponent = () => {
         };
 
         try {
+            setIsSubmittingDemo(true);
             // Create the demo user
             await customFetch.post("/auth/registerDemoUser", data);
-
+            setDemoSubmittedSuccessfully(true);
             navigate("/feed");
 
             toast.success("Enjoy the demo!");
         } catch (error) {
             toast.error(error?.response?.data?.message || "An error occurred");
+            setIsSubmittingDemo(false);
+        } finally {
+            setIsSubmittingDemo(false);
         }
     };
 
@@ -93,7 +101,11 @@ const RegisterFormComponent = () => {
                         <button type="submit" disabled={isSubmitting || isRegisterSuccessful}>
                             {isSubmitting ? "Submitting..." : "Register"}
                         </button>
-                        <button id="exploreButton" onClick={() => registerDemoUser()}>
+                        <button
+                            type="button"
+                            id="exploreButton"
+                            onClick={() => registerDemoUser()}
+                            disabled={isSubmittingDemo || demoSubmittedSuccessfully}>
                             Explore the app
                         </button>
                     </div>

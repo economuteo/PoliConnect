@@ -4,13 +4,15 @@ import { StatusCodes } from "http-status-codes";
 
 export const authenticateUser = (req, res, next) => {
     const { token } = req.cookies;
-    if (!token) throw new UnauthenticatedError("Authentication invalid");
+    if (!token) {
+        return res.status(StatusCodes.UNAUTHORIZED).json({ msg: "Authentication required" });
+    }
     try {
         const { userId, role } = verifyJWT(token);
         req.user = { userId, role };
         next();
     } catch (error) {
-        throw new UnauthenticatedError("Authentication invalid");
+        return res.status(StatusCodes.UNAUTHORIZED).json({ msg: "Authentication invalid" });
     }
 };
 
