@@ -7,6 +7,7 @@ import {
     createMessage,
     editMessage,
     deleteMessage,
+    getOlderMessages,
 } from "../controllers/messageController.js";
 
 import { validateMessageInput, validateIdParam } from "../middleware/validationMiddleware.js";
@@ -32,5 +33,7 @@ router.post("/sendMessage", async (req, res) => {
 
     res.status(201).json({ message: "Message sent" });
 });
+
+router.post("/getOlderMessages", getOlderMessages);
 
 export default router;

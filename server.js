@@ -117,7 +117,7 @@ io.on("connection", (socket) => {
         console.log("user disconnected");
     });
 
-    // Start a new chat
+    // Start a new chat and preload previous messages if any
     socket.on("startChat", async (userId1, userId2) => {
         // Getting the needed room
         const users = [userId1, userId2].sort();
@@ -142,57 +142,36 @@ io.on("connection", (socket) => {
             let initialMessages;
 
             if (cachedMessages.length > 0) {
-                // Decrypt each cached message
-                initialMessages = cachedMessages.map((message) => {
-                    const parsedMessage = JSON.parse(message);
-
-                    const decryptedContent = decrypt(parsedMessage.content, parsedMessage.iv);
-
-                    return {
-                        ...parsedMessage,
-                        content: decryptedContent,
-                    };
-                });
+                console.log(cachedMessages);
+                initialMessages = cachedMessages.map((msg) => JSON.parse(msg));
             } else {
-                // Fetch from MongoDB if Redis cache is empty
                 initialMessages = await Message.find({ roomId })
                     .sort({ createdAt: -1 })
                     .limit(20)
                     .lean();
 
-                // Cache the result in Redis
                 initialMessages.reverse().forEach((msg) => {
+                    const decryptedContent = decrypt(msg.content, msg.iv);
+                    msg.content = decryptedContent;
                     redis.rpush(
                         `chat:${roomId}`,
                         JSON.stringify({
-                            content: msg.content,
+                            content: decryptedContent,
                             iv: msg.iv,
                             senderId: msg.senderId,
                             receiverId: msg.receiverId,
+                            createdAt: msg.createdAt,
                         })
                     );
                 });
-                redis.ltrim(`chat:${roomId}`, -20, -1); // Keep only the latest 20
+                redis.ltrim(`chat:${roomId}`, -20, -1);
             }
 
-            socket.emit("preloadMessages", initialMessages); // Send messages to the client
+            socket.emit("preloadMessages", initialMessages);
         } catch (err) {
             console.error("Error while creating or retrieving room:", err);
             socket.emit("preloadMessages", []);
         }
-    });
-
-    // Background loading of older messages
-    socket.on("loadMoreMessages", async ({ roomId, lastMessageId }) => {
-        const olderMessages = await Message.find({
-            roomId,
-            _id: { $lt: lastMessageId },
-        })
-            .sort({ createdAt: -1 })
-            .limit(20)
-            .lean();
-
-        socket.emit("backgroundMessages", olderMessages.reverse()); // Send in chronological order
     });
 
     socket.on("chat message", async (data) => {

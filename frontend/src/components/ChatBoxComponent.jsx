@@ -1,13 +1,11 @@
 import Wrapper from "../assets/wrappers/ChatBoxComponent.js";
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { startChat } from "../socket.io/chatHandler.js";
 import socket from "../socket.io/socket.js"; // Assuming this is where you configure the socket
+import customFetch from "../utils/customFetch.js";
 
 const ChatBoxComponent = ({ currentUserId, receiverUserId, currentRoomId }) => {
     const [messages, setMessages] = useState([]);
-    const [preloadedMessages, setPreloadedMessages] = useState([]);
     const [lastMessageId, setLastMessageId] = useState(null);
-    const [isFetching, setIsFetching] = useState(false);
     const messagesEndRef = useRef(null);
 
     const scrollToBottom = (behavior = "smooth") => {
@@ -15,85 +13,61 @@ const ChatBoxComponent = ({ currentUserId, receiverUserId, currentRoomId }) => {
     };
 
     useEffect(() => {
-        // Receive the preloaded messages and set them in state
+        scrollToBottom("smooth");
+    }, [messages]);
+
+    // Load more messages from MongoDB when button is clicked
+    const loadMoreMessages = useCallback(async () => {
+        try {
+            const response = await customFetch.post("/messages/getOlderMessages", {
+                roomId: currentRoomId,
+                lastMessageId,
+                limit: 20,
+            });
+            const olderMessages = await response.json();
+
+            if (olderMessages.length > 0) {
+                setMessages((prevMessages) => [...olderMessages, ...prevMessages]);
+                setLastMessageId(olderMessages[0]._id);
+            }
+        } catch (error) {
+            console.error("Failed to load more messages:", error);
+        }
+    }, [currentRoomId, lastMessageId]);
+
+    useEffect(() => {
+        // Inserts the most recent 20 messages from Redis or MongoDB (if Redis cache is empty)
         socket.on("preloadMessages", (fetchedMessages) => {
             setMessages(fetchedMessages);
+            console.log(fetchedMessages);
             setLastMessageId(fetchedMessages[0]?._id);
-            setTimeout(() => scrollToBottom("auto"), 100);
         });
 
+        // New message listener for real-time updates
         const handleReceiveMessage = (messageData) => {
             if (messageData.roomId === currentRoomId) {
                 setMessages((prevMessages) => [...prevMessages, messageData]);
-                scrollToBottom("smooth");
             }
         };
         socket.on("receiveMessage", handleReceiveMessage);
 
-        // Load more messages in the background when requested
-        socket.on("backgroundMessages", (olderMessages) => {
-            setPreloadedMessages((prev) => [...olderMessages, ...prev]);
-            setLastMessageId(olderMessages[0]?._id); // Update the lastMessageId for the next fetch
-            setIsFetching(false); // Reset fetching state
-        });
-
         return () => {
             socket.off("preloadMessages");
             socket.off("receiveMessage", handleReceiveMessage);
-            socket.off("backgroundMessages");
         };
     }, [currentRoomId]);
-
-    const fetchOlderMessages = useCallback(() => {
-        if (!isFetching && lastMessageId) {
-            setIsFetching(true);
-            socket.emit("loadMoreMessages", { roomId: currentRoomId, lastMessageId });
-        }
-    }, [currentRoomId, lastMessageId, isFetching]);
-
-    // Load next preloaded batch when the user scrolls to the top
-    const handleScrollToTop = useCallback(() => {
-        if (preloadedMessages.length > 0) {
-            setMessages((prevMessages) => [...preloadedMessages, ...prevMessages]);
-            setPreloadedMessages([]);
-            fetchOlderMessages();
-        }
-    }, [preloadedMessages, fetchOlderMessages]);
-
-    // Trigger handleScrollToTop when the user scrolls to the top of the message list
-    useEffect(() => {
-        const chatContainer = document.querySelector(".chat-container");
-
-        const onScroll = () => {
-            if (chatContainer.scrollTop === 0) {
-                handleScrollToTop();
-            }
-        };
-
-        chatContainer.addEventListener("scroll", onScroll);
-
-        return () => {
-            chatContainer.removeEventListener("scroll", onScroll);
-        };
-    }, [handleScrollToTop]);
-
-    // Start initial background fetch of older messages
-    useEffect(() => {
-        if (lastMessageId) {
-            fetchOlderMessages();
-        }
-    }, [lastMessageId, fetchOlderMessages]);
-
-    useEffect(() => {
-        scrollToBottom("smooth");
-    }, [messages]);
 
     return (
         <Wrapper className="secondContainer">
             <div className="chat-container">
                 <div className="chatMessages">
+                    {messages.length >= 20 && (
+                        <button className="loadMessagesButton" onClick={loadMoreMessages}>
+                            Load more messages
+                        </button>
+                    )}
                     {messages.map((msg, index) => (
-                        <div className="messageContainer" key={index}>
+                        <div className="messageContainer" key={msg._id || index}>
                             <span
                                 className={`message ${
                                     msg.senderId === currentUserId

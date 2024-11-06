@@ -43,6 +43,18 @@ const Wrapper = styled.div`
         width: 100%;
     }
 
+    .loadMessagesButton {
+        align-self: center;
+        width: 200px;
+        padding: 10px;
+        border-radius: 10px;
+        background-color: #0a6c9f;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-family: "Poppins Regular";
+    }
+
     .currentUserMsg {
         justify-self: flex-end;
         background-color: #2f6c9f;

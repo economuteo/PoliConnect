@@ -20,6 +20,22 @@ export const getMessage = async (req, res) => {
     res.status(StatusCodes.OK).json(message);
 };
 
+export const getOlderMessages = async (req, res) => {
+    const { roomId, lastMessageId, limit } = req.body;
+
+    try {
+        const olderMessages = await Message.find({ roomId, _id: { $lt: lastMessageId } })
+            .sort({ _id: -1 })
+            .limit(limit);
+
+        // Reverse the array to maintain chronological order
+        res.status(200).json(olderMessages.reverse());
+    } catch (error) {
+        console.error("Error fetching older messages:", error);
+        res.status(500).json({ error: "Failed to fetch older messages" });
+    }
+};
+
 export const editMessage = async (req, res) => {
     const { id } = req.params;
     const updatedMessage = await Message.findByIdAndUpdate(id, req.body, {
