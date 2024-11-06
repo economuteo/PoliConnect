@@ -8,7 +8,7 @@ import { comparePassword, hashPassword } from "../utils/passwordUtils.js";
 import { createJWT, verifyJWT } from "../utils/tokenUtils.js";
 
 import { StatusCodes } from "http-status-codes";
-import { BadRequestError, NotFoundError, UnauthenticatedError } from "../errors/customErrors.js";
+import { BadRequestError, NotFoundError } from "../errors/customErrors.js";
 
 import cloudinary from "cloudinary";
 
@@ -123,7 +123,7 @@ export const login = async (req, res) => {
 
     const isValidUser = user && (await comparePassword(req.body.password, user.password));
 
-    if (!isValidUser) throw new UnauthenticatedError("Invalid credentials");
+    if (!isValidUser) throw new BadRequestError("Invalid credentials");
 
     const token = createJWT({ userId: user._id, role: user.role });
 
@@ -238,7 +238,7 @@ export const verifyEmailCode = async (req, res) => {
     if (verificationCode === myCode) {
         res.status(StatusCodes.OK).json({ msg: "The code entered is correct!" });
     } else {
-        throw new UnauthenticatedError("The code entered is incorrect!");
+        throw new BadRequestError("The code entered is incorrect!");
     }
 };
 
