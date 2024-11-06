@@ -139,12 +139,14 @@ export const login = async (req, res) => {
 };
 
 export const logout = async (req, res) => {
-    res.cookie("token", "logout", {
+    // Clear the token cookie
+    res.clearCookie("token", {
         httpOnly: true,
-        expires: new Date(Date.now()),
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
     });
 
-    res.status(StatusCodes.OK).json({ msg: "User logged out !" });
+    res.status(StatusCodes.OK).json({ msg: "User logged out!" });
 };
 
 export const resetPassword = async (req, res) => {
@@ -170,16 +172,6 @@ export const resetPassword = async (req, res) => {
     await user.save();
 
     res.status(StatusCodes.OK).json({ msg: "Password was reset successfully!" });
-};
-
-export const checkEmail = async (req, res, next) => {
-    const { email } = req.body;
-
-    if (email) {
-        return next();
-    } else {
-        throw new BadRequestError("Please provide an email address");
-    }
 };
 
 export const sendEmail = async (req, res, next) => {
@@ -215,6 +207,16 @@ export const resendEmail = async (req, res, next) => {
 
     if (email) {
         req.body.email = email;
+        return next();
+    } else {
+        throw new BadRequestError("Please provide an email address");
+    }
+};
+
+export const checkEmail = async (req, res, next) => {
+    const { email } = req.body;
+
+    if (email) {
         return next();
     } else {
         throw new BadRequestError("Please provide an email address");
