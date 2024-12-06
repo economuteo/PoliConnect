@@ -59,7 +59,6 @@ input[type="email"] {
     bottom: 40px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 0.75rem;
     font-family: "Poppins Regular";
     letter-spacing: 2px;
     color: #b3b2b2;
@@ -78,9 +77,6 @@ input[type="email"] {
 }
 
 @media only screen and (min-width: 768px) {
-    .shortIntroductionOpenPage {
-        font-size: 1.25rem;
-    }
 }
 
 @media only screen and (min-width: 1024px) {
@@ -92,13 +88,6 @@ input[type="email"] {
     .title {
         font-size: 4.5rem;
     }
-
-    .shortIntroductionOpenPage {
-        font-size: 1.75rem;
-    }
 }
 @media only screen and (min-width: 1024px) {
-    .shortIntroductionOpenPage {
-        font-size: 1.75rem;
-    }
 }

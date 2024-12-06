@@ -25,11 +25,12 @@ const UserSchema = new mongoose.Schema({
     profileImage: {
         type: String,
         default:
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
+            "https://res.cloudinary.com/diydmnphf/image/upload/f_webp/v1723297355/user-profile_ny6qgr.png",
     },
     bannerImage: {
         type: String,
-        default: "https://res.cloudinary.com/diydmnphf/image/upload/v1726415614/default-banner.png",
+        default:
+            "https://res.cloudinary.com/diydmnphf/image/upload/f_webp/v1726415614/default-banner.png",
     },
     following: [
         {

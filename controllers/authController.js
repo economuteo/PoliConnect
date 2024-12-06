@@ -279,7 +279,7 @@ export const saveUserPhoto = async (req, res) => {
         await currentUser.save();
     } else {
         currentUser.profileImage =
-            "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png";
+            "https://res.cloudinary.com/diydmnphf/image/upload/f_webp/v1723297355/user-profile_ny6qgr.png";
         await currentUser.save();
     }
 

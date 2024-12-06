@@ -39,13 +39,13 @@ const OnBoarding = () => {
                         secondParagraph="We are not collecting data of any kind <br>Talk with your colleagues or with your teachers stress-free"
                     />
                 </SwiperSlide>
-                <SwiperSlide>
+                {/* <SwiperSlide>
                     <OnBoardingTemplateComponent
                         SVGComponent={GPSIcon}
                         firstParagraph="Classroom Finder"
                         secondParagraph="Remove the clutter of navigating through the campus with the help of our tailored PoliGPS"
                     />
-                </SwiperSlide>
+                </SwiperSlide> */}
                 <SwiperSlide>
                     <OnBoardingRegistrationComponent />
                 </SwiperSlide>

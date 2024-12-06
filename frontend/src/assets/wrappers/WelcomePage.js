@@ -43,10 +43,6 @@ const Wrapper = styled.main`
         .title {
             font-size: 3.75rem;
         }
-
-        .shortIntroductionOpenPage {
-            font-size: 1.25rem;
-        }
     }
 
     @media only screen and (min-width: 1024px) {
@@ -57,10 +53,6 @@ const Wrapper = styled.main`
 
         .title {
             font-size: 4.5rem;
-        }
-
-        .shortIntroductionOpenPage {
-            font-size: 1.75rem;
         }
     }
 `;

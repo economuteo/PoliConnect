@@ -33,9 +33,9 @@ const RegisterFormComponent = () => {
             profile: "Electronics, Telecommunications and Information Technology",
             year: "4",
             profileImage:
-                "https://res.cloudinary.com/diydmnphf/image/upload/v1723297355/user-profile_ny6qgr.png",
+                "https://res.cloudinary.com/diydmnphf/image/upload/f_webp/v1723297355/user-profile_ny6qgr.png",
             bannerImage:
-                "https://res.cloudinary.com/diydmnphf/image/upload/v1726415614/default-banner.png",
+                "https://res.cloudinary.com/diydmnphf/image/upload/f_webp/v1726415614/default-banner.png",
         };
 
         try {
