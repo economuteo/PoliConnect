@@ -15,93 +15,85 @@ export const firstPostLoader = async () => {
 
 const PostsComponent = () => {
     const { mostRecentPost } = useLoaderData();
-
-    const [posts, setPosts] = useState([]);
-    const [firstPost, setFirstPost] = useState(mostRecentPost);
+    const [posts, setPosts] = useState(mostRecentPost ? [mostRecentPost] : []);
     const [totalPosts, setTotalPosts] = useState(0);
-    const [isAPICalling, setIsAPICalling] = useState(false);
     const [stopFetchingPosts, setStopFetchingPosts] = useState(false);
-    const [hasScrolledToBottom, setHasScrolledToBottom] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
     const limit = 5; // Number of posts per page
 
-    const scrollableRef = useRef(null);
+    const observerRef = useRef(null); // Ref for the sentinel element
+    const isFetchingRef = useRef(false); // Tracks ongoing API calls
 
+    // Fetch posts from the server
     const fetchPosts = useCallback(async () => {
-        if (!isAPICalling && !stopFetchingPosts) {
-            setStopFetchingPosts(true);
-            try {
-                setLoading(true);
+        if (isFetchingRef.current || stopFetchingPosts) return;
 
-                const response = await customFetch.get(
-                    `/posts/getNoOfPostsForTheCurrentUser?page=${page}&limit=${limit}`
-                );
-                const newPosts = response.data.posts;
-                setTotalPosts(response.data.postsLength);
+        isFetchingRef.current = true;
+        setLoading(true);
 
-                if (newPosts.length !== 0) {
-                    setStopFetchingPosts(false);
-                }
+        try {
+            const response = await customFetch.get(
+                `/posts/getNoOfPostsForTheCurrentUser?page=${page}&limit=${limit}`
+            );
+            const newPosts = response.data.posts;
+            setTotalPosts(response.data.postsLength);
 
+            if (
+                newPosts.length === 0 ||
+                posts.length + newPosts.length >= response.data.postsLength
+            ) {
+                setStopFetchingPosts(true);
+            } else {
                 setPosts((prevPosts) => [...prevPosts, ...newPosts]);
-            } catch (err) {
-                setErrorMessage(err.response?.data?.error || "An error occurred");
-            } finally {
-                setLoading(false);
-                setIsAPICalling(false);
             }
+        } catch (err) {
+            setErrorMessage(err.response?.data?.error || "An error occurred");
+        } finally {
+            setLoading(false);
+            isFetchingRef.current = false; // Reset fetching status
         }
     }, [page]);
 
+    // Fetch initial posts on component mount
     useEffect(() => {
         fetchPosts();
     }, [fetchPosts]);
 
+    // IntersectionObserver setup
     useEffect(() => {
-        if (posts.length !== totalPosts) {
-            setHasScrolledToBottom(false);
-        }
-    }, [posts]);
-
-    const handleScroll = useCallback(() => {
-        const scrollableElement = scrollableRef.current;
-        if (!scrollableElement || hasScrolledToBottom) return;
-
-        // New page condition
-        if (
-            scrollableElement.scrollTop + scrollableElement.clientHeight >=
-            scrollableElement.scrollHeight
-        ) {
-            setPage((prevPage) => prevPage + 1);
-            setHasScrolledToBottom(true);
-        }
-    }, [hasScrolledToBottom]);
-
-    // Add and remove the scroll event listener
-    useEffect(() => {
-        const scrollableElement = scrollableRef.current;
-        if (scrollableElement) {
-            scrollableElement.addEventListener("scroll", handleScroll);
-        }
-        return () => {
-            if (scrollableElement) {
-                scrollableElement.removeEventListener("scroll", handleScroll);
+        const observer = new IntersectionObserver(
+            (entries) => {
+                const [entry] = entries;
+                if (entry.isIntersecting && !isFetchingRef.current) {
+                    setPage((prevPage) => prevPage + 1);
+                }
+            },
+            {
+                threshold: 0.1, // Trigger when at least 10% of the sentinel is visible
+                rootMargin: "200px", // Trigger 200px before the sentinel enters the viewport
             }
+        );
+
+        if (observerRef.current) observer.observe(observerRef.current);
+
+        return () => {
+            if (observerRef.current) observer.unobserve(observerRef.current);
         };
-    }, [handleScroll]);
+    }, []);
 
     return (
-        <Wrapper ref={scrollableRef}>
+        <Wrapper>
             {errorMessage && <p id="errorMessage">{errorMessage}</p>}
-            {firstPost.typeOfPost ? (
-                firstPost.typeOfPost === "EventPost" ? (
-                    <EventPostComponent key={firstPost._id} eventPost={firstPost} />
+            {posts.map((post, index) =>
+                post.typeOfPost === "EventPost" ? (
+                    <EventPostComponent key={post._id || index} eventPost={post} />
                 ) : (
-                    <PhotoPostComponent key={firstPost._id} photoPost={firstPost} />
+                    <PhotoPostComponent key={post._id || index} photoPost={post} />
                 )
-            ) : null}
+            )}
+            {posts.length === 0 && <p id="noPostsMessage">No posts were made yet!</p>}
             {loading && (
                 <div
                     style={{
@@ -113,19 +105,7 @@ const PostsComponent = () => {
                     <ClipLoader color="#ffffff" size={50} />
                 </div>
             )}
-            {posts.length > 0
-                ? posts.map((post) =>
-                      post.typeOfPost === "EventPost" ? (
-                          <EventPostComponent key={post._id} eventPost={post} />
-                      ) : (
-                          <PhotoPostComponent key={post._id} photoPost={post} />
-                      )
-                  )
-                : null}
-
-            {posts.length === 0 && !firstPost.typeOfPost ? (
-                <p id="noPostsMessage">No posts were made yet!</p>
-            ) : null}
+            <div ref={observerRef} id="observerRef"></div>
         </Wrapper>
     );
 };

@@ -24,6 +24,10 @@ const Wrapper = styled.main`
         color: white;
         text-align: center;
     }
+
+    #observerRef {
+        height: 1px;
+    }
 `;
 
 export default Wrapper;

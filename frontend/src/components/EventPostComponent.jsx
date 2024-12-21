@@ -241,7 +241,6 @@ const EventPostComponent = ({ eventPost }) => {
                     <p id="userUsername">{post.specificUsername}</p>
                 </div>
             )}
-
             <div className="eventPostContent">
                 <div
                     onDoubleClick={() => {
