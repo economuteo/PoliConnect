@@ -4,7 +4,7 @@ module.exports = function (app) {
     const target =
         process.env.NODE_ENV === "production"
             ? "https://policonnect.onrender.com/api"
-            : "http://192.168.1.136:8080/api";
+            : "http://192.168.100.85:8080/api";
 
     if (process.env.NODE_ENV !== "production") {
         app.use(

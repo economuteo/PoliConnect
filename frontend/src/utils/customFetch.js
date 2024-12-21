@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const baseURL =
-    process.env.NODE_ENV === "production" ? "/api/v1" : "http://192.168.1.136:3000/api/v1";
+    process.env.NODE_ENV === "production" ? "/api/v1" : "http://192.168.100.85:3000/api/v1";
 
 const customFetch = axios.create({
     baseURL: baseURL,
