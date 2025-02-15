@@ -3,7 +3,7 @@ const { createProxyMiddleware } = require("http-proxy-middleware");
 module.exports = function (app) {
     const target =
         process.env.NODE_ENV === "production"
-            ? "https://policonnect.onrender.com/api"
+            ? "https://policonnect-1.onrender.com/api"
             : "http://localhost:8080/api";
 
     if (process.env.NODE_ENV !== "production") {
