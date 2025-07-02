@@ -1,4 +1,4 @@
-# PoliConnect Theasis Social Media App
+# License - PoliConnect Social Media App
 
 ## Gallery
 
