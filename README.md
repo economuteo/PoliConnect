@@ -1,4 +1,4 @@
-# PoliConnect Project Social Media App
+# PoliConnect Theasis Social Media App
 
 ## Gallery
 
